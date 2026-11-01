@@ -24,27 +24,13 @@
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
           colors: {
             brand: {
-              bg: '#f8fafc',
-              surface: '#ffffff',
-              border: '#e2e8f0',
-              teal: '#0d9488',
-              tealDark: '#0f766e',
-              tealLight: '#ccfbf1',
-              tealText: '#115e59',
-              cyan: '#06b6d4',
-              cyanDark: '#0e7490',
-              accentYellow: '#d97706',
-              accentYellowLight: '#fef3c7'
+              bg: '#f8fafc', surface: '#ffffff', border: '#e2e8f0',
+              teal: '#0d9488', tealDark: '#0f766e', tealLight: '#ccfbf1',
+              cyan: '#06b6d4', cyanDark: '#0e7490', accentYellow: '#d97706'
             }
-          },
-          boxShadow: {
-            'glass': '0 8px 32px 0 rgba(15, 23, 42, 0.08)',
-            'card-hover': '0 12px 24px -4px rgba(13, 148, 136, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.03)'
           }
         }
       }
@@ -57,24 +43,70 @@
     ::-webkit-scrollbar-thumb { background: #0d9488; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #0f766e; }
 
-    @keyframes botGlow {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4); }
-      50% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(13, 148, 136, 0); }
+    /* Aero Vista Glassmorphism Style */
+    .aero-vista-bar {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.9) 100%);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(13, 148, 136, 0.2);
+      box-shadow: 0 4px 20px -2px rgba(13, 148, 136, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
     }
-    .bot-glow { animation: botGlow 3s infinite ease-in-out; }
+    .aero-vista-bar:hover {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(204, 251, 241, 0.5) 100%);
+      border-color: rgba(13, 148, 136, 0.4);
+      box-shadow: 0 6px 24px -2px rgba(13, 148, 136, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
+    }
+
+    /* Mascot Floating Animation */
+    @keyframes mascotFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+    }
+    .mascot-floating {
+      animation: mascotFloat 3.5s ease-in-out infinite;
+    }
+
+    /* Blinking Eyes Animation */
+    @keyframes blinkEyes {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+    .blinking-eyes {
+      animation: blinkEyes 4s infinite;
+      transform-origin: center;
+    }
+
+    @keyframes slideUpMenu {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .animate-slide-up { animation: slideUpMenu 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    @keyframes slideDownCenter {
+      from { transform: translate(-50%, -30px); opacity: 0; }
+      to { transform: translate(-50%, 0); opacity: 1; }
+    }
+    .animate-slide-down-center { animation: slideDownCenter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
     @media print {
       body { background-color: white !important; color: black !important; }
       .no-print { display: none !important; }
-      .print-card { background: white !important; color: black !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; }
     }
   </style>
 </head>
 
-<body class="bg-brand-bg text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-brand-tealLight selection:text-brand-tealDark antialiased relative">
+<body class="bg-brand-bg text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-brand-tealLight antialiased relative">
+
+  <!-- TOP CENTER SUCCESS & NOTIFICATION MESSAGE BAR -->
+  <div id="toastMessageBar" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden max-w-lg w-[92%] bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-teal-500/40 flex items-center justify-between gap-3 animate-slide-down-center backdrop-blur-xl">
+    <div class="flex items-center gap-3 text-xs sm:text-sm">
+      <span id="toastIcon" class="text-teal-400 text-lg">⚡</span>
+      <span id="toastText" class="font-bold tracking-wide">Success message here...</span>
+    </div>
+    <button onclick="hideToast()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+  </div>
 
   <!-- TOP HEADER NAVBAR -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm no-print">
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
       
       <div class="flex items-center gap-3">
@@ -84,7 +116,7 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="font-extrabold text-slate-900 text-lg sm:text-xl tracking-tight">CCST Networking Portal</h1>
-            <span class="bg-teal-50 text-teal-700 border border-teal-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full">NAVTTIC / Cisco</span>
+            <span class="bg-teal-50 text-teal-700 border border-teal-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🌐 Adan iT Center / Cisco</span>
           </div>
           <p class="text-xs text-slate-500 font-medium">AITECH Skills for Tomorrow • Interactive Student Track</p>
         </div>
@@ -93,7 +125,7 @@
       <div class="flex items-center gap-3">
         <div class="bg-slate-100/80 border border-slate-200 rounded-xl px-3 py-1.5 flex items-center gap-3 text-xs">
           <div>
-            <span class="text-slate-400 block text-[10px] font-semibold uppercase">Overall Completion</span>
+            <span class="text-slate-400 block text-[10px] font-semibold uppercase">Overall Progress</span>
             <span class="font-extrabold text-teal-700 text-sm" id="headerProgressPct">0%</span>
           </div>
           <div class="w-px h-6 bg-slate-200"></div>
@@ -103,16 +135,19 @@
           </div>
         </div>
 
-        <button onclick="resetAllProgress()" class="text-slate-400 hover:text-rose-600 transition p-2 rounded-lg hover:bg-rose-50" title="Reset All Tracked Progress">
+        <button onclick="resetAllProgress()" class="text-slate-400 hover:text-rose-600 transition p-2 rounded-lg hover:bg-rose-50 cursor-pointer" title="Reset All Tracked Progress">
           <i class="fa-solid fa-rotate-left text-sm"></i>
         </button>
 
-        <div id="authHeaderContainer"></div>
+        <button onclick="openAuthModal('signin')" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-user-shield"></i> 🔐 Student Login / Sync
+        </button>
       </div>
 
     </div>
   </header>
 
+  <!-- MAIN WRAPPER CONTAINER -->
   <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
 
     <!-- DOMAIN TABS NAVIGATION -->
@@ -120,29 +155,24 @@
       <div class="flex items-center gap-2 overflow-x-auto scrollbar-none" id="domainNavTabs"></div>
     </section>
 
-    <!-- DOMAIN BANNER CARD -->
-    <section class="bg-gradient-to-r from-teal-700 via-teal-600 to-cyan-700 text-white rounded-2xl p-6 shadow-md border border-teal-800/20 relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-      <div class="relative z-10 space-y-2">
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="bg-white/20 text-white font-bold text-xs px-3 py-1 rounded-full backdrop-blur-md border border-white/20" id="domainBadgeText">Domain 1.0</span>
-          <span class="text-teal-100 text-xs font-semibold">Cisco Certified Support Technician Syllabus</span>
+    <!-- CAPSTONE BANNER CARD -->
+    <section class="bg-gradient-to-r from-teal-600 via-teal-700 to-cyan-800 text-white rounded-2xl p-5 sm:p-6 shadow-md border border-teal-800/20 relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div class="space-y-1.5 relative z-10">
+        <div class="flex items-center gap-2">
+          <span class="bg-amber-400 text-slate-950 font-extrabold text-[11px] px-3 py-0.5 rounded-full shadow-sm" id="domainBadgeText">Domain 1</span>
+          <span class="text-teal-100 text-xs font-semibold">Cisco Certified Support Technician Track</span>
         </div>
-        <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white" id="domainTitleText">1. Standards and Concepts</h2>
+        <h2 class="text-xl sm:text-2xl font-black tracking-tight" id="capstoneTitle">BUILD TOWARDS SMALL OFFICE NETWORK</h2>
         <p class="text-teal-100 text-xs sm:text-sm max-w-2xl leading-relaxed" id="domainDescText">
-          Master core networking reference models, physical topology layouts, traffic characteristics, geographic classifications, and standard application/transport layer protocols.
+          Create network topology diagram and explain data flow using OSI/TCP-IP models in Packet Tracer.
         </p>
       </div>
-
-      <div class="relative z-10 flex flex-wrap md:flex-col items-start md:items-end gap-2 text-xs font-semibold">
-        <span class="bg-white/15 hover:bg-white/25 transition backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/20 flex items-center gap-2">
-          <i class="fa-solid fa-layer-group text-teal-200"></i> <span id="domainLessonsCount">5 Lessons Included</span>
-        </span>
-        <span class="bg-amber-400 text-slate-950 font-bold px-3.5 py-2 rounded-xl shadow-sm flex items-center gap-2">
-          <i class="fa-solid fa-flask"></i> Hands-on Practical Track
-        </span>
+      <div class="relative z-10">
+        <button onclick="openCurrentAssignment()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-xs px-5 py-3 rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-cloud-arrow-up"></i> 📤 Submit Lab (.pkt / Image)
+        </button>
       </div>
-
-      <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none"></div>
     </section>
 
     <!-- MAIN TWO-COLUMN DASHBOARD GRID -->
@@ -154,22 +184,23 @@
           <div class="flex items-center justify-between pb-2 border-b border-slate-100">
             <div>
               <h3 class="font-extrabold text-slate-900 text-sm flex items-center gap-2">
-                <i class="fa-solid fa-list-ul text-teal-600"></i> Course Lessons
+                <i class="fa-solid fa-list-ul text-teal-600"></i> 📚 Course Lessons
               </h3>
-              <p class="text-[11px] text-slate-500">Click any lesson to load viewport</p>
+              <p class="text-[11px] text-slate-500" id="domainLessonsCount">Loading lessons...</p>
             </div>
             <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-full border border-teal-200">
-              Select Lesson
+              Select
             </span>
           </div>
 
           <div class="space-y-2.5" id="lessonSelectList"></div>
         </div>
 
+        <!-- PROGRESS BAR CARD -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3 print-card">
           <div class="flex items-center justify-between">
             <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-2">
-              <i class="fa-solid fa-chart-line text-teal-600"></i> Total Domain Progress
+              <i class="fa-solid fa-chart-line text-teal-600"></i> 📊 Total Domain Progress
             </h4>
             <span class="text-sm font-extrabold text-teal-700" id="sidebarProgressPct">0%</span>
           </div>
@@ -183,44 +214,73 @@
             <strong id="sidebarTaskFraction" class="text-slate-900 font-extrabold">0 / 0</strong>
           </div>
         </div>
+
+        <!-- EXAM DOMAINS & TOOLS GRID -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-4">
+          <div>
+            <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <i class="fa-solid fa-chart-pie text-teal-600"></i> Exam Domains (100-150)
+            </h4>
+            <div class="grid grid-cols-2 gap-2 text-[11px] font-semibold text-slate-700">
+              <div class="bg-slate-50 border border-slate-200 p-2 rounded-xl flex items-center justify-between"><span>Standards</span><span class="text-teal-700 font-bold">20%</span></div>
+              <div class="bg-slate-50 border border-slate-200 p-2 rounded-xl flex items-center justify-between"><span>Addressing</span><span class="text-teal-700 font-bold">20%</span></div>
+              <div class="bg-slate-50 border border-slate-200 p-2 rounded-xl flex items-center justify-between"><span>Media</span><span class="text-teal-700 font-bold">15%</span></div>
+              <div class="bg-slate-50 border border-slate-200 p-2 rounded-xl flex items-center justify-between"><span>Infrastructure</span><span class="text-teal-700 font-bold">20%</span></div>
+              <div class="bg-slate-50 border border-slate-200 p-2 rounded-xl flex items-center justify-between"><span>Diagnosing</span><span class="text-teal-700 font-bold">15%</span></div>
+              <div class="bg-slate-50 border border-slate-200 p-2 rounded-xl flex items-center justify-between"><span>Security</span><span class="text-teal-700 font-bold">10%</span></div>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-slate-100">
+            <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <i class="fa-solid fa-screwdriver-wrench text-teal-600"></i> Tools & Technologies
+            </h4>
+            <div class="flex flex-wrap gap-1.5 text-[11px] font-semibold">
+              <span class="bg-teal-50 text-teal-800 border border-teal-200 px-2.5 py-1 rounded-lg">Packet Tracer</span>
+              <span class="bg-teal-50 text-teal-800 border border-teal-200 px-2.5 py-1 rounded-lg">Cisco IOS</span>
+              <span class="bg-teal-50 text-teal-800 border border-teal-200 px-2.5 py-1 rounded-lg">Wireshark</span>
+              <span class="bg-teal-50 text-teal-800 border border-teal-200 px-2.5 py-1 rounded-lg">CLI Tools</span>
+            </div>
+          </div>
+        </div>
       </aside>
 
-      <!-- RIGHT VIEWPORT: ACTIVE LESSON CONTENT (8 COLS) -->
-      <main class="lg:col-span-8 space-y-6">
-        <section class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-6 print-card relative transition-all">
-          
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
-            <div class="flex items-center gap-2.5 flex-wrap">
-              <span id="activeLessonBadge" class="bg-teal-600 text-white font-black text-xs px-3 py-1 rounded-md tracking-wide shadow-sm">
-                LESSON 1.1
-              </span>
-              <span class="text-xs font-semibold text-slate-400">Current Active Module</span>
-            </div>
+              <!-- RIGHT VIEWPORT: ACTIVE LESSON CONTENT (8 COLS) -->
+              <main class="lg:col-span-8 space-y-6">
+                <section class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-6 print-card relative transition-all">
+                  
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                    <div class="flex items-center gap-2.5 flex-wrap">
+                      <span id="activeLessonBadge" class="bg-teal-600 text-white font-black text-xs px-3 py-1 rounded-md tracking-wide shadow-sm">
+                        LESSON 1.1
+                      </span>
+                      <span class="text-xs font-semibold text-slate-400">Current Active Module</span>
+                    </div>
 
-            <div class="flex items-center gap-2 flex-wrap">
-              <button onclick="openCurrentGlossary()" class="bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1.5 rounded-lg border border-teal-200/80 transition flex items-center gap-1.5 shadow-2xs">
-                <i class="fa-solid fa-book-bookmark text-teal-600"></i> Glossary
-              </button>
-              <button onclick="openCurrentAssignment()" class="bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-950 text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5">
-                <i class="fa-solid fa-upload"></i> Submit Assignment
-              </button>
-            </div>
-          </div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <button onclick="openCurrentGlossary()" class="bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1.5 rounded-lg border border-teal-200/80 transition flex items-center gap-1.5 shadow-2xs cursor-pointer">
+                        <i class="fa-solid fa-book-bookmark text-teal-600"></i> 📖 Glossary
+                      </button>
+                      <button onclick="openCurrentAssignment()" class="bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-950 text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-upload"></i> 📤 Submit Lab Work
+                      </button>
+                    </div>
+                  </div>
 
-          <div>
-            <h2 id="activeLessonTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              OSI and TCP/IP Models
-            </h2>
-            <div class="mt-3 bg-teal-50/70 border border-teal-200/80 p-4 rounded-xl text-slate-700 text-xs sm:text-sm leading-relaxed">
-              <p><strong class="text-teal-900 font-bold"><i class="fa-solid fa-bullseye mr-1.5 text-teal-600"></i> Learning Objective:</strong> <span id="activeLessonObjective">Master core concepts and protocol layer functions.</span></p>
-            </div>
-          </div>
+                  <div>
+                    <h2 id="activeLessonTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                      OSI and TCP/IP Models
+                    </h2>
+                    <div class="mt-3 bg-orange-50/70 border border-teal-200/80 p-4 rounded-xl text-slate-700 text-xs sm:text-sm leading-relaxed">
+                      <p><strong class="text-teal-900 font-bold"><i class="fa-solid fa-bullseye mr-1.5 text-teal-600"></i> Learning Objective:</strong> <span id="activeLessonObjective">Master core concepts and protocol layer functions.</span></p>
+                    </div>
+                  </div>
 
           <!-- SUBTOPICS CHECKLIST -->
-          <div class="bg-slate-50/80 rounded-xl p-4 sm:p-5 border border-slate-200 space-y-4">
+          <div class="bg-slate-80/110 rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-4">
             <div class="flex items-center justify-between pb-2 border-b border-slate-200">
               <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                <i class="fa-solid fa-list-check text-teal-600"></i> Subtopics & Lesson Modules
+                <i class="fa-solid fa-list-check text-teal-600"></i> ✅ Topic Breakdown & Specific Page Info
               </h3>
               <div class="flex items-center gap-2">
                 <span class="text-xs font-bold text-slate-600" id="lessonSubtaskStats">0 / 0 Done</span>
@@ -228,48 +288,63 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="subtopicsContainer"></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="subtopicsContainer"></div>
           </div>
 
-          <!-- GLOSSARY & ASSIGNMENT CARDS -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div onclick="openCurrentGlossary()" class="bg-gradient-to-br from-teal-50 to-white p-4 rounded-xl border border-teal-200/80 hover:border-teal-400 transition cursor-pointer shadow-2xs group flex items-start justify-between gap-3">
-              <div class="space-y-1">
-                <span class="text-[10px] font-bold text-teal-700 uppercase tracking-wider">Reference Terms</span>
-                <h4 class="font-extrabold text-sm text-slate-900 group-hover:text-teal-700 transition flex items-center gap-1.5">
-                  <i class="fa-solid fa-book-bookmark text-teal-600"></i> Lesson Glossary
-                </h4>
-                <p class="text-xs text-slate-500">View definition terms for <span class="activeLessonBadgeInline font-bold">1.1</span></p>
-              </div>
-              <span class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center shrink-0 group-hover:scale-110 transition">
-                <i class="fa-solid fa-arrow-right text-xs"></i>
-              </span>
+          <!-- PACKET TRACER SIMULATION CARD -->
+          <div class="bg-gradient-to-r from-purple-100 to-violet-100/100 p-5 rounded-2xl border border-purple-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="bg-purple-700 text-white text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Packet Tracer Lab</span>
+              <span class="text-xs font-bold text-slate-600"><i class="fa-regular fa-clock text-purple-600 mr-1"></i> Duration: 45 min | Type: Simulation</span>
             </div>
+            <div>
+              <h4 id="labCardTitle" class="font-extrabold text-slate-900 text-sm">Explore OSI Model In Packet Tracer</h4>
+              <p id="labCardDesc" class="text-xs text-slate-600 mt-1">Apply osi and tcp/ip models concepts in hands-on lab environment.</p>
+            </div>
+            <div class="pt-2 flex items-center gap-3">
+              <button onclick="openCurrentAssignment()" class="bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-laptop-code"></i> Launch / Submit Lab
+              </button>
+            </div>
+          </div>
 
-            <div onclick="openCurrentAssignment()" class="bg-gradient-to-br from-amber-50/80 to-white p-4 rounded-xl border border-amber-200 hover:border-amber-400 transition cursor-pointer shadow-2xs group flex items-start justify-between gap-3">
-              <div class="space-y-1">
-                <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Practical Task</span>
-                <h4 class="font-extrabold text-sm text-slate-900 group-hover:text-amber-700 transition flex items-center gap-1.5">
-                  <i class="fa-solid fa-file-arrow-up text-amber-600"></i> Submit Your Work Here
-                </h4>
-                <p class="text-xs text-slate-500">Upload lab solution & assignment</p>
+          <!-- QUIZ MODULE -->
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-question"></i></span>
+                <h4 id="quizCardTitle" class="font-extrabold text-slate-900 text-sm">Quiz 1.1: OSI and TCP/IP Models</h4>
               </div>
-              <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 group-hover:scale-110 transition">
-                <i class="fa-solid fa-upload text-xs"></i>
-              </span>
+              <p class="text-xs text-slate-500 pl-9">Complete this quiz after studying all topics</p>
+            </div>
+            <div class="flex items-center gap-4 text-xs font-bold text-slate-700 pl-9 sm:pl-0">
+              <div class="text-center">
+                <span class="block text-slate-400 text-[10px] uppercase font-semibold">Questions</span>
+                <span class="text-sm font-extrabold text-slate-900">5</span>
+              </div>
+              <div class="w-px h-6 bg-slate-200"></div>
+              <div class="text-center">
+                <span class="block text-slate-400 text-[10px] uppercase font-semibold">Pass Mark</span>
+                <span class="text-sm font-extrabold text-teal-700">70%</span>
+              </div>
+              <div class="w-px h-6 bg-slate-200"></div>
+              <div class="text-center">
+                <span class="block text-slate-400 text-[10px] uppercase font-semibold">Attempts</span>
+                <span class="text-sm font-extrabold text-slate-900">∞</span>
+              </div>
             </div>
           </div>
 
           <!-- FOOTER ACTIONS -->
           <div class="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 no-print">
-            <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-xl text-xs sm:text-sm border border-slate-300 transition flex items-center gap-2">
-              <i class="fa-solid fa-print"></i> Print Lesson Summary
+            <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-xl text-xs sm:text-sm border border-slate-300 transition flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-print"></i> 🖨️ Print Summary
             </button>
             <div class="flex items-center gap-2">
-              <button id="prevLessonBtn" onclick="navigateLesson(-1)" class="bg-white hover:bg-slate-50 text-slate-700 font-bold px-4 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm transition flex items-center gap-1.5">
+              <button id="prevLessonBtn" onclick="navigateLesson(-1)" class="bg-white hover:bg-slate-50 text-slate-700 font-bold px-4 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm transition flex items-center gap-1.5 cursor-pointer">
                 <i class="fa-solid fa-chevron-left"></i> Previous
               </button>
-              <button id="nextLessonBtn" onclick="navigateLesson(1)" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2 rounded-xl shadow-sm text-xs sm:text-sm transition flex items-center gap-1.5">
+              <button id="nextLessonBtn" onclick="navigateLesson(1)" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2 rounded-xl shadow-sm text-xs sm:text-sm transition flex items-center gap-1.5 cursor-pointer">
                 Next Lesson <i class="fa-solid fa-chevron-right"></i>
               </button>
             </div>
@@ -283,18 +358,18 @@
 
   <!-- FLOATING STUDENT PRESENCE & WHATSAPP CONTAINER -->
   <div class="fixed bottom-5 left-5 z-40 flex flex-col items-start gap-2.5 no-print">
-    <button onclick="toggleStudentDrawer()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2 transition hover:scale-105">
+    <button onclick="toggleStudentDrawer()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2 transition hover:scale-105 cursor-pointer">
       <i class="fa-solid fa-users text-teal-400"></i>
-      <span>Students List</span>
+      <span>👥 Students List</span>
       <span id="studentCountBadge" class="bg-teal-600 text-white text-[10px] px-1.5 py-0.2 rounded-full font-extrabold">0</span>
     </button>
 
     <div id="studentDrawer" class="hidden w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3.5 space-y-2.5 text-xs transition-all">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100">
         <h4 class="font-extrabold text-slate-900 flex items-center gap-1.5">
-          <i class="fa-solid fa-user-graduate text-teal-600"></i> Registered Accounts
+          <i class="fa-solid fa-user-graduate text-teal-600"></i> 🎓 Registered Accounts
         </h4>
-        <button onclick="toggleStudentDrawer()" class="text-slate-400 hover:text-slate-600">
+        <button onclick="toggleStudentDrawer()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -311,95 +386,108 @@
         <i class="fa-brands fa-whatsapp text-xl"></i>
       </a>
       <span class="absolute left-14 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-[11px] font-medium px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-sm">
-        WhatsApp Support
+        💬 WhatsApp Support
       </span>
     </div>
   </div>
 
-  <!-- FLOATING AI NETWORKING TUTOR WIDGET -->
+  <!-- CHATBOT WITH FLOATING & BLINKING EYES ANIMATION -->
   <div class="fixed bottom-5 right-5 z-50 no-print">
-    <button id="aiBotToggle" onclick="toggleAiBot()" class="bot-glow bg-gradient-to-r from-teal-600 to-cyan-600 text-white p-4 rounded-full shadow-xl flex items-center justify-center relative hover:scale-105 transition-all">
-      <i class="fa-solid fa-robot text-2xl"></i>
-      <span class="absolute -top-1 -right-1 bg-amber-400 text-slate-950 font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">AI</span>
-    </button>
-
-    <div id="aiChatWindow" class="hidden absolute bottom-16 right-0 w-[92vw] sm:w-[380px] h-[520px] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden transition-all">
-      <div class="bg-gradient-to-r from-teal-700 to-cyan-700 text-white p-4 flex items-center justify-between">
+    
+    <div id="aiChatWindow" class="hidden absolute bottom-20 right-0 w-[92vw] sm:w-[380px] h-[520px] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden transition-all animate-slide-up">
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/30">
-            <i class="fa-solid fa-brain text-teal-200 text-sm"></i>
+          <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/30 text-base shadow-sm">
+            🤖
           </div>
           <div>
-            <h4 class="font-bold text-sm leading-tight">CCST AI Networking Tutor</h4>
-            <p class="text-[11px] text-teal-100">Domain 1 Specialist • Active</p>
+            <h4 class="font-bold text-sm leading-tight">CCST AI Assistant</h4>
+            <p class="text-[11px] text-blue-100">Domains 1-6 Specialist • Active</p>
           </div>
         </div>
-        <button onclick="toggleAiBot()" class="text-white/80 hover:text-white p-1">
+        <button onclick="toggleAiBot()" class="text-white/80 hover:text-white p-1 cursor-pointer">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
 
       <div class="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-[11px]">
-        <button onclick="sendQuickPrompt('Explain 7 OSI Layers')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">💡 D1: OSI Layers</button>
-        <button onclick="sendQuickPrompt('How to calculate IPv4 CIDR subnet mask?')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">🔢 D2: Subnetting</button>
+        <button onclick="sendQuickPrompt('Explain 7 OSI Layers')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">💡 D1: OSI</button>
+        <button onclick="sendQuickPrompt('How to calculate IPv4 CIDR subnet mask?')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">🔢 D2: Subnet</button>
+        <button onclick="sendQuickPrompt('Single-mode vs Multi-mode Fiber?')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">🔌 D3: Fiber</button>
+        <button onclick="sendQuickPrompt('Difference between Switch and Router?')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">🏢 D4: Hardware</button>
+        <button onclick="sendQuickPrompt('How to use ping and traceroute?')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">🔍 D5: Diagnostics</button>
+        <button onclick="sendQuickPrompt('Explain WPA3 and ACL Security')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">🛡️ D6: Security</button>
       </div>
 
       <div id="aiChatMessages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs bg-slate-50/50">
         <div class="flex items-start gap-2.5">
-          <div class="w-7 h-7 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5">
-            <i class="fa-solid fa-robot"></i>
+          <div class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-md">
+            🤖
           </div>
           <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 space-y-1 max-w-[85%]">
             <p class="font-bold text-slate-900">Hello Student! 👋</p>
-            <p>I am your AI Networking Tutor. Ask me any question about OSI layers, subnetting, or labs!</p>
+            <p>I am your CCST AI Assistant. Tap any quick topic above or ask me anything across CCST Domains 1 to 6!</p>
           </div>
         </div>
       </div>
 
       <form id="aiChatForm" onsubmit="handleAiSubmit(event)" class="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
-        <input type="text" id="aiInput" placeholder="Ask a networking question..." class="flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-teal-500">
-        <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm transition">
+        <input type="text" id="aiInput" placeholder="Ask AI Assistant about networking..." class="flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-medium">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm transition cursor-pointer">
           <i class="fa-solid fa-paper-plane"></i>
         </button>
       </form>
     </div>
+
+    <!-- CHATBOT AVATAR -->
+    <button id="aiBotToggle" onclick="toggleAiBot()" class="mascot-floating bg-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center relative transition-transform cursor-pointer border-2 border-blue-500/40 group overflow-hidden" title="CCST AI Assistant">
+      <div class="w-full h-full bg-gradient-to-tr from-blue-700 via-blue-500 to-cyan-400 flex items-center justify-center text-white relative">
+        <div class="absolute inset-1 rounded-full bg-gradient-to-b from-blue-600 to-indigo-800 flex items-center justify-center shadow-inner">
+          <div class="blinking-eyes w-6 h-3 bg-cyan-300 rounded-full flex items-center justify-between px-1">
+            <div class="w-1 h-1 bg-slate-950 rounded-full"></div>
+            <div class="w-1 h-1 bg-slate-950 rounded-full"></div>
+          </div>
+          <span class="absolute top-1 right-2 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-white animate-pulse"></span>
+        </div>
+      </div>
+    </button>
   </div>
 
   <!-- ASSIGNMENT SUBMISSION MODAL -->
-  <div id="assignmentModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+  <div id="assignmentModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-7 shadow-2xl border border-slate-100 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <div class="flex items-center gap-2.5">
-          <div class="bg-amber-100 text-amber-800 p-2.5 rounded-xl">
+          <div class="bg-amber-100 text-amber-800 p-2.5 rounded-2xl">
             <i class="fa-solid fa-file-arrow-up text-lg"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-slate-900 text-base">Submit Assignment Work</h3>
+            <h3 class="font-extrabold text-slate-900 text-base">📤 Submit Packet Tracer Lab</h3>
             <p class="text-xs text-slate-500" id="modalLessonSubtitle">Lesson 1.1 Submission</p>
           </div>
         </div>
-        <button onclick="closeAssignmentModal()" class="text-slate-400 hover:text-slate-600 p-1">
-          <i class="fa-solid fa-xmark text-lg"></i>
+        <button onclick="closeAssignmentModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
       <form onsubmit="handleAssignmentSubmit(event)" class="space-y-3.5 text-xs">
         <div>
           <label class="block font-bold text-slate-700 mb-1">Student Full Name</label>
-          <input type="text" id="assignStudentName" required placeholder="e.g. Muhammad Ali" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500">
+          <input type="text" id="assignStudentName" required placeholder="e.g. Muhammad Ali" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 font-medium">
         </div>
 
         <div>
           <label class="block font-bold text-slate-700 mb-1">Packet Tracer Link / Lab Summary</label>
-          <textarea id="assignTextSummary" rows="3" required placeholder="Paste Google Drive/GitHub link or describe completed tasks..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500"></textarea>
+          <textarea id="assignTextSummary" rows="3" required placeholder="Paste Google Drive/GitHub link or describe lab configuration..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 font-medium"></textarea>
         </div>
 
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Upload Solution File / Lab Screenshot</label>
-          <div id="dropzoneContainer" onclick="document.getElementById('assignmentFileInput').click()" class="border-2 border-dashed border-amber-300 hover:border-amber-500 rounded-xl p-4 text-center bg-amber-50/50 hover:bg-amber-50 transition cursor-pointer space-y-1">
-            <i class="fa-solid fa-cloud-arrow-up text-2xl text-amber-600"></i>
+          <label class="block font-bold text-slate-700 mb-1">Upload Solution File (.pkt, PNG, JPG, PDF)</label>
+          <div id="dropzoneContainer" onclick="document.getElementById('assignmentFileInput').click()" class="border-2 border-dashed border-amber-300 hover:border-amber-500 rounded-2xl p-4 text-center bg-amber-50/40 hover:bg-amber-50 transition cursor-pointer space-y-1">
+            <i class="fa-solid fa-cloud-arrow-up text-2xl text-amber-600 mb-1"></i>
             <p class="text-slate-700 font-bold">Click to select file or drag & drop</p>
-            <p class="text-[10px] text-slate-400">PKT, PDF, PNG, JPG up to 5MB</p>
+            <p class="text-[10px] text-slate-400">PKT, PDF, PNG, JPG up to 20MB</p>
             <input type="file" id="assignmentFileInput" onchange="handleFileSelect(this)" class="hidden">
           </div>
           <p id="selectedFileName" class="text-[11px] text-teal-700 font-extrabold mt-1.5 hidden flex items-center gap-1">
@@ -408,9 +496,9 @@
         </div>
 
         <div class="pt-2 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeAssignmentModal()" class="px-4 py-2 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200">Cancel</button>
-          <button type="submit" id="assignSubmitBtn" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-950 font-extrabold rounded-xl shadow-md cursor-pointer transition flex items-center gap-2">
-            <i class="fa-solid fa-paper-plane"></i> Submit Work Now
+          <button type="button" onclick="closeAssignmentModal()" class="px-4 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 cursor-pointer">Cancel</button>
+          <button type="submit" id="assignSubmitBtn" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-paper-plane"></i> Upload & Submit Lab
           </button>
         </div>
       </form>
@@ -418,62 +506,78 @@
   </div>
 
   <!-- GLOSSARY MODAL -->
-  <div id="glossaryModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+  <div id="glossaryModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-7 shadow-2xl border border-slate-100 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <h3 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
-          <i class="fa-solid fa-book-bookmark text-teal-600"></i> Technical Glossary
+          <i class="fa-solid fa-book-bookmark text-teal-600"></i> 📖 Complete CCST Technical Glossary
         </h3>
-        <button onclick="closeGlossaryModal()" class="text-slate-400 hover:text-slate-600 p-1">
-          <i class="fa-solid fa-xmark text-lg"></i>
+        <button onclick="closeGlossaryModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <div id="glossaryModalContent" class="space-y-3.5 text-xs text-slate-700 max-h-96 overflow-y-auto pr-1"></div>
+      <div class="flex items-center gap-2 overflow-x-auto scrollbar-none pb-2 text-[11px]" id="glossaryFilterTabs"></div>
+
+      <div id="glossaryModalContent" class="space-y-3 text-xs text-slate-700 max-h-96 overflow-y-auto pr-1"></div>
 
       <div class="pt-2 flex justify-end">
-        <button onclick="closeGlossaryModal()" class="px-4 py-2 bg-teal-600 text-white font-bold rounded-xl text-xs">Close Glossary</button>
+        <button onclick="closeGlossaryModal()" class="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl text-xs cursor-pointer">Close Glossary</button>
       </div>
     </div>
   </div>
 
   <!-- AUTH MODAL -->
-  <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-5">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+  <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-slate-100 space-y-6 relative overflow-hidden">
+      
+      <div class="absolute -top-12 -right-12 w-32 h-32 bg-teal-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
         <div class="flex items-center gap-2">
-          <button id="tabSignInBtn" onclick="setAuthTab('signin')" class="text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700">Sign In</button>
+          <button id="tabSignInBtn" onclick="setAuthTab('signin')" class="text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700 transition cursor-pointer">🔐 Sign In</button>
           <span class="text-slate-300">|</span>
-          <button id="tabSignUpBtn" onclick="setAuthTab('signup')" class="text-sm font-bold text-slate-400 pb-1 hover:text-slate-600">Create Account</button>
+          <button id="tabSignUpBtn" onclick="setAuthTab('signup')" class="text-sm font-bold text-slate-400 pb-1 hover:text-slate-600 transition cursor-pointer">✨ Create Account</button>
         </div>
-        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <button onclick="closeAuthModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
       </div>
 
-      <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3.5 text-xs">
-        <div id="nameInputGroup" class="hidden">
-          <label class="block font-bold text-slate-700 mb-1">Full Student Name</label>
-          <input type="text" id="authNameInput" placeholder="e.g. Usman Khan" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500">
+      <div class="text-center space-y-1.5">
+        <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-700 mx-auto flex items-center justify-center text-xl shadow-inner">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <h3 class="font-black text-slate-900 text-lg" id="authModalTitle">Welcome Back Student</h3>
+        <p class="text-xs text-slate-500">Sign in to sync your CCST progress across devices</p>
+      </div>
+
+      <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4 text-xs">
+        <div id="nameInputGroup" class="hidden space-y-1">
+          <label class="block font-bold text-slate-700">Full Student Name</label>
+          <input type="text" id="authNameInput" placeholder="e.g. Usman Khan" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 font-medium">
         </div>
 
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Email Address</label>
-          <input type="email" id="authEmailInput" required placeholder="student@aitech.edu.pk" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500">
+        <div class="space-y-1">
+          <label class="block font-bold text-slate-700">Email Address</label>
+          <input type="email" id="authEmailInput" required placeholder="student@aitech.edu.pk" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 font-medium">
         </div>
 
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Password</label>
-          <input type="password" id="authPasswordInput" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500">
+        <div class="space-y-1">
+          <label class="block font-bold text-slate-700">Password</label>
+          <input type="password" id="authPasswordInput" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 font-medium">
         </div>
 
-        <div class="pt-2 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeAuthModal()" class="px-4 py-2 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200">Cancel</button>
-          <button type="submit" id="authSubmitBtn" class="px-5 py-2 bg-teal-600 hover:bg-teal-700 text-white font-extrabold rounded-xl shadow-sm">Sign In</button>
+        <div class="pt-2">
+          <button type="submit" id="authSubmitBtn" class="w-full py-3.5 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-teal-700 text-white font-extrabold rounded-2xl shadow-lg shadow-teal-600/20 transition cursor-pointer text-sm">
+            Sign In to Portal
+          </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- APPLICATION LOGIC WITH CORRECTED SUPABASE KEYS -->
+  <!-- APPLICATION SCRIPT -->
   <script>
     const SUPABASE_URL = 'https://zusnbawalemprtizubzh.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_3SjMa829fo37hIS2xBS5IA_HlGwEVQS';
@@ -488,6 +592,8 @@
         id: "1",
         title: "1. Standards and Concepts",
         badge: "Domain 1.0",
+        capstone: "BUILD TOWARDS SMALL OFFICE NETWORK",
+        capstoneDesc: "Create network topology diagram and explain data flow using OSI/TCP-IP models.",
         description: "Master OSI and TCP/IP reference models, physical topology designs, bandwidth performance, geographic network types, and common protocols.",
         lessons: [
           {
@@ -496,7 +602,14 @@
             title: "OSI and TCP/IP Models",
             objective: "Compare and contrast the 7-layer OSI reference model with the 4-layer TCP/IP stack.",
             subtopics: ["7 OSI Layers", "4 TCP/IP Layers", "Encapsulation", "PDUs", "Layer Functions"],
-            glossary: [{ term: "OSI Reference Model", acronym: "Open Systems Interconnection", def: "A 7-layer conceptual framework standardized by ISO.", example: "Switches operate at Layer 2." }]
+            labTitle: "Explore OSI Model In Packet Tracer",
+            labDesc: "Apply osi and tcp/ip models concepts in hands-on lab environment.",
+            quizTitle: "Quiz 1.1: OSI and TCP/IP Models",
+            glossary: [
+              { term: "OSI Reference Model", acronym: "Open Systems Interconnection", def: "A 7-layer conceptual framework standardized by ISO.", example: "Switches operate at Layer 2." },
+              { term: "TCP/IP Stack", acronym: "Transmission Control Protocol", def: "A 4-layer practical networking model forming the architectural baseline of the Internet.", example: "HTTP, DNS, and DHCP function at the Application layer." },
+              { term: "PDU", acronym: "Protocol Data Unit", def: "The specific format and unit of data transmitted at a given layer.", example: "Packets (Layer 3), Frames (Layer 2)." }
+            ]
           },
           {
             id: "1.2",
@@ -504,7 +617,13 @@
             title: "Network Topologies",
             objective: "Analyze physical and logical network layouts, evaluating fault tolerance and scalability.",
             subtopics: ["Star", "Bus", "Ring", "Mesh", "Hybrid", "Physical vs Logical"],
-            glossary: [{ term: "Star Topology", acronym: "N/A", def: "Layout where peripheral nodes connect to a central switch.", example: "Standard office LANs." }]
+            labTitle: "Topology Design Lab in Packet Tracer",
+            labDesc: "Build redundant star and mesh topologies in Cisco Packet Tracer.",
+            quizTitle: "Quiz 1.2: Network Topologies",
+            glossary: [
+              { term: "Star Topology", acronym: "N/A", def: "Layout where peripheral nodes connect to a central switch.", example: "Standard office LANs." },
+              { term: "Mesh Topology", acronym: "N/A", def: "Redundant layout where every node is directly connected to every other node.", example: "Enterprise WAN backbones." }
+            ]
           },
           {
             id: "1.3",
@@ -512,7 +631,12 @@
             title: "Bandwidth, Throughput & Latency",
             objective: "Measure and differentiate network transmission characteristics.",
             subtopics: ["Bandwidth vs Throughput", "Latency", "Delay", "Speed Tests", "Iperf"],
-            glossary: [{ term: "Bandwidth", acronym: "N/A", def: "Theoretical maximum data carrying capacity.", example: "Cat6 Ethernet provides up to 10 Gbps." }]
+            labTitle: "Performance Testing Lab",
+            labDesc: "Measure throughput and bottlenecks across simulated links.",
+            quizTitle: "Quiz 1.3: Performance & Latency",
+            glossary: [
+              { term: "Bandwidth", acronym: "N/A", def: "Theoretical maximum data carrying capacity.", example: "Cat6 Ethernet provides up to 10 Gbps." }
+            ]
           },
           {
             id: "1.4",
@@ -520,7 +644,12 @@
             title: "Network Types (LAN, WAN, WLAN)",
             objective: "Identify geographic scale classifications of networks.",
             subtopics: ["LAN", "WAN", "MAN", "PAN", "WLAN", "CAN"],
-            glossary: [{ term: "LAN", acronym: "Local Area Network", def: "High-speed network spanning a small geographical area.", example: "Wi-Fi access points in a school." }]
+            labTitle: "Multi-Site Connectivity Lab",
+            labDesc: "Interconnect LANs and WANs using simulated routers.",
+            quizTitle: "Quiz 1.4: Network Classifications",
+            glossary: [
+              { term: "LAN", acronym: "Local Area Network", def: "High-speed network spanning a small geographical area.", example: "Wi-Fi access points in a school." }
+            ]
           },
           {
             id: "1.5",
@@ -528,7 +657,12 @@
             title: "Common Protocols & Services",
             objective: "Examine transport and application layer protocols.",
             subtopics: ["TCP vs UDP", "HTTP/HTTPS", "FTP/SFTP", "DNS", "DHCP", "ICMP", "NTP"],
-            glossary: [{ term: "DHCP", acronym: "Dynamic Host Configuration Protocol", def: "Dynamically assigns IP addresses.", example: "Connecting a device to Wi-Fi." }]
+            labTitle: "Protocol Capture Analysis",
+            labDesc: "Analyze DNS and DHCP packets using simulation mode.",
+            quizTitle: "Quiz 1.5: Protocols & Services",
+            glossary: [
+              { term: "DHCP", acronym: "Dynamic Host Configuration Protocol", def: "Dynamically assigns IP addresses.", example: "Connecting a device to Wi-Fi." }
+            ]
           }
         ]
       },
@@ -536,6 +670,8 @@
         id: "2",
         title: "2. Addressing & Subnetting",
         badge: "Domain 2.0",
+        capstone: "IPv4 & IPv6 SUBNETTING DEPLOYMENT",
+        capstoneDesc: "Calculate subnet masks, CIDR blocks, and configure IP addresses on interfaces.",
         description: "IPv4 & IPv6 addressing schemes, subnet masks, and CIDR notation.",
         lessons: [
           {
@@ -544,7 +680,26 @@
             title: "IPv4 Addressing & Subnetting",
             objective: "Calculate network addresses, broadcast IPs, and host ranges.",
             subtopics: ["IPv4 Classes", "Subnet Masks", "CIDR Notation", "Private vs Public IPs", "APIPA"],
-            glossary: [{ term: "CIDR Notation", acronym: "Classless Inter-Domain Routing", def: "Syntax representing IP address and subnet mask length.", example: "192.168.1.0/24." }]
+            labTitle: "Subnet Calculator & Packet Tracer Lab",
+            labDesc: "Configure /24 and /26 subnets across multiple VLAN switches.",
+            quizTitle: "Quiz 2.1: IPv4 Subnetting",
+            glossary: [
+              { term: "CIDR Notation", acronym: "Classless Inter-Domain Routing", def: "Syntax representing IP address and subnet mask length.", example: "192.168.1.0/24." },
+              { term: "IPv6", acronym: "Internet Protocol Version 6", def: "128-bit address space utilizing hexadecimal format.", example: "2001:db8::1" }
+            ]
+          },
+          {
+            id: "2.2",
+            badge: "LESSON 2.2",
+            title: "IPv6 Addressing & Configuration",
+            objective: "Understand global unicast, link-local, and unique local addresses.",
+            subtopics: ["IPv6 Format", "Global Unicast", "Link-Local", "EUI-64", "SLAAC"],
+            labTitle: "IPv6 Dual-Stack Lab",
+            labDesc: "Configure IPv6 addresses alongside IPv4 on routers and switches.",
+            quizTitle: "Quiz 2.2: IPv6 Fundamentals",
+            glossary: [
+              { term: "SLAAC", acronym: "Stateless Address Autoconfiguration", def: "Enables devices to configure their own IPv6 address automatically.", example: "Router Advertisement messages." }
+            ]
           }
         ]
       },
@@ -552,6 +707,8 @@
         id: "3",
         title: "3. Endpoints & Media",
         badge: "Domain 3.0",
+        capstone: "CABLE PLANT & FIBER OPTICS SETUP",
+        capstoneDesc: "Select appropriate cabling standards and wireless frequencies for business connectivity.",
         description: "Physical cabling types, fiber optics, and wireless frequencies.",
         lessons: [
           {
@@ -560,7 +717,25 @@
             title: "Cabling & Connector Types",
             objective: "Identify twisted pair Ethernet cables and fiber optic modes.",
             subtopics: ["Cat5e/Cat6/Cat6a", "Single-mode vs Multi-mode Fiber", "RJ-45 & T568B", "Coaxial"],
-            glossary: [{ term: "Single-Mode Fiber", acronym: "SMF", def: "Uses small core with laser light for long distances.", example: "Building interconnects." }]
+            labTitle: "Cabling Specifications Lab",
+            labDesc: "Test copper pinouts and fiber patch cords in simulation.",
+            quizTitle: "Quiz 3.1: Cabling Standards",
+            glossary: [
+              { term: "Single-Mode Fiber", acronym: "SMF", def: "Uses small core (9µm) with laser light for long distances.", example: "Building interconnects." }
+            ]
+          },
+          {
+            id: "3.2",
+            badge: "LESSON 3.2",
+            title: "Wireless Standards & Channels",
+            objective: "Compare 802.11 standards and 2.4GHz vs 5GHz frequency bands.",
+            subtopics: ["802.11 a/b/g/n/ac/ax", "2.4GHz vs 5GHz", "Channels & SSID", "Wireless Security"],
+            labTitle: "WLAN Access Point Setup Lab",
+            labDesc: "Configure wireless router SSIDs and WPA3 security in Packet Tracer.",
+            quizTitle: "Quiz 3.2: Wireless Networks",
+            glossary: [
+              { term: "SSID", acronym: "Service Set Identifier", def: "The user-facing name of a wireless local area network.", example: "Company_Guest_WiFi" }
+            ]
           }
         ]
       },
@@ -568,6 +743,8 @@
         id: "4",
         title: "4. Infrastructure",
         badge: "Domain 4.0",
+        capstone: "ROUTER & SWITCH CONFIGURATION",
+        capstoneDesc: "Deploy enterprise switches, routers, and access points with secure VLANs.",
         description: "Switches, routers, firewalls, and access points.",
         lessons: [
           {
@@ -576,7 +753,25 @@
             title: "Network Device Roles",
             objective: "Differentiate layer 2 switching from layer 3 routing.",
             subtopics: ["Layer 2 Switches", "Layer 3 Routers", "Wireless Access Points", "Firewalls"],
-            glossary: [{ term: "Layer 2 Switch", acronym: "MAC Switch", def: "Forwards frames inside a LAN using MAC tables.", example: "Cisco Catalyst 2960." }]
+            labTitle: "Cisco Catalyst Switch Setup Lab",
+            labDesc: "Configure basic switch management IPs and trunking.",
+            quizTitle: "Quiz 4.1: Infrastructure Devices",
+            glossary: [
+              { term: "Layer 2 Switch", acronym: "MAC Switch", def: "Forwards frames inside a LAN using MAC tables.", example: "Cisco Catalyst 2960." }
+            ]
+          },
+          {
+            id: "4.2",
+            badge: "LESSON 4.2",
+            title: "VLANs & Trunking",
+            objective: "Configure Virtual Local Area Networks and 802.1Q trunking.",
+            subtopics: ["VLAN Concepts", "Access Ports", "Trunk Ports", "802.1Q Tagging", "Inter-VLAN Routing"],
+            labTitle: "VLAN Configuration Lab",
+            labDesc: "Segment switches into departments and enable inter-VLAN routing.",
+            quizTitle: "Quiz 4.2: VLANs & Trunking",
+            glossary: [
+              { term: "802.1Q", acronym: "VLAN Tagging Standard", def: "Inserts a 4-byte tag into Ethernet frames to identify VLAN membership.", example: "Trunk link traffic segregation." }
+            ]
           }
         ]
       },
@@ -584,6 +779,8 @@
         id: "5",
         title: "5. Diagnostics & Troubleshooting",
         badge: "Domain 5.0",
+        capstone: "CLI NETWORK TROUBLESHOOTING",
+        capstoneDesc: "Isolate network faults using ping, traceroute, and show commands.",
         description: "Command-line diagnostic tools and troubleshooting methodology.",
         lessons: [
           {
@@ -592,7 +789,12 @@
             title: "Command-Line Diagnostics",
             objective: "Utilize ping, traceroute, ipconfig, and netstat.",
             subtopics: ["Ping & ICMP", "Traceroute / Tracert", "Ipconfig / Ifconfig", "Nslookup", "Netstat"],
-            glossary: [{ term: "Traceroute", acronym: "Tracert", def: "Displays the path and transit delays of packets across IP hops.", example: "Identifies router hop drops." }]
+            labTitle: "Troubleshooting Faulty Networks Lab",
+            labDesc: "Diagnose broken connectivity using CLI diagnostic tools.",
+            quizTitle: "Quiz 5.1: CLI Diagnostics",
+            glossary: [
+              { term: "Traceroute", acronym: "Tracert", def: "Displays the path and transit delays of packets across IP hops.", example: "Identifies router hop drops." }
+            ]
           }
         ]
       },
@@ -600,6 +802,8 @@
         id: "6",
         title: "6. Security",
         badge: "Domain 6.0",
+        capstone: "SECURITY HARDENING & ACLS",
+        capstoneDesc: "Implement password policies, port security, and standard ACL filters.",
         description: "Network access control, WPA3 wireless encryption, and ACL filters.",
         lessons: [
           {
@@ -608,7 +812,12 @@
             title: "Access Control & Authentication",
             objective: "Implement basic security mechanisms including firewalls and ACLs.",
             subtopics: ["Authentication Methods", "Password Policies", "ACLs", "Port Security", "WPA2/WPA3"],
-            glossary: [{ term: "Access Control List", acronym: "ACL", def: "Sequential set of permit/deny rules applied to filter IP traffic.", example: "Filtering destination ports." }]
+            labTitle: "Port Security & ACL Lab",
+            labDesc: "Restrict unauthorized switch port access and filter traffic with ACLs.",
+            quizTitle: "Quiz 6.1: Security & ACLs",
+            glossary: [
+              { term: "Access Control List", acronym: "ACL", def: "Sequential set of permit/deny rules applied to filter IP traffic.", example: "Filtering destination ports." }
+            ]
           }
         ]
       }
@@ -618,26 +827,40 @@
     let activeLessonIndex = 0;
     let authMode = 'signin';
     let currentUser = null;
-    let currentBase64File = null;
+    let selectedAssignmentFile = null;
 
     document.addEventListener('DOMContentLoaded', async () => {
       loadSavedUser();
-      renderAuthHeader();
       renderDomainNav();
       
       if (currentUser) {
         await syncUserProgressFromCloud();
+        showToast('👋 Welcome back, ' + currentUser.name + '!', '⚡');
+      } else {
+        setTimeout(() => { openAuthModal('signin'); }, 600);
       }
       loadDomain(0);
       fetchRegisteredStudentsList();
     });
+
+    function showToast(message, icon = '⚡') {
+      const bar = document.getElementById('toastMessageBar');
+      document.getElementById('toastText').textContent = message;
+      document.getElementById('toastIcon').textContent = icon;
+      bar.classList.remove('hidden');
+      setTimeout(() => { hideToast(); }, 4000);
+    }
+
+    function hideToast() {
+      document.getElementById('toastMessageBar').classList.add('hidden');
+    }
 
     function renderDomainNav() {
       const container = document.getElementById('domainNavTabs');
       if (!container) return;
 
       container.innerHTML = domainsData.map((domain, idx) => `
-        <button onclick="switchDomain(${idx})" class="px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-2 ${
+        <button onclick="switchDomain(${idx})" class="px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-2 cursor-pointer ${
           idx === activeDomainIndex ? 'bg-teal-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
         }">
           <span class="w-2 h-2 rounded-full ${idx === activeDomainIndex ? 'bg-amber-300' : 'bg-slate-400'}"></span>
@@ -651,40 +874,12 @@
       if (saved) { currentUser = JSON.parse(saved); }
     }
 
-    function renderAuthHeader() {
-      const container = document.getElementById('authHeaderContainer');
-      if (currentUser) {
-        container.innerHTML = `
-          <div class="flex items-center gap-2 bg-teal-50 border border-teal-200 rounded-xl px-2.5 py-1">
-            <div class="w-6 h-6 rounded-full bg-teal-700 text-white font-bold text-[10px] flex items-center justify-center">
-              ${currentUser.name.charAt(0).toUpperCase()}
-            </div>
-            <div class="hidden sm:block text-left">
-              <span class="block text-[11px] font-extrabold text-slate-900 leading-none">${currentUser.name}</span>
-              <span class="block text-[9px] text-teal-700 font-semibold leading-none">${currentUser.email}</span>
-            </div>
-            <button onclick="logoutUser()" class="text-slate-400 hover:text-rose-600 text-xs ml-1 transition" title="Sign Out">
-              <i class="fa-solid fa-right-from-bracket"></i>
-            </button>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <button onclick="openAuthModal('signin')" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold px-3 py-1.5 rounded-xl shadow-xs transition">
-            Sign In
-          </button>
-        `;
-      }
-    }
-
     function openAuthModal(mode) {
       setAuthTab(mode);
       document.getElementById('authModal').classList.remove('hidden');
     }
 
-    function closeAuthModal() {
-      document.getElementById('authModal').classList.add('hidden');
-    }
+    function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
 
     function setAuthTab(mode) {
       authMode = mode;
@@ -692,17 +887,20 @@
       const tabSignUp = document.getElementById('tabSignUpBtn');
       const nameGroup = document.getElementById('nameInputGroup');
       const submitBtn = document.getElementById('authSubmitBtn');
+      const titleEl = document.getElementById('authModalTitle');
 
       if (mode === 'signup') {
-        tabSignUp.className = 'text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700';
-        tabSignIn.className = 'text-sm font-bold text-slate-400 pb-1 hover:text-slate-600';
+        tabSignUp.className = 'text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700 transition cursor-pointer';
+        tabSignIn.className = 'text-sm font-bold text-slate-400 pb-1 hover:text-slate-600 transition cursor-pointer';
         nameGroup.classList.remove('hidden');
-        submitBtn.textContent = 'Create Student Account';
+        titleEl.textContent = '✨ Create Student Profile';
+        submitBtn.textContent = 'Register & Start Learning';
       } else {
-        tabSignIn.className = 'text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700';
-        tabSignUp.className = 'text-sm font-bold text-slate-400 pb-1 hover:text-slate-600';
+        tabSignIn.className = 'text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700 transition cursor-pointer';
+        tabSignUp.className = 'text-sm font-bold text-slate-400 pb-1 hover:text-slate-600 transition cursor-pointer';
         nameGroup.classList.add('hidden');
-        submitBtn.textContent = 'Sign In';
+        titleEl.textContent = '🔐 Welcome Back Student';
+        submitBtn.textContent = 'Sign In to Portal';
       }
     }
 
@@ -723,11 +921,10 @@
       }
 
       await syncUserProgressFromCloud();
-      renderAuthHeader();
       closeAuthModal();
       loadDomain(activeDomainIndex);
       fetchRegisteredStudentsList();
-      alert(`Welcome, ${currentUser.name}! Your account is now synced.`);
+      showToast(`🎉 Successfully logged in as ${currentUser.name}!`, '⚡');
     }
 
     function logoutUser() {
@@ -735,9 +932,10 @@
         currentUser = null;
         localStorage.removeItem('ccst_user');
         localStorage.clear();
-        renderAuthHeader();
         loadDomain(0);
         fetchRegisteredStudentsList();
+        showToast('🔒 Signed out successfully.', '🛡️');
+        openAuthModal('signin');
       }
     }
 
@@ -807,26 +1005,60 @@
       }
     }
 
-    function toggleStudentDrawer() {
-      document.getElementById('studentDrawer').classList.toggle('hidden');
-    }
+    function toggleStudentDrawer() { document.getElementById('studentDrawer').classList.toggle('hidden'); }
 
     function openGlossaryModalFor(lessonIdx) {
       const lesson = domainsData[activeDomainIndex].lessons[lessonIdx];
-      const container = document.getElementById('glossaryModalContent');
+      renderGlossaryFilterTabs();
+      renderGlossaryContent(lesson.glossary);
+      document.getElementById('glossaryModal').classList.remove('hidden');
+    }
 
-      container.innerHTML = lesson.glossary.map(g => `
-        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1.5">
+    function openCompleteGlossary() {
+      renderGlossaryFilterTabs();
+      let allTerms = [];
+      domainsData.forEach(d => d.lessons.forEach(l => allTerms.push(...l.glossary)));
+      renderGlossaryContent(allTerms);
+      document.getElementById('glossaryModal').classList.remove('hidden');
+    }
+
+    function renderGlossaryFilterTabs() {
+      const tabsContainer = document.getElementById('glossaryFilterTabs');
+      let html = `<button onclick="filterGlossary('all')" class="bg-teal-600 text-white font-bold px-3 py-1 rounded-full whitespace-nowrap cursor-pointer">🌐 All Terms</button>`;
+      
+      domainsData.forEach((d, dIdx) => {
+        html += `<button onclick="filterGlossary(${dIdx})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-1 rounded-full whitespace-nowrap cursor-pointer">Domain ${dIdx + 1}</button>`;
+      });
+      tabsContainer.innerHTML = html;
+    }
+
+    function filterGlossary(domainIndex) {
+      let terms = [];
+      if (domainIndex === 'all') {
+        domainsData.forEach(d => d.lessons.forEach(l => terms.push(...l.glossary)));
+      } else {
+        domainsData[domainIndex].lessons.forEach(l => terms.push(...l.glossary));
+      }
+      renderGlossaryContent(terms);
+    }
+
+    function renderGlossaryContent(termsList) {
+      const container = document.getElementById('glossaryModalContent');
+      if (!termsList || termsList.length === 0) {
+        container.innerHTML = `<p class="text-slate-400 italic">No glossary terms available for this section.</p>`;
+        return;
+      }
+
+      container.innerHTML = termsList.map(g => `
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1.5 hover:border-teal-400 transition">
           <div class="flex items-center justify-between">
-            <h5 class="font-extrabold text-teal-900 text-xs sm:text-sm">${g.term}</h5>
-            ${g.acronym !== 'N/A' ? `<span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded-md border border-teal-200">${g.acronym}</span>` : ''}
+            <h5 class="font-extrabold text-teal-900 text-xs sm:text-sm">📖 ${g.term}</h5>
+            ${g.acronym && g.acronym !== 'N/A' ? `<span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded-md border border-teal-200">${g.acronym}</span>` : ''}
           </div>
           <p class="text-slate-700 leading-relaxed text-xs">${g.def}</p>
           ${g.example ? `<div class="bg-white p-2 rounded-lg border border-slate-200/80 text-[11px] text-slate-600 font-medium"><strong>💡 Example:</strong> ${g.example}</div>` : ''}
         </div>
       `).join('');
-
-      document.getElementById('glossaryModal').classList.remove('hidden');
     }
 
     function closeGlossaryModal() { document.getElementById('glossaryModal').classList.add('hidden'); }
@@ -838,15 +1070,29 @@
       if (!text) return;
 
       const chatBox = document.getElementById('aiChatMessages');
-      chatBox.innerHTML += `<div class="flex items-start justify-end gap-2"><div class="bg-teal-600 text-white p-2.5 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] font-medium">${text}</div></div>`;
+      chatBox.innerHTML += `<div class="flex items-start justify-end gap-2"><div class="bg-blue-600 text-white p-2.5 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] font-medium">${text}</div></div>`;
       input.value = '';
       chatBox.scrollTop = chatBox.scrollHeight;
 
       setTimeout(() => {
         let response = "In CCST networking, mastering core concepts across OSI layers, IP subnetting, media types, routers/switches, CLI tools, and security ensures career track success!";
-        if (text.toLowerCase().includes('osi')) { response = "<strong>Domain 1 - OSI Model:</strong> 7 Layers (Physical up to Application)."; }
+        const q = text.toLowerCase();
 
-        chatBox.innerHTML += `<div class="flex items-start gap-2"><div class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5"><i class="fa-solid fa-robot"></i></div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 max-w-[85%] leading-relaxed">${response}</div></div>`;
+        if (q.includes('osi') || q.includes('layer') || q.includes('tcp')) {
+          response = "<strong>Domain 1 - OSI & TCP/IP:</strong><br>• 7 Layers: Physical, Data Link, Network, Transport, Session, Presentation, Application.<br>• Encapsulation wraps data downwards from L7 to L1.";
+        } else if (q.includes('subnet') || q.includes('cidr') || q.includes('ipv4') || q.includes('ip')) {
+          response = "<strong>Domain 2 - Addressing & Subnetting:</strong><br>• /24 = 255.255.255.0 (254 usable hosts).<br>• /30 = point-to-point links.<br>• IPv4 is 32-bit; IPv6 is 128-bit hex.";
+        } else if (q.includes('fiber') || q.includes('cable') || q.includes('media') || q.includes('cat')) {
+          response = "<strong>Domain 3 - Endpoints & Media:</strong><br>• Single-mode Fiber uses lasers for long WAN spans.<br>• Multi-mode Fiber uses LEDs for data centers.<br>• Cat6 supports up to 10 Gbps.";
+        } else if (q.includes('switch') || q.includes('router') || q.includes('hardware') || q.includes('firewall')) {
+          response = "<strong>Domain 4 - Infrastructure:</strong><br>• Layer 2 Switches forward frames based on MAC tables.<br>• Layer 3 Routers route packets between different subnets using IP routing tables.";
+        } else if (q.includes('ping') || q.includes('traceroute') || q.includes('diagnos') || q.includes('troubleshoot')) {
+          response = "<strong>Domain 5 - Diagnostics:</strong><br>• <code>ping</code> tests reachability via ICMP.<br>• <code>traceroute</code> maps router hops.<br>• <code>ipconfig</code> views local adapter configs.";
+        } else if (q.includes('security') || q.includes('acl') || q.includes('wpa3') || q.includes('port security')) {
+          response = "<strong>Domain 6 - Security:</strong><br>• ACLs filter packets based on rules.<br>• Port Security binds MAC addresses to switch ports.<br>• WPA3 secures wireless networks.";
+        }
+
+        chatBox.innerHTML += `<div class="flex items-start gap-2"><div class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-md">🤖</div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 max-w-[85%] leading-relaxed">${response}</div></div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
       }, 600);
     }
@@ -859,10 +1105,11 @@
     }
 
     function loadDomain(domainIdx) {
+      activeDomainIndex = domainIdx;
       const domain = domainsData[domainIdx];
-      document.getElementById('domainBadgeText').textContent = domain.badge;
-      document.getElementById('domainTitleText').textContent = domain.title;
-      document.getElementById('domainDescText').textContent = domain.description;
+      document.getElementById('domainBadgeText').textContent = `Domain ${domainIdx + 1}`;
+      document.getElementById('capstoneTitle').textContent = domain.capstone;
+      document.getElementById('domainDescText').textContent = domain.capstoneDesc;
       document.getElementById('domainLessonsCount').textContent = `${domain.lessons.length} Lessons Included`;
 
       renderLessonSelectList();
@@ -872,6 +1119,7 @@
     function renderLessonSelectList() {
       const domain = domainsData[activeDomainIndex];
       const container = document.getElementById('lessonSelectList');
+      if (!container) return;
 
       container.innerHTML = domain.lessons.map((lesson, idx) => `
         <div onclick="loadLesson(${idx})" class="p-3.5 rounded-xl border transition cursor-pointer group ${idx === activeLessonIndex ? 'bg-teal-50/90 border-teal-300 shadow-sm' : 'bg-slate-50/60 border-slate-200 hover:bg-slate-100'}">
@@ -882,8 +1130,8 @@
           <h4 class="font-extrabold text-xs text-slate-900 group-hover:text-teal-700 transition">${lesson.title}</h4>
           
           <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-slate-200/60 text-[11px]">
-            <span class="text-teal-700 font-bold hover:underline" onclick="event.stopPropagation(); openGlossaryModalFor(${idx})">Glossary</span>
-            <span class="text-amber-800 font-extrabold bg-amber-100 px-2 py-0.5 rounded border border-amber-300/80" onclick="event.stopPropagation(); openAssignmentModalFor(${idx})">Submit Work</span>
+            <span class="text-teal-700 font-bold hover:underline" onclick="event.stopPropagation(); openGlossaryModalFor(${idx})">📖 Glossary</span>
+            <span class="text-amber-800 font-extrabold bg-amber-100 px-2 py-0.5 rounded border border-amber-300/80" onclick="event.stopPropagation(); openAssignmentModalFor(${idx})">📤 Submit Lab</span>
           </div>
         </div>
       `).join('');
@@ -899,6 +1147,10 @@
       document.getElementById('activeLessonTitle').textContent = lesson.title;
       document.getElementById('activeLessonObjective').textContent = lesson.objective;
       document.getElementById('lessonTopicBadge').textContent = `${lesson.subtopics.length} Topics`;
+      
+      document.getElementById('labCardTitle').textContent = lesson.labTitle;
+      document.getElementById('labCardDesc').textContent = lesson.labDesc;
+      document.getElementById('quizCardTitle').textContent = lesson.quizTitle;
 
       renderLessonSelectList();
       renderSubtopicsGrid(lesson);
@@ -908,18 +1160,22 @@
 
     function renderSubtopicsGrid(lesson) {
       const container = document.getElementById('subtopicsContainer');
+      if (!container) return;
+
       const storageKey = `ccst_check_d${activeDomainIndex}_l${activeLessonIndex}`;
       const savedChecks = JSON.parse(localStorage.getItem(storageKey) || '{}');
 
       let html = lesson.subtopics.map((topic, tIdx) => {
         const isChecked = !!savedChecks[tIdx];
         return `
-          <label class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 shadow-2xs hover:border-teal-300 transition cursor-pointer select-none">
-            <div class="flex items-center gap-2.5">
+          <label class="aero-vista-bar p-3.5 rounded-2xl flex items-center justify-between text-xs font-bold text-slate-800 transition cursor-pointer select-none">
+            <div class="flex items-center gap-3">
               <input type="checkbox" onchange="toggleSubtopicCheck('${tIdx}', this.checked)" ${isChecked ? 'checked' : ''} class="accent-teal-600 w-4 h-4 rounded cursor-pointer">
-              <span class="${isChecked ? 'line-through text-slate-400' : ''}">${topic}</span>
+              <span class="${isChecked ? 'line-through text-slate-400' : 'text-slate-800'}">${topic}</span>
             </div>
-            <i class="fa-solid fa-check ${isChecked ? 'text-teal-600 opacity-100' : 'opacity-0'} transition-opacity"></i>
+            <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold ${isChecked ? 'bg-teal-100 text-teal-800' : 'bg-slate-200/60 text-slate-600'}">
+              ${isChecked ? 'Completed' : 'Pending'}
+            </span>
           </label>
         `;
       }).join('');
@@ -928,23 +1184,28 @@
       const isAssignmentChecked = !!savedChecks['assignment'];
 
       html += `
-        <label class="flex items-center justify-between bg-teal-50/70 p-3 rounded-xl border border-teal-200 text-xs font-bold text-teal-900 hover:bg-teal-100/70 transition cursor-pointer select-none">
-          <div class="flex items-center gap-2.5">
+        <label class="aero-vista-bar p-3.5 rounded-2xl flex items-center justify-between text-xs font-bold text-teal-900 transition cursor-pointer select-none">
+          <div class="flex items-center gap-3">
             <input type="checkbox" onchange="toggleSubtopicCheck('glossary', this.checked)" ${isGlossaryChecked ? 'checked' : ''} class="accent-teal-600 w-4 h-4 rounded cursor-pointer">
-            <span class="${isGlossaryChecked ? 'line-through text-teal-600' : ''}">Glossary Review</span>
+            <span class="${isGlossaryChecked ? 'line-through text-teal-600' : ''}">📖 Glossary Review</span>
           </div>
-          <i class="fa-solid fa-book-bookmark text-teal-600"></i>
+          <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold ${isGlossaryChecked ? 'bg-teal-100 text-teal-800' : 'bg-teal-50 text-teal-700 border border-teal-200'}">
+            ${isGlossaryChecked ? 'Done' : 'Review'}
+          </span>
         </label>
-        <label class="flex items-center justify-between bg-amber-50/70 p-3 rounded-xl border border-amber-200 text-xs font-bold text-amber-900 hover:bg-amber-100/80 transition cursor-pointer select-none">
-          <div class="flex items-center gap-2.5">
+        <label class="aero-vista-bar p-3.5 rounded-2xl flex items-center justify-between text-xs font-bold text-amber-900 transition cursor-pointer select-none">
+          <div class="flex items-center gap-3">
             <input type="checkbox" onchange="toggleSubtopicCheck('assignment', this.checked)" ${isAssignmentChecked ? 'checked' : ''} class="accent-amber-600 w-4 h-4 rounded cursor-pointer">
-            <span class="${isAssignmentChecked ? 'line-through text-amber-700' : ''}">Submit Assignment Task</span>
+            <span class="${isAssignmentChecked ? 'line-through text-amber-700' : ''}">📤 Submit Lab Task</span>
           </div>
-          <i class="fa-solid fa-file-arrow-up text-amber-600"></i>
+          <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold ${isAssignmentChecked ? 'bg-amber-100 text-amber-800' : 'bg-amber-50 text-amber-800 border border-amber-200'}">
+            ${isAssignmentChecked ? 'Submitted' : 'Pending'}
+          </span>
         </label>
       `;
 
       container.innerHTML = html;
+      document.getElementById('lessonSubtaskStats').textContent = `${Object.values(savedChecks).filter(Boolean).length} / ${lesson.subtopics.length + 2} Done`;
     }
 
     async function toggleSubtopicCheck(key, isChecked) {
@@ -1010,7 +1271,7 @@
       const lesson = domainsData[activeDomainIndex].lessons[lessonIdx];
       document.getElementById('modalLessonSubtitle').textContent = `${lesson.badge} - ${lesson.title}`;
       if (currentUser) { document.getElementById('assignStudentName').value = currentUser.name; }
-      currentBase64File = null;
+      selectedAssignmentFile = null;
       document.getElementById('selectedFileName').classList.add('hidden');
       document.getElementById('assignmentFileInput').value = '';
       document.getElementById('assignmentModal').classList.remove('hidden');
@@ -1020,15 +1281,9 @@
 
     function handleFileSelect(input) {
       if (input.files && input.files[0]) {
-        const file = input.files[0];
-        document.getElementById('fileNameText').textContent = `${file.name} (${Math.round(file.size/1024)} KB)`;
+        selectedAssignmentFile = input.files[0];
+        document.getElementById('fileNameText').textContent = `${selectedAssignmentFile.name} (${Math.round(selectedAssignmentFile.size/1024)} KB)`;
         document.getElementById('selectedFileName').classList.remove('hidden');
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          currentBase64File = { fileName: file.name, fileType: file.type, base64: e.target.result };
-        };
-        reader.readAsDataURL(file);
       }
     }
 
@@ -1038,12 +1293,36 @@
       const textSummary = document.getElementById('assignTextSummary').value.trim();
       const lessonId = domainsData[activeDomainIndex].lessons[activeLessonIndex].id;
 
+      let filePublicUrl = '';
+
+      if (supabaseClient && selectedAssignmentFile) {
+        try {
+          const fileExt = selectedAssignmentFile.name.split('.').pop().toLowerCase();
+          const folderName = (fileExt === 'pkt') ? 'Packet Tracer files' : 'Pix';
+          const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+          const filePath = `${folderName}/${lessonId}/${fileName}`;
+
+          const { error: uploadError } = await supabaseClient.storage
+            .from('assignment-files')
+            .upload(filePath, selectedAssignmentFile);
+
+          if (!uploadError) {
+            const { data: publicUrlData } = supabaseClient.storage
+              .from('assignment-files')
+              .getPublicUrl(filePath);
+            filePublicUrl = publicUrlData.publicUrl;
+          }
+        } catch (err) {
+          console.log('File upload exception:', err);
+        }
+      }
+
       if (supabaseClient) {
         try {
           await supabaseClient.from('assignments').insert([{
             student_name: studentName,
             lesson_id: lessonId,
-            submission_text: textSummary + (currentBase64File ? `\n[File Attached: ${currentBase64File.fileName}]` : '')
+            submission_text: textSummary + (filePublicUrl ? `\n[Attached File URL]: ${filePublicUrl}` : '')
           }]);
         } catch (err) {
           console.log('Supabase assignment save note:', err);
@@ -1051,7 +1330,7 @@
       }
 
       await toggleSubtopicCheck('assignment', true);
-      alert('Assignment and solution file submitted & saved successfully!');
+      showToast('🚀 Lab submission uploaded & saved successfully!', '📤');
       closeAssignmentModal();
     }
 
@@ -1059,6 +1338,7 @@
       if (confirm('Are you sure you want to reset all completed tasks?')) {
         localStorage.clear();
         loadLesson(activeLessonIndex);
+        showToast('🔄 Progress reset successfully.', '⚡');
       }
     }
 
