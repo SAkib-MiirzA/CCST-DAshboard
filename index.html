@@ -52,32 +52,17 @@
   </script>
 
   <style>
-    /* Custom Scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #0d9488;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #0f766e;
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #0d9488; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #0f766e; }
 
-    /* Pulse Glow Animation for AI Assistant */
     @keyframes botGlow {
       0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4); }
       50% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(13, 148, 136, 0); }
     }
-    .bot-glow {
-      animation: botGlow 3s infinite ease-in-out;
-    }
+    .bot-glow { animation: botGlow 3s infinite ease-in-out; }
 
-    /* Print Styles */
     @media print {
       body { background-color: white !important; color: black !important; }
       .no-print { display: none !important; }
@@ -92,7 +77,6 @@
   <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
       
-      <!-- Brand Logo & Title -->
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-700 to-cyan-600 flex items-center justify-center text-white shadow-md shadow-teal-700/20">
           <i class="fa-solid fa-network-wired text-lg"></i>
@@ -106,7 +90,6 @@
         </div>
       </div>
 
-      <!-- Quick Metrics Counter & Actions -->
       <div class="flex items-center gap-3">
         <div class="bg-slate-100/80 border border-slate-200 rounded-xl px-3 py-1.5 flex items-center gap-3 text-xs">
           <div>
@@ -124,23 +107,17 @@
           <i class="fa-solid fa-rotate-left text-sm"></i>
         </button>
 
-        <!-- USER AUTH HEADER CONTROLLER -->
-        <div id="authHeaderContainer">
-          <!-- Rendered dynamically via JS -->
-        </div>
+        <div id="authHeaderContainer"></div>
       </div>
 
     </div>
   </header>
 
-  <!-- MAIN WRAPPER CONTAINER -->
   <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
 
     <!-- DOMAIN TABS NAVIGATION -->
     <section class="bg-white rounded-2xl p-2 border border-slate-200 shadow-sm no-print">
-      <div class="flex items-center gap-2 overflow-x-auto scrollbar-none" id="domainNavTabs">
-        <!-- Rendered via JS -->
-      </div>
+      <div class="flex items-center gap-2 overflow-x-auto scrollbar-none" id="domainNavTabs"></div>
     </section>
 
     <!-- DOMAIN BANNER CARD -->
@@ -173,7 +150,6 @@
 
       <!-- LEFT SIDEBAR: LESSON SELECTION (4 COLS) -->
       <aside class="lg:col-span-4 space-y-5 no-print">
-        
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
           <div class="flex items-center justify-between pb-2 border-b border-slate-100">
             <div>
@@ -187,12 +163,9 @@
             </span>
           </div>
 
-          <div class="space-y-2.5" id="lessonSelectList">
-            <!-- Populated via JavaScript -->
-          </div>
+          <div class="space-y-2.5" id="lessonSelectList"></div>
         </div>
 
-        <!-- OVERALL DOMAIN PROGRESS CARD -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3 print-card">
           <div class="flex items-center justify-between">
             <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-2">
@@ -210,12 +183,10 @@
             <strong id="sidebarTaskFraction" class="text-slate-900 font-extrabold">0 / 0</strong>
           </div>
         </div>
-
       </aside>
 
       <!-- RIGHT VIEWPORT: ACTIVE LESSON CONTENT (8 COLS) -->
       <main class="lg:col-span-8 space-y-6">
-
         <section class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-6 print-card relative transition-all">
           
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
@@ -257,9 +228,7 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="subtopicsContainer">
-              <!-- Rendered via JS -->
-            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="subtopicsContainer"></div>
           </div>
 
           <!-- GLOSSARY & ASSIGNMENT CARDS -->
@@ -307,7 +276,6 @@
           </div>
 
         </section>
-
       </main>
     </div>
 
@@ -315,15 +283,12 @@
 
   <!-- FLOATING STUDENT PRESENCE & WHATSAPP CONTAINER -->
   <div class="fixed bottom-5 left-5 z-40 flex flex-col items-start gap-2.5 no-print">
-    
-    <!-- REGISTERED STUDENTS PANEL TOGGLE BUTTON -->
     <button onclick="toggleStudentDrawer()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2 transition hover:scale-105">
       <i class="fa-solid fa-users text-teal-400"></i>
       <span>Students List</span>
       <span id="studentCountBadge" class="bg-teal-600 text-white text-[10px] px-1.5 py-0.2 rounded-full font-extrabold">0</span>
     </button>
 
-    <!-- LIVE REGISTERED STUDENTS DRAWER -->
     <div id="studentDrawer" class="hidden w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3.5 space-y-2.5 text-xs transition-all">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100">
         <h4 class="font-extrabold text-slate-900 flex items-center gap-1.5">
@@ -339,7 +304,6 @@
       </div>
     </div>
 
-    <!-- WHATSAPP SUPPORT BUTTON -->
     <div class="group relative">
       <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" 
          class="w-11 h-11 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-md flex items-center justify-center transition-all transform hover:scale-110 active:scale-95"
@@ -376,24 +340,8 @@
       </div>
 
       <div class="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-[11px]">
-        <button onclick="sendQuickPrompt('Explain 7 OSI Layers')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">
-          💡 D1: OSI Layers
-        </button>
-        <button onclick="sendQuickPrompt('How to calculate IPv4 CIDR subnet mask?')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">
-          🔢 D2: Subnetting & CIDR
-        </button>
-        <button onclick="sendQuickPrompt('Single-mode vs Multi-mode Fiber?')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">
-          🔌 D3: Fiber Media
-        </button>
-        <button onclick="sendQuickPrompt('What is the difference between Switch and Router?')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">
-          🏢 D4: Routers & Switches
-        </button>
-        <button onclick="sendQuickPrompt('How to use ping and traceroute for troubleshooting?')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">
-          🔍 D5: Diagnostics
-        </button>
-        <button onclick="sendQuickPrompt('Explain WPA3 and ACL Port Security')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">
-          🛡️ D6: Security & ACLs
-        </button>
+        <button onclick="sendQuickPrompt('Explain 7 OSI Layers')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">💡 D1: OSI Layers</button>
+        <button onclick="sendQuickPrompt('How to calculate IPv4 CIDR subnet mask?')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">🔢 D2: Subnetting</button>
       </div>
 
       <div id="aiChatMessages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs bg-slate-50/50">
@@ -403,7 +351,7 @@
           </div>
           <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 space-y-1 max-w-[85%]">
             <p class="font-bold text-slate-900">Hello Student! 👋</p>
-            <p>I am your AI Networking Tutor. Ask me any question about OSI layers, topologies, latency, protocols, or assignment help!</p>
+            <p>I am your AI Networking Tutor. Ask me any question about OSI layers, subnetting, or labs!</p>
           </div>
         </div>
       </div>
@@ -414,11 +362,10 @@
           <i class="fa-solid fa-paper-plane"></i>
         </button>
       </form>
-
     </div>
   </div>
 
-  <!-- ACTIVE FILE ASSIGNMENT SUBMISSION MODAL -->
+  <!-- ASSIGNMENT SUBMISSION MODAL -->
   <div id="assignmentModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -482,9 +429,7 @@
         </button>
       </div>
 
-      <div id="glossaryModalContent" class="space-y-3.5 text-xs text-slate-700 max-h-96 overflow-y-auto pr-1">
-        <!-- Rendered via JS -->
-      </div>
+      <div id="glossaryModalContent" class="space-y-3.5 text-xs text-slate-700 max-h-96 overflow-y-auto pr-1"></div>
 
       <div class="pt-2 flex justify-end">
         <button onclick="closeGlossaryModal()" class="px-4 py-2 bg-teal-600 text-white font-bold rounded-xl text-xs">Close Glossary</button>
@@ -497,17 +442,11 @@
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-5">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <div class="flex items-center gap-2">
-          <button id="tabSignInBtn" onclick="setAuthTab('signin')" class="text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700">
-            Sign In
-          </button>
+          <button id="tabSignInBtn" onclick="setAuthTab('signin')" class="text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700">Sign In</button>
           <span class="text-slate-300">|</span>
-          <button id="tabSignUpBtn" onclick="setAuthTab('signup')" class="text-sm font-bold text-slate-400 pb-1 hover:text-slate-600">
-            Create Account
-          </button>
+          <button id="tabSignUpBtn" onclick="setAuthTab('signup')" class="text-sm font-bold text-slate-400 pb-1 hover:text-slate-600">Create Account</button>
         </div>
-        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-600 p-1">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
+        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
       <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3.5 text-xs">
@@ -534,10 +473,10 @@
     </div>
   </div>
 
-  <!-- APPLICATION LOGIC WITH SUPABASE BACKEND -->
+  <!-- APPLICATION LOGIC WITH CORRECTED SUPABASE KEYS -->
   <script>
     const SUPABASE_URL = 'https://zusnbawalemprtizubzh.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1c25iYXdhbGVtcHJ0aXp1YnpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyMzg0MDAsImV4cCI6MjA1NjgxNDQwMH0.SUPABASE_ANON_KEY';
+    const SUPABASE_ANON_KEY = 'sb_publishable_3SjMa829fo37hIS2xBS5IA_HlGwEVQS';
     
     let supabaseClient = null;
     if (window.supabase) {
@@ -555,52 +494,41 @@
             id: "1.1",
             badge: "LESSON 1.1",
             title: "OSI and TCP/IP Models",
-            objective: "Compare and contrast the 7-layer OSI reference model with the 4-layer TCP/IP stack, understanding data encapsulation, protocol data units (PDUs), and layer functions.",
+            objective: "Compare and contrast the 7-layer OSI reference model with the 4-layer TCP/IP stack.",
             subtopics: ["7 OSI Layers", "4 TCP/IP Layers", "Encapsulation", "PDUs", "Layer Functions"],
-            glossary: [
-              { term: "OSI Reference Model", acronym: "Open Systems Interconnection", def: "A 7-layer conceptual framework standardized by ISO defining standardized inter-computer communications.", example: "Switches operate at Layer 2; Routers operate at Layer 3." },
-              { term: "TCP/IP Stack", acronym: "Transmission Control Protocol / Internet Protocol", def: "A 4-layer practical networking model forming the architectural baseline of the Internet.", example: "HTTP, DNS, and DHCP function at the Application layer." }
-            ]
+            glossary: [{ term: "OSI Reference Model", acronym: "Open Systems Interconnection", def: "A 7-layer conceptual framework standardized by ISO.", example: "Switches operate at Layer 2." }]
           },
           {
             id: "1.2",
             badge: "LESSON 1.2",
             title: "Network Topologies",
-            objective: "Analyze physical and logical network layouts, evaluating fault tolerance, scalability, and implementation cost across topology designs.",
+            objective: "Analyze physical and logical network layouts, evaluating fault tolerance and scalability.",
             subtopics: ["Star", "Bus", "Ring", "Mesh", "Hybrid", "Physical vs Logical"],
-            glossary: [
-              { term: "Star Topology", acronym: "N/A", def: "Layout where peripheral nodes connect to a central networking switch.", example: "Standard office LANs." }
-            ]
+            glossary: [{ term: "Star Topology", acronym: "N/A", def: "Layout where peripheral nodes connect to a central switch.", example: "Standard office LANs." }]
           },
           {
             id: "1.3",
             badge: "LESSON 1.3",
             title: "Bandwidth, Throughput & Latency",
-            objective: "Measure and differentiate network transmission characteristics including max bandwidth, real throughput, latency delays, and iperf performance testing.",
+            objective: "Measure and differentiate network transmission characteristics.",
             subtopics: ["Bandwidth vs Throughput", "Latency", "Delay", "Speed Tests", "Iperf"],
-            glossary: [
-              { term: "Bandwidth", acronym: "N/A", def: "Theoretical maximum data carrying capacity of a transmission medium.", example: "Cat6 Ethernet provides up to 10 Gbps." }
-            ]
+            glossary: [{ term: "Bandwidth", acronym: "N/A", def: "Theoretical maximum data carrying capacity.", example: "Cat6 Ethernet provides up to 10 Gbps." }]
           },
           {
             id: "1.4",
             badge: "LESSON 1.4",
             title: "Network Types (LAN, WAN, WLAN)",
-            objective: "Identify geographic scale classifications of networks from personal area networks to wide area systems.",
+            objective: "Identify geographic scale classifications of networks.",
             subtopics: ["LAN", "WAN", "MAN", "PAN", "WLAN", "CAN"],
-            glossary: [
-              { term: "LAN", acronym: "Local Area Network", def: "High-speed network spanning a small geographical area such as an office.", example: "Wi-Fi access points in a school." }
-            ]
+            glossary: [{ term: "LAN", acronym: "Local Area Network", def: "High-speed network spanning a small geographical area.", example: "Wi-Fi access points in a school." }]
           },
           {
             id: "1.5",
             badge: "LESSON 1.5",
             title: "Common Protocols & Services",
-            objective: "Examine transport and application layer protocols providing web, dynamic IP addressing, and domain resolution.",
+            objective: "Examine transport and application layer protocols.",
             subtopics: ["TCP vs UDP", "HTTP/HTTPS", "FTP/SFTP", "DNS", "DHCP", "ICMP", "NTP"],
-            glossary: [
-              { term: "DHCP", acronym: "Dynamic Host Configuration Protocol", def: "Dynamically assigns IP addresses, subnet masks, default gateways, and DNS servers.", example: "Connecting a device to Wi-Fi." }
-            ]
+            glossary: [{ term: "DHCP", acronym: "Dynamic Host Configuration Protocol", def: "Dynamically assigns IP addresses.", example: "Connecting a device to Wi-Fi." }]
           }
         ]
       },
@@ -608,17 +536,15 @@
         id: "2",
         title: "2. Addressing & Subnetting",
         badge: "Domain 2.0",
-        description: "IPv4 & IPv6 addressing schemes, subnet masks, CIDR notation, and default gateways.",
+        description: "IPv4 & IPv6 addressing schemes, subnet masks, and CIDR notation.",
         lessons: [
           {
             id: "2.1",
             badge: "LESSON 2.1",
             title: "IPv4 Addressing & Subnetting",
-            objective: "Calculate network addresses, broadcast IPs, and host ranges across CIDR blocks.",
+            objective: "Calculate network addresses, broadcast IPs, and host ranges.",
             subtopics: ["IPv4 Classes", "Subnet Masks", "CIDR Notation", "Private vs Public IPs", "APIPA"],
-            glossary: [
-              { term: "CIDR Notation", acronym: "Classless Inter-Domain Routing", def: "Syntax representing IP address and subnet mask length.", example: "192.168.1.0/24." }
-            ]
+            glossary: [{ term: "CIDR Notation", acronym: "Classless Inter-Domain Routing", def: "Syntax representing IP address and subnet mask length.", example: "192.168.1.0/24." }]
           }
         ]
       },
@@ -626,17 +552,15 @@
         id: "3",
         title: "3. Endpoints & Media",
         badge: "Domain 3.0",
-        description: "Physical cabling types, fiber optics, wireless frequencies, and endpoint hardware.",
+        description: "Physical cabling types, fiber optics, and wireless frequencies.",
         lessons: [
           {
             id: "3.1",
             badge: "LESSON 3.1",
             title: "Cabling & Connector Types",
-            objective: "Identify twisted pair Ethernet cables, fiber optic modes, and standard copper RJ-45 pinouts.",
+            objective: "Identify twisted pair Ethernet cables and fiber optic modes.",
             subtopics: ["Cat5e/Cat6/Cat6a", "Single-mode vs Multi-mode Fiber", "RJ-45 & T568B", "Coaxial"],
-            glossary: [
-              { term: "Single-Mode Fiber", acronym: "SMF", def: "Uses small core (9µm) with laser light for long distances.", example: "Building interconnects." }
-            ]
+            glossary: [{ term: "Single-Mode Fiber", acronym: "SMF", def: "Uses small core with laser light for long distances.", example: "Building interconnects." }]
           }
         ]
       },
@@ -644,17 +568,15 @@
         id: "4",
         title: "4. Infrastructure",
         badge: "Domain 4.0",
-        description: "Switches, routers, firewalls, access points, and hardware installation principles.",
+        description: "Switches, routers, firewalls, and access points.",
         lessons: [
           {
             id: "4.1",
             badge: "LESSON 4.1",
             title: "Network Device Roles",
-            objective: "Differentiate layer 2 switching from layer 3 routing and perimeter firewall filtering.",
+            objective: "Differentiate layer 2 switching from layer 3 routing.",
             subtopics: ["Layer 2 Switches", "Layer 3 Routers", "Wireless Access Points", "Firewalls"],
-            glossary: [
-              { term: "Layer 2 Switch", acronym: "MAC Switch", def: "Forwards frames inside a LAN using MAC tables.", example: "Cisco Catalyst 2960." }
-            ]
+            glossary: [{ term: "Layer 2 Switch", acronym: "MAC Switch", def: "Forwards frames inside a LAN using MAC tables.", example: "Cisco Catalyst 2960." }]
           }
         ]
       },
@@ -662,17 +584,15 @@
         id: "5",
         title: "5. Diagnostics & Troubleshooting",
         badge: "Domain 5.0",
-        description: "Command-line diagnostic tools, ping, traceroute, nslookup, and troubleshooting methodology.",
+        description: "Command-line diagnostic tools and troubleshooting methodology.",
         lessons: [
           {
             id: "5.1",
             badge: "LESSON 5.1",
             title: "Command-Line Diagnostics",
-            objective: "Utilize ping, traceroute, ipconfig, and netstat to isolate network connectivity faults.",
+            objective: "Utilize ping, traceroute, ipconfig, and netstat.",
             subtopics: ["Ping & ICMP", "Traceroute / Tracert", "Ipconfig / Ifconfig", "Nslookup", "Netstat"],
-            glossary: [
-              { term: "Traceroute", acronym: "Tracert", def: "Displays the path and transit delays of packets across IP hops.", example: "Identifies router hop drops." }
-            ]
+            glossary: [{ term: "Traceroute", acronym: "Tracert", def: "Displays the path and transit delays of packets across IP hops.", example: "Identifies router hop drops." }]
           }
         ]
       },
@@ -680,17 +600,15 @@
         id: "6",
         title: "6. Security",
         badge: "Domain 6.0",
-        description: "Network access control, WPA3 wireless encryption, ACL filters, and port security.",
+        description: "Network access control, WPA3 wireless encryption, and ACL filters.",
         lessons: [
           {
             id: "6.1",
             badge: "LESSON 6.1",
             title: "Access Control & Authentication",
-            objective: "Implement basic security mechanisms including firewalls, VPNs, ACLs, and port security.",
+            objective: "Implement basic security mechanisms including firewalls and ACLs.",
             subtopics: ["Authentication Methods", "Password Policies", "ACLs", "Port Security", "WPA2/WPA3"],
-            glossary: [
-              { term: "Access Control List", acronym: "ACL", def: "Sequential set of permit/deny rules applied to filter IP traffic.", example: "Filtering destination ports." }
-            ]
+            glossary: [{ term: "Access Control List", acronym: "ACL", def: "Sequential set of permit/deny rules applied to filter IP traffic.", example: "Filtering destination ports." }]
           }
         ]
       }
@@ -720,9 +638,7 @@
 
       container.innerHTML = domainsData.map((domain, idx) => `
         <button onclick="switchDomain(${idx})" class="px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-2 ${
-          idx === activeDomainIndex
-            ? 'bg-teal-600 text-white shadow-sm'
-            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
+          idx === activeDomainIndex ? 'bg-teal-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
         }">
           <span class="w-2 h-2 rounded-full ${idx === activeDomainIndex ? 'bg-amber-300' : 'bg-slate-400'}"></span>
           ${domain.title}
@@ -732,9 +648,7 @@
 
     function loadSavedUser() {
       const saved = localStorage.getItem('ccst_user');
-      if (saved) {
-        currentUser = JSON.parse(saved);
-      }
+      if (saved) { currentUser = JSON.parse(saved); }
     }
 
     function renderAuthHeader() {
@@ -795,16 +709,14 @@
     async function handleAuthSubmit(e) {
       e.preventDefault();
       const email = document.getElementById('authEmailInput').value.trim();
-      const name = authMode === 'signup' 
-        ? document.getElementById('authNameInput').value.trim() 
-        : email.split('@')[0];
+      const name = authMode === 'signup' ? document.getElementById('authNameInput').value.trim() : email.split('@')[0];
 
       currentUser = { name: name || 'Student', email: email };
       localStorage.setItem('ccst_user', JSON.stringify(currentUser));
 
       if (supabaseClient) {
         try {
-          await supabaseClient.from('profiles').upsert([{ email: email, full_name: name }]);
+          await supabaseClient.from('profiles').upsert([{ email: email, full_name: name }], { onConflict: 'email' });
         } catch (err) {
           console.log('Supabase profile sync note:', err);
         }
@@ -833,7 +745,7 @@
       if (!supabaseClient || !currentUser) return;
 
       try {
-        const { data, error } = await supabaseClient
+        const { data } = await supabaseClient
           .from('student_progress')
           .select('*')
           .eq('student_email', currentUser.email);
@@ -843,8 +755,7 @@
             domainsData.forEach((d, dIdx) => {
               d.lessons.forEach((l, lIdx) => {
                 if (l.id === row.lesson_id) {
-                  const storageKey = `ccst_check_d${dIdx}_l${lIdx}`;
-                  localStorage.setItem(storageKey, JSON.stringify(row.completed_tasks || {}));
+                  localStorage.setItem(`ccst_check_d${dIdx}_l${lIdx}`, JSON.stringify(row.completed_tasks || {}));
                 }
               });
             });
@@ -861,7 +772,7 @@
       if (!supabaseClient) return;
 
       try {
-        const { data, error } = await supabaseClient.from('profiles').select('full_name, email');
+        const { data } = await supabaseClient.from('profiles').select('full_name, email');
         if (data && data.length > 0) {
           badge.textContent = data.length;
           const colors = ['emerald', 'indigo', 'amber', 'purple', 'cyan', 'rose'];
@@ -918,9 +829,7 @@
       document.getElementById('glossaryModal').classList.remove('hidden');
     }
 
-    function closeGlossaryModal() {
-      document.getElementById('glossaryModal').classList.add('hidden');
-    }
+    function closeGlossaryModal() { document.getElementById('glossaryModal').classList.add('hidden'); }
 
     function handleAiSubmit(e) {
       e.preventDefault();
@@ -929,37 +838,15 @@
       if (!text) return;
 
       const chatBox = document.getElementById('aiChatMessages');
-      chatBox.innerHTML += `
-        <div class="flex items-start justify-end gap-2">
-          <div class="bg-teal-600 text-white p-2.5 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] font-medium">
-            ${text}
-          </div>
-        </div>
-      `;
-
+      chatBox.innerHTML += `<div class="flex items-start justify-end gap-2"><div class="bg-teal-600 text-white p-2.5 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] font-medium">${text}</div></div>`;
       input.value = '';
       chatBox.scrollTop = chatBox.scrollHeight;
 
       setTimeout(() => {
         let response = "In CCST networking, mastering core concepts across OSI layers, IP subnetting, media types, routers/switches, CLI tools, and security ensures career track success!";
-        const q = text.toLowerCase();
+        if (text.toLowerCase().includes('osi')) { response = "<strong>Domain 1 - OSI Model:</strong> 7 Layers (Physical up to Application)."; }
 
-        if (q.includes('osi') || q.includes('7 layer')) {
-          response = "<strong>Domain 1 - OSI Model:</strong><br>1. Physical<br>2. Data Link<br>3. Network<br>4. Transport<br>5. Session<br>6. Presentation<br>7. Application";
-        } else if (q.includes('subnet') || q.includes('cidr')) {
-          response = "<strong>Domain 2 - Subnetting:</strong> /24 = 255.255.255.0 (254 hosts). /25 = 255.255.255.128 (126 hosts).";
-        }
-
-        chatBox.innerHTML += `
-          <div class="flex items-start gap-2">
-            <div class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5">
-              <i class="fa-solid fa-robot"></i>
-            </div>
-            <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 max-w-[85%] leading-relaxed">
-              ${response}
-            </div>
-          </div>
-        `;
+        chatBox.innerHTML += `<div class="flex items-start gap-2"><div class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5"><i class="fa-solid fa-robot"></i></div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 max-w-[85%] leading-relaxed">${response}</div></div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
       }, 600);
     }
@@ -987,28 +874,16 @@
       const container = document.getElementById('lessonSelectList');
 
       container.innerHTML = domain.lessons.map((lesson, idx) => `
-        <div onclick="loadLesson(${idx})" class="p-3.5 rounded-xl border transition cursor-pointer group ${
-          idx === activeLessonIndex 
-            ? 'bg-teal-50/90 border-teal-300 shadow-sm' 
-            : 'bg-slate-50/60 border-slate-200 hover:bg-slate-100'
-        }">
+        <div onclick="loadLesson(${idx})" class="p-3.5 rounded-xl border transition cursor-pointer group ${idx === activeLessonIndex ? 'bg-teal-50/90 border-teal-300 shadow-sm' : 'bg-slate-50/60 border-slate-200 hover:bg-slate-100'}">
           <div class="flex items-center justify-between mb-1">
-            <span class="text-[11px] font-black ${idx === activeLessonIndex ? 'text-teal-800' : 'text-slate-500'}">
-              ${lesson.badge}
-            </span>
-            <span class="text-[10px] bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-full font-bold">
-              ${lesson.subtopics.length} Subtopics
-            </span>
+            <span class="text-[11px] font-black ${idx === activeLessonIndex ? 'text-teal-800' : 'text-slate-500'}">${lesson.badge}</span>
+            <span class="text-[10px] bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-full font-bold">${lesson.subtopics.length} Subtopics</span>
           </div>
           <h4 class="font-extrabold text-xs text-slate-900 group-hover:text-teal-700 transition">${lesson.title}</h4>
           
           <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-slate-200/60 text-[11px]">
-            <span class="text-teal-700 font-bold flex items-center gap-1 hover:underline" onclick="event.stopPropagation(); openGlossaryModalFor(${idx})">
-              <i class="fa-solid fa-book-bookmark text-[10px]"></i> Glossary
-            </span>
-            <span class="text-amber-800 font-extrabold bg-amber-100 px-2 py-0.5 rounded border border-amber-300/80 hover:bg-amber-200" onclick="event.stopPropagation(); openAssignmentModalFor(${idx})">
-              Submit Work
-            </span>
+            <span class="text-teal-700 font-bold hover:underline" onclick="event.stopPropagation(); openGlossaryModalFor(${idx})">Glossary</span>
+            <span class="text-amber-800 font-extrabold bg-amber-100 px-2 py-0.5 rounded border border-amber-300/80" onclick="event.stopPropagation(); openAssignmentModalFor(${idx})">Submit Work</span>
           </div>
         </div>
       `).join('');
@@ -1086,94 +961,62 @@
             domain_id: String(activeDomainIndex + 1),
             lesson_id: lessonObj.id,
             completed_tasks: savedChecks
-          }]);
+          }], { onConflict: 'student_email,lesson_id' });
         } catch (err) {
           console.log('Supabase cloud save note:', err);
         }
       }
 
-      const lesson = domainsData[activeDomainIndex].lessons[activeLessonIndex];
-      renderSubtopicsGrid(lesson);
+      renderSubtopicsGrid(domainsData[activeDomainIndex].lessons[activeLessonIndex]);
       calculateProgress();
     }
 
     function calculateProgress() {
-      let totalTasks = 0;
-      let completedTasks = 0;
+      let totalTasks = 0, completedTasks = 0;
 
       domainsData.forEach((domain, dIdx) => {
         domain.lessons.forEach((lesson, lIdx) => {
-          const lessonTotal = lesson.subtopics.length + 2;
-          totalTasks += lessonTotal;
-
+          totalTasks += lesson.subtopics.length + 2;
           const saved = JSON.parse(localStorage.getItem(`ccst_check_d${dIdx}_l${lIdx}`) || '{}');
-          lesson.subtopics.forEach((_, tIdx) => {
-            if (saved[tIdx]) completedTasks++;
-          });
+          lesson.subtopics.forEach((_, tIdx) => { if (saved[tIdx]) completedTasks++; });
           if (saved['glossary']) completedTasks++;
           if (saved['assignment']) completedTasks++;
         });
       });
 
       const pct = Math.round((completedTasks / totalTasks) * 100) || 0;
-
       document.getElementById('headerProgressPct').textContent = pct + '%';
       document.getElementById('headerTasksCount').textContent = `${completedTasks} / ${totalTasks}`;
       document.getElementById('sidebarProgressPct').textContent = pct + '%';
       document.getElementById('sidebarProgressBar').style.width = pct + '%';
       document.getElementById('sidebarTaskFraction').textContent = `${completedTasks} / ${totalTasks}`;
-
-      const currentLesson = domainsData[activeDomainIndex].lessons[activeLessonIndex];
-      const currentSaved = JSON.parse(localStorage.getItem(`ccst_check_d${activeDomainIndex}_l${activeLessonIndex}`) || '{}');
-      let currentDone = 0;
-      currentLesson.subtopics.forEach((_, tIdx) => { if (currentSaved[tIdx]) currentDone++; });
-      if (currentSaved['glossary']) currentDone++;
-      if (currentSaved['assignment']) currentDone++;
-
-      document.getElementById('lessonSubtaskStats').textContent = `${currentDone} / ${currentLesson.subtopics.length + 2} Done`;
     }
 
     function updateNavigationButtons() {
       const lessons = domainsData[activeDomainIndex].lessons;
       document.getElementById('prevLessonBtn').disabled = activeLessonIndex === 0;
       document.getElementById('nextLessonBtn').disabled = activeLessonIndex === lessons.length - 1;
-
-      document.getElementById('prevLessonBtn').classList.toggle('opacity-50', activeLessonIndex === 0);
-      document.getElementById('nextLessonBtn').classList.toggle('opacity-50', activeLessonIndex === lessons.length - 1);
     }
 
     function navigateLesson(direction) {
       const newIdx = activeLessonIndex + direction;
-      if (newIdx >= 0 && newIdx < domainsData[activeDomainIndex].lessons.length) {
-        loadLesson(newIdx);
-      }
+      if (newIdx >= 0 && newIdx < domainsData[activeDomainIndex].lessons.length) { loadLesson(newIdx); }
     }
 
-    function openCurrentGlossary() {
-      openGlossaryModalFor(activeLessonIndex);
-    }
-
-    function openCurrentAssignment() {
-      openAssignmentModalFor(activeLessonIndex);
-    }
+    function openCurrentGlossary() { openGlossaryModalFor(activeLessonIndex); }
+    function openCurrentAssignment() { openAssignmentModalFor(activeLessonIndex); }
 
     function openAssignmentModalFor(lessonIdx) {
       const lesson = domainsData[activeDomainIndex].lessons[lessonIdx];
       document.getElementById('modalLessonSubtitle').textContent = `${lesson.badge} - ${lesson.title}`;
-      
-      if (currentUser) {
-        document.getElementById('assignStudentName').value = currentUser.name;
-      }
-
+      if (currentUser) { document.getElementById('assignStudentName').value = currentUser.name; }
       currentBase64File = null;
       document.getElementById('selectedFileName').classList.add('hidden');
       document.getElementById('assignmentFileInput').value = '';
       document.getElementById('assignmentModal').classList.remove('hidden');
     }
 
-    function closeAssignmentModal() {
-      document.getElementById('assignmentModal').classList.add('hidden');
-    }
+    function closeAssignmentModal() { document.getElementById('assignmentModal').classList.add('hidden'); }
 
     function handleFileSelect(input) {
       if (input.files && input.files[0]) {
@@ -1181,14 +1024,9 @@
         document.getElementById('fileNameText').textContent = `${file.name} (${Math.round(file.size/1024)} KB)`;
         document.getElementById('selectedFileName').classList.remove('hidden');
 
-        // Convert file to Base64 data for smooth inline storage
         const reader = new FileReader();
         reader.onload = function(e) {
-          currentBase64File = {
-            fileName: file.name,
-            fileType: file.type,
-            base64: e.target.result
-          };
+          currentBase64File = { fileName: file.name, fileType: file.type, base64: e.target.result };
         };
         reader.readAsDataURL(file);
       }
@@ -1224,10 +1062,7 @@
       }
     }
 
-    function toggleAiBot() {
-      document.getElementById('aiChatWindow').classList.toggle('hidden');
-    }
-
+    function toggleAiBot() { document.getElementById('aiChatWindow').classList.toggle('hidden'); }
     function sendQuickPrompt(promptText) {
       document.getElementById('aiInput').value = promptText;
       handleAiSubmit(new Event('submit'));
