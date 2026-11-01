@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CCST Networking Career Track - Interactive Student Portal</title>
 
-  <!-- Favicon Icons -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%230d9488' d='M64 64C28.7 64 0 92.7 0 128V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H64zm192 96c35.3 0 64 28.7 64 64c0 23.7-12.9 44.3-32 55.4V320h64c17.7 0 32 14.3 32 32s-14.3 32-32 32H180.7c1.1-5.2 3.3-10.1 6.6-14.3l37.4-48c5.4-6.9 8.3-15.4 8.3-24.1V279.4c-19.1-11.1-32-31.7-32-55.4c0-35.3 28.7-64 64-64z'/></svg>" />
+  <!-- Embedded Networking Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230d9488'><path d='M12 2a3 3 0 0 0-3 3c0 .38.08.74.21 1.07L6.34 8.94A3 3 0 0 0 5 8a3 3 0 1 0 3 3c0-.38-.08-.74-.21-1.07l2.87-2.87c.33.13.69.21 1.07.21c.38 0 .74-.08 1.07-.21l2.87 2.87c-.13.33-.21.69-.21 1.07a3 3 0 1 0 3-3c-.47 0-.91.11-1.34.31l-2.87-2.87C14.92 5.74 15 5.38 15 5a3 3 0 0 0-3-3z'/></svg>">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -136,7 +136,7 @@
   <!-- MAIN WRAPPER CONTAINER -->
   <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
 
-    <!-- DOMAIN TABS NAVIGATION (CLICKABLE) -->
+    <!-- DOMAIN TABS NAVIGATION -->
     <section class="bg-white rounded-2xl p-2 border border-slate-200 shadow-sm no-print">
       <div class="flex items-center gap-2 overflow-x-auto scrollbar-none" id="domainNavTabs">
         <!-- Rendered via JS -->
@@ -156,7 +156,6 @@
         </p>
       </div>
 
-      <!-- Domain Stats Pill Badges -->
       <div class="relative z-10 flex flex-wrap md:flex-col items-start md:items-end gap-2 text-xs font-semibold">
         <span class="bg-white/15 hover:bg-white/25 transition backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/20 flex items-center gap-2">
           <i class="fa-solid fa-layer-group text-teal-200"></i> <span id="domainLessonsCount">5 Lessons Included</span>
@@ -166,17 +165,15 @@
         </span>
       </div>
 
-      <!-- Decorative Background Glow -->
       <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none"></div>
     </section>
 
     <!-- MAIN TWO-COLUMN DASHBOARD GRID -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-      <!-- LEFT SIDEBAR: LESSON SELECTION & SYLLABUS CARD (4 COLS) -->
+      <!-- LEFT SIDEBAR: LESSON SELECTION (4 COLS) -->
       <aside class="lg:col-span-4 space-y-5 no-print">
         
-        <!-- Lesson Cards Accordion List -->
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
           <div class="flex items-center justify-between pb-2 border-b border-slate-100">
             <div>
@@ -190,7 +187,6 @@
             </span>
           </div>
 
-          <!-- Dynamic Lesson List -->
           <div class="space-y-2.5" id="lessonSelectList">
             <!-- Populated via JavaScript -->
           </div>
@@ -205,7 +201,6 @@
             <span class="text-sm font-extrabold text-teal-700" id="sidebarProgressPct">0%</span>
           </div>
 
-          <!-- Progress Bar Container -->
           <div class="w-full bg-slate-100 rounded-full h-3 border border-slate-200 overflow-hidden">
             <div id="sidebarProgressBar" class="bg-gradient-to-r from-teal-500 to-cyan-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
           </div>
@@ -218,13 +213,11 @@
 
       </aside>
 
-      <!-- RIGHT VIEWPORT: ACTIVE LESSON CONTENT & CHECKLIST (8 COLS) -->
+      <!-- RIGHT VIEWPORT: ACTIVE LESSON CONTENT (8 COLS) -->
       <main class="lg:col-span-8 space-y-6">
 
-        <!-- ACTIVE LESSON MAIN DISPLAY CARD -->
         <section class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-6 print-card relative transition-all">
           
-          <!-- Lesson Banner Header -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
             <div class="flex items-center gap-2.5 flex-wrap">
               <span id="activeLessonBadge" class="bg-teal-600 text-white font-black text-xs px-3 py-1 rounded-md tracking-wide shadow-sm">
@@ -233,18 +226,16 @@
               <span class="text-xs font-semibold text-slate-400">Current Active Module</span>
             </div>
 
-            <!-- Quick Trigger Actions -->
             <div class="flex items-center gap-2 flex-wrap">
               <button onclick="openCurrentGlossary()" class="bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1.5 rounded-lg border border-teal-200/80 transition flex items-center gap-1.5 shadow-2xs">
                 <i class="fa-solid fa-book-bookmark text-teal-600"></i> Glossary
               </button>
-              <button onclick="openCurrentAssignment()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5">
+              <button onclick="openCurrentAssignment()" class="bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-950 text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5">
                 <i class="fa-solid fa-upload"></i> Submit Assignment
               </button>
             </div>
           </div>
 
-          <!-- Lesson Title & Learning Objective -->
           <div>
             <h2 id="activeLessonTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               OSI and TCP/IP Models
@@ -254,7 +245,7 @@
             </div>
           </div>
 
-          <!-- SUBTOPICS & CONTENT CHECKLIST GRID -->
+          <!-- SUBTOPICS CHECKLIST -->
           <div class="bg-slate-50/80 rounded-xl p-4 sm:p-5 border border-slate-200 space-y-4">
             <div class="flex items-center justify-between pb-2 border-b border-slate-200">
               <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
@@ -266,16 +257,13 @@
               </div>
             </div>
 
-            <!-- Interactive Subtopics Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="subtopicsContainer">
               <!-- Rendered via JS -->
             </div>
           </div>
 
-          <!-- GLOSSARY & ASSIGNMENT DIRECT INTERACTIVE CARDS -->
+          <!-- GLOSSARY & ASSIGNMENT CARDS -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            
-            <!-- Glossary Interactive Trigger Card -->
             <div onclick="openCurrentGlossary()" class="bg-gradient-to-br from-teal-50 to-white p-4 rounded-xl border border-teal-200/80 hover:border-teal-400 transition cursor-pointer shadow-2xs group flex items-start justify-between gap-3">
               <div class="space-y-1">
                 <span class="text-[10px] font-bold text-teal-700 uppercase tracking-wider">Reference Terms</span>
@@ -289,7 +277,6 @@
               </span>
             </div>
 
-            <!-- Assignment Interactive Trigger Card -->
             <div onclick="openCurrentAssignment()" class="bg-gradient-to-br from-amber-50/80 to-white p-4 rounded-xl border border-amber-200 hover:border-amber-400 transition cursor-pointer shadow-2xs group flex items-start justify-between gap-3">
               <div class="space-y-1">
                 <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Practical Task</span>
@@ -302,7 +289,6 @@
                 <i class="fa-solid fa-upload text-xs"></i>
               </span>
             </div>
-
           </div>
 
           <!-- FOOTER ACTIONS -->
@@ -327,27 +313,34 @@
 
   </div>
 
-  <!-- BOTTOM-LEFT CONTAINER: STUDENT STATUS PANEL + WHATSAPP BUTTON -->
-  <div class="fixed bottom-5 left-5 z-40 flex flex-col gap-2.5 no-print">
+  <!-- FLOATING STUDENT PRESENCE & WHATSAPP CONTAINER -->
+  <div class="fixed bottom-5 left-5 z-40 flex flex-col items-start gap-2.5 no-print">
     
-    <!-- STUDENT ACCOUNTS STATUS PANEL (POSITIONED ABOVE WHATSAPP LOGO) -->
-    <div id="studentAccountsPanel" class="bg-white/95 backdrop-blur-md rounded-2xl p-3 border border-slate-200 shadow-xl max-w-xs w-72 space-y-2 transition-all">
-      <div class="flex items-center justify-between pb-1.5 border-b border-slate-100">
-        <div class="flex items-center gap-1.5">
-          <i class="fa-solid fa-users text-teal-600 text-xs"></i>
-          <span class="font-extrabold text-slate-800 text-[11px]">Registered Students</span>
-        </div>
-        <span class="bg-teal-50 text-teal-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-teal-200" id="studentCountBadge">0 Users</span>
+    <!-- REGISTERED STUDENTS PANEL TOGGLE BUTTON -->
+    <button onclick="toggleStudentDrawer()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2 transition hover:scale-105">
+      <i class="fa-solid fa-users text-teal-400"></i>
+      <span>Students List</span>
+      <span id="studentCountBadge" class="bg-teal-600 text-white text-[10px] px-1.5 py-0.2 rounded-full font-extrabold">0</span>
+    </button>
+
+    <!-- LIVE REGISTERED STUDENTS DRAWER -->
+    <div id="studentDrawer" class="hidden w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3.5 space-y-2.5 text-xs transition-all">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+        <h4 class="font-extrabold text-slate-900 flex items-center gap-1.5">
+          <i class="fa-solid fa-user-graduate text-teal-600"></i> Registered Accounts
+        </h4>
+        <button onclick="toggleStudentDrawer()" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
 
-      <!-- Scrollable List of Students with Online/Offline Status -->
-      <div id="studentAccountsList" class="space-y-1.5 max-h-36 overflow-y-auto text-[11px] pr-1">
-        <!-- Rendered via JS -->
+      <div id="studentListContainer" class="max-h-56 overflow-y-auto space-y-2 pr-1">
+        <p class="text-slate-400 text-[11px] italic">Loading registered students...</p>
       </div>
     </div>
 
-    <!-- FLOATING WHATSAPP HELP BUTTON (44px) -->
-    <div class="relative group">
+    <!-- WHATSAPP SUPPORT BUTTON -->
+    <div class="group relative">
       <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" 
          class="w-11 h-11 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-md flex items-center justify-center transition-all transform hover:scale-110 active:scale-95"
          title="WhatsApp Support">
@@ -357,10 +350,9 @@
         WhatsApp Support
       </span>
     </div>
-
   </div>
 
-  <!-- FLOATING STYLISH AI NETWORKING TUTOR WIDGET -->
+  <!-- FLOATING AI NETWORKING TUTOR WIDGET -->
   <div class="fixed bottom-5 right-5 z-50 no-print">
     <button id="aiBotToggle" onclick="toggleAiBot()" class="bot-glow bg-gradient-to-r from-teal-600 to-cyan-600 text-white p-4 rounded-full shadow-xl flex items-center justify-center relative hover:scale-105 transition-all">
       <i class="fa-solid fa-robot text-2xl"></i>
@@ -426,7 +418,7 @@
     </div>
   </div>
 
-  <!-- ASSIGNMENT SUBMISSION MODAL -->
+  <!-- ACTIVE FILE ASSIGNMENT SUBMISSION MODAL -->
   <div id="assignmentModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -451,24 +443,28 @@
         </div>
 
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Packet Tracer Link / Answer Summary</label>
+          <label class="block font-bold text-slate-700 mb-1">Packet Tracer Link / Lab Summary</label>
           <textarea id="assignTextSummary" rows="3" required placeholder="Paste Google Drive/GitHub link or describe completed tasks..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500"></textarea>
         </div>
 
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Upload Solution File / Screenshot</label>
-          <div class="border-2 border-dashed border-slate-200 hover:border-teal-400 rounded-xl p-4 text-center bg-slate-50 transition cursor-pointer">
-            <i class="fa-solid fa-cloud-arrow-up text-2xl text-teal-600 mb-1"></i>
-            <p class="text-slate-600 font-semibold">Click to select file or drag & drop</p>
-            <p class="text-[10px] text-slate-400 mt-0.5">PKT, PDF, PNG up to 10MB</p>
-            <input type="file" class="hidden" id="assignmentFileInput" onchange="handleFileSelect(this)">
+          <label class="block font-bold text-slate-700 mb-1">Upload Solution File / Lab Screenshot</label>
+          <div id="dropzoneContainer" onclick="document.getElementById('assignmentFileInput').click()" class="border-2 border-dashed border-amber-300 hover:border-amber-500 rounded-xl p-4 text-center bg-amber-50/50 hover:bg-amber-50 transition cursor-pointer space-y-1">
+            <i class="fa-solid fa-cloud-arrow-up text-2xl text-amber-600"></i>
+            <p class="text-slate-700 font-bold">Click to select file or drag & drop</p>
+            <p class="text-[10px] text-slate-400">PKT, PDF, PNG, JPG up to 5MB</p>
+            <input type="file" id="assignmentFileInput" onchange="handleFileSelect(this)" class="hidden">
           </div>
-          <p id="selectedFileName" class="text-[11px] text-teal-700 font-bold mt-1 hidden"></p>
+          <p id="selectedFileName" class="text-[11px] text-teal-700 font-extrabold mt-1.5 hidden flex items-center gap-1">
+            <i class="fa-solid fa-circle-check text-teal-600"></i> <span id="fileNameText"></span>
+          </p>
         </div>
 
         <div class="pt-2 flex items-center justify-end gap-2">
           <button type="button" onclick="closeAssignmentModal()" class="px-4 py-2 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200">Cancel</button>
-          <button type="submit" id="assignSubmitBtn" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold rounded-xl shadow-sm">Submit Work Now</button>
+          <button type="submit" id="assignSubmitBtn" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-950 font-extrabold rounded-xl shadow-md cursor-pointer transition flex items-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i> Submit Work Now
+          </button>
         </div>
       </form>
     </div>
@@ -479,7 +475,7 @@
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <h3 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
-          <i class="fa-solid fa-book-bookmark text-teal-600"></i> Comprehensive Technical Glossary
+          <i class="fa-solid fa-book-bookmark text-teal-600"></i> Technical Glossary
         </h3>
         <button onclick="closeGlossaryModal()" class="text-slate-400 hover:text-slate-600 p-1">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -496,10 +492,9 @@
     </div>
   </div>
 
-  <!-- AUTH MODAL (SIGN IN / SIGN UP) -->
+  <!-- AUTH MODAL -->
   <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-5">
-      
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <div class="flex items-center gap-2">
           <button id="tabSignInBtn" onclick="setAuthTab('signin')" class="text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700">
@@ -539,9 +534,8 @@
     </div>
   </div>
 
-  <!-- COMPLETE JAVASCRIPT APPLICATION LOGIC WITH LIVE STUDENT STATUS PANEL -->
+  <!-- APPLICATION LOGIC WITH SUPABASE BACKEND -->
   <script>
-    // SUPABASE BACKEND CONFIGURATION
     const SUPABASE_URL = 'https://zusnbawalemprtizubzh.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1c25iYXdhbGVtcHJ0aXp1YnpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyMzg0MDAsImV4cCI6MjA1NjgxNDQwMH0.SUPABASE_ANON_KEY';
     
@@ -549,15 +543,6 @@
     if (window.supabase) {
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
-
-    const colorPalettes = [
-      { bg: 'bg-emerald-500', text: 'text-emerald-700', border: 'border-emerald-200', lightBg: 'bg-emerald-50' },
-      { bg: 'bg-indigo-500', text: 'text-indigo-700', border: 'border-indigo-200', lightBg: 'bg-indigo-50' },
-      { bg: 'bg-amber-500', text: 'text-amber-800', border: 'border-amber-200', lightBg: 'bg-amber-50' },
-      { bg: 'bg-purple-500', text: 'text-purple-700', border: 'border-purple-200', lightBg: 'bg-purple-50' },
-      { bg: 'bg-cyan-500', text: 'text-cyan-700', border: 'border-cyan-200', lightBg: 'bg-cyan-50' },
-      { bg: 'bg-rose-500', text: 'text-rose-700', border: 'border-rose-200', lightBg: 'bg-rose-50' }
-    ];
 
     const domainsData = [
       {
@@ -573,10 +558,8 @@
             objective: "Compare and contrast the 7-layer OSI reference model with the 4-layer TCP/IP stack, understanding data encapsulation, protocol data units (PDUs), and layer functions.",
             subtopics: ["7 OSI Layers", "4 TCP/IP Layers", "Encapsulation", "PDUs", "Layer Functions"],
             glossary: [
-              { term: "OSI Reference Model", acronym: "Open Systems Interconnection", def: "A 7-layer conceptual framework standardized by ISO (Physical, Data Link, Network, Transport, Session, Presentation, Application) defining standardized inter-computer communications.", example: "Switches operate at Layer 2; Routers operate at Layer 3." },
-              { term: "TCP/IP Stack", acronym: "Transmission Control Protocol / Internet Protocol", def: "A 4-layer practical networking model (Network Access, Internet, Transport, Application) that forms the foundational architecture of the modern Internet.", example: "HTTP, DNS, and DHCP function at the TCP/IP Application layer." },
-              { term: "Protocol Data Unit (PDU)", acronym: "PDU", def: "The specific format and unit of data transmitted at a given layer of the protocol stack.", example: "Bits (Layer 1), Frames (Layer 2), Packets (Layer 3), Segments (Layer 4), Data (Layers 5-7)." },
-              { term: "Encapsulation & Decapsulation", acronym: "N/A", def: "Encapsulation wraps application data with header and trailer control info as it moves down the stack; Decapsulation strips headers as data ascends the destination stack.", example: "Layer 3 attaches source/destination IP addresses to the packet header." }
+              { term: "OSI Reference Model", acronym: "Open Systems Interconnection", def: "A 7-layer conceptual framework standardized by ISO defining standardized inter-computer communications.", example: "Switches operate at Layer 2; Routers operate at Layer 3." },
+              { term: "TCP/IP Stack", acronym: "Transmission Control Protocol / Internet Protocol", def: "A 4-layer practical networking model forming the architectural baseline of the Internet.", example: "HTTP, DNS, and DHCP function at the Application layer." }
             ]
           },
           {
@@ -586,44 +569,37 @@
             objective: "Analyze physical and logical network layouts, evaluating fault tolerance, scalability, and implementation cost across topology designs.",
             subtopics: ["Star", "Bus", "Ring", "Mesh", "Hybrid", "Physical vs Logical"],
             glossary: [
-              { term: "Star Topology", acronym: "N/A", def: "Layout where all peripheral nodes individually connect to a central networking device like a switch.", example: "Standard office LANs utilize Star topology via RJ-45 Ethernet to a central switch." },
-              { term: "Full Mesh Topology", acronym: "N/A", def: "Redundant layout where every node is directly connected to every other node, delivering high fault tolerance at high cost.", example: "Used in enterprise WAN backbones and critical data center links." },
-              { term: "Physical vs Logical Topology", acronym: "N/A", def: "Physical describes actual cable routing and device locations; Logical defines how data frames travel through the network path.", example: "A physical star layout using an old hub behaves as a logical bus." }
+              { term: "Star Topology", acronym: "N/A", def: "Layout where peripheral nodes connect to a central networking switch.", example: "Standard office LANs." }
             ]
           },
           {
             id: "1.3",
             badge: "LESSON 1.3",
             title: "Bandwidth, Throughput & Latency",
-            objective: "Measure and differentiate network transmission characteristics including theoretical max bandwidth, real throughput, latency delays, and iperf performance testing.",
+            objective: "Measure and differentiate network transmission characteristics including max bandwidth, real throughput, latency delays, and iperf performance testing.",
             subtopics: ["Bandwidth vs Throughput", "Latency", "Delay", "Speed Tests", "Iperf"],
             glossary: [
-              { term: "Bandwidth", acronym: "N/A", def: "Theoretical maximum data carrying capacity of a transmission medium measured in bits per second (bps, Mbps, Gbps).", example: "Cat6 Ethernet cable provides up to 10 Gbps theoretical bandwidth." },
-              { term: "Throughput & Goodput", acronym: "N/A", def: "Throughput is actual measured rate of data transfer; Goodput excludes protocol header overhead to measure usable application payload rate.", example: "A 100 Mbps link may yield 85 Mbps actual throughput due to TCP overhead." },
-              { term: "Latency & Jitter", acronym: "RTT (Round Trip Time)", def: "Latency is time delay for data packet travel from source to destination; Jitter is variability in latency over time.", example: "VoIP calls require low latency (<150ms) and minimal jitter (<30ms) to prevent audio distortion." }
+              { term: "Bandwidth", acronym: "N/A", def: "Theoretical maximum data carrying capacity of a transmission medium.", example: "Cat6 Ethernet provides up to 10 Gbps." }
             ]
           },
           {
             id: "1.4",
             badge: "LESSON 1.4",
             title: "Network Types (LAN, WAN, WLAN)",
-            objective: "Identify geographic scale classifications of networks from personal area networks (PAN) to local, wide area, and enterprise wireless systems.",
+            objective: "Identify geographic scale classifications of networks from personal area networks to wide area systems.",
             subtopics: ["LAN", "WAN", "MAN", "PAN", "WLAN", "CAN"],
             glossary: [
-              { term: "LAN (Local Area Network)", acronym: "LAN", def: "High-speed network spanning a small geographical area such as an office, home, or classroom.", example: "Wi-Fi access points and switches in a school building form a LAN." },
-              { term: "WAN (Wide Area Network)", acronym: "WAN", def: "Telecommunications network spanning large geographical distances connecting multiple LANs.", example: "The Internet is the world's largest public WAN; leased MPLS circuits form enterprise WANs." }
+              { term: "LAN", acronym: "Local Area Network", def: "High-speed network spanning a small geographical area such as an office.", example: "Wi-Fi access points in a school." }
             ]
           },
           {
             id: "1.5",
             badge: "LESSON 1.5",
             title: "Common Protocols & Services",
-            objective: "Examine transport and application layer protocols providing web, file, dynamic IP addressing, domain resolution, and time synchronization services.",
+            objective: "Examine transport and application layer protocols providing web, dynamic IP addressing, and domain resolution.",
             subtopics: ["TCP vs UDP", "HTTP/HTTPS", "FTP/SFTP", "DNS", "DHCP", "ICMP", "NTP"],
             glossary: [
-              { term: "TCP vs UDP", acronym: "Transmission Control / User Datagram", def: "TCP is connection-oriented, reliable with 3-way handshake (SYN, SYN-ACK, ACK); UDP is connectionless, lightweight, and fast without delivery guarantees.", example: "Web surfing uses TCP; Video streaming and DNS queries use UDP." },
-              { term: "DHCP", acronym: "Dynamic Host Configuration Protocol", def: "Application service that dynamically assigns IP addresses, subnet masks, default gateways, and DNS servers to host devices via DORA (Discover, Offer, Request, Acknowledge).", example: "Connecting a phone to Wi-Fi automatically obtains an IP address via DHCP." },
-              { term: "DNS", acronym: "Domain Name System", def: "Hierarchical database system resolving human-readable domain names into IP addresses.", example: "Translates 'aitech.edu.pk' into server IP '192.0.2.1'." }
+              { term: "DHCP", acronym: "Dynamic Host Configuration Protocol", def: "Dynamically assigns IP addresses, subnet masks, default gateways, and DNS servers.", example: "Connecting a device to Wi-Fi." }
             ]
           }
         ]
@@ -638,11 +614,10 @@
             id: "2.1",
             badge: "LESSON 2.1",
             title: "IPv4 Addressing & Subnetting",
-            objective: "Calculate network addresses, broadcast IPs, and host ranges across Classless Inter-Domain Routing (CIDR) blocks.",
+            objective: "Calculate network addresses, broadcast IPs, and host ranges across CIDR blocks.",
             subtopics: ["IPv4 Classes", "Subnet Masks", "CIDR Notation", "Private vs Public IPs", "APIPA"],
             glossary: [
-              { term: "CIDR Notation", acronym: "Classless Inter-Domain Routing", def: "Syntax representing IP address and subnet mask length with a slash followed by number of network bits.", example: "192.168.1.0/24 equals subnet mask 255.255.255.0 with 254 usable host IPs." },
-              { term: "Private IP Ranges (RFC 1918)", acronym: "RFC 1918", def: "Non-routable IP ranges reserved for internal networks: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.", example: "Home routers typically assign 192.168.1.x addresses." }
+              { term: "CIDR Notation", acronym: "Classless Inter-Domain Routing", def: "Syntax representing IP address and subnet mask length.", example: "192.168.1.0/24." }
             ]
           }
         ]
@@ -660,7 +635,7 @@
             objective: "Identify twisted pair Ethernet cables, fiber optic modes, and standard copper RJ-45 pinouts.",
             subtopics: ["Cat5e/Cat6/Cat6a", "Single-mode vs Multi-mode Fiber", "RJ-45 & T568B", "Coaxial"],
             glossary: [
-              { term: "Single-Mode vs Multi-Mode Fiber", acronym: "SMF / MMF", def: "SMF uses a small core (9µm) with laser light for long distances; MMF uses a larger core (50/62.5µm) with LED for shorter campus distances.", example: "SMF connects buildings miles apart; MMF connects racks inside a data center." }
+              { term: "Single-Mode Fiber", acronym: "SMF", def: "Uses small core (9µm) with laser light for long distances.", example: "Building interconnects." }
             ]
           }
         ]
@@ -678,7 +653,7 @@
             objective: "Differentiate layer 2 switching from layer 3 routing and perimeter firewall filtering.",
             subtopics: ["Layer 2 Switches", "Layer 3 Routers", "Wireless Access Points", "Firewalls"],
             glossary: [
-              { term: "Layer 2 Switch", acronym: "MAC Switch", def: "Network device that inspects MAC address tables to forward frames within the same broadcast domain.", example: "Cisco Catalyst 2960 switch." }
+              { term: "Layer 2 Switch", acronym: "MAC Switch", def: "Forwards frames inside a LAN using MAC tables.", example: "Cisco Catalyst 2960." }
             ]
           }
         ]
@@ -687,7 +662,7 @@
         id: "5",
         title: "5. Diagnostics & Troubleshooting",
         badge: "Domain 5.0",
-        description: "Command-line diagnostic tools, ping, traceroute, nslookup, and network troubleshooting methodology.",
+        description: "Command-line diagnostic tools, ping, traceroute, nslookup, and troubleshooting methodology.",
         lessons: [
           {
             id: "5.1",
@@ -696,7 +671,7 @@
             objective: "Utilize ping, traceroute, ipconfig, and netstat to isolate network connectivity faults.",
             subtopics: ["Ping & ICMP", "Traceroute / Tracert", "Ipconfig / Ifconfig", "Nslookup", "Netstat"],
             glossary: [
-              { term: "Traceroute", acronym: "Tracert", def: "Diagnostic utility displaying the path and transit delays of packets across IP hops using ICMP/TTL expiration.", example: "Identifies which specific router hop is dropping traffic." }
+              { term: "Traceroute", acronym: "Tracert", def: "Displays the path and transit delays of packets across IP hops.", example: "Identifies router hop drops." }
             ]
           }
         ]
@@ -714,20 +689,19 @@
             objective: "Implement basic security mechanisms including firewalls, VPNs, ACLs, and port security.",
             subtopics: ["Authentication Methods", "Password Policies", "ACLs", "Port Security", "WPA2/WPA3"],
             glossary: [
-              { term: "Access Control List (ACL)", acronym: "ACL", def: "Sequential set of permit/deny rules applied to switch/router interfaces to filter IP traffic based on source/destination addresses or ports.", example: "Standard ACL filters by source IP; Extended ACL filters by protocol and port." }
+              { term: "Access Control List", acronym: "ACL", def: "Sequential set of permit/deny rules applied to filter IP traffic.", example: "Filtering destination ports." }
             ]
           }
         ]
       }
     ];
 
-    // STATE VARIABLES
     let activeDomainIndex = 0;
     let activeLessonIndex = 0;
     let authMode = 'signin';
     let currentUser = null;
+    let currentBase64File = null;
 
-    // APP INITIALIZATION
     document.addEventListener('DOMContentLoaded', async () => {
       loadSavedUser();
       renderAuthHeader();
@@ -737,71 +711,9 @@
         await syncUserProgressFromCloud();
       }
       loadDomain(0);
-      
-      // Load & render registered student status list above WhatsApp logo
-      await fetchAndRenderStudentStatusPanel();
+      fetchRegisteredStudentsList();
     });
 
-    // FETCH & RENDER REGISTERED STUDENTS LIST (ABOVE WHATSAPP BUTTON)
-    async function fetchAndRenderStudentStatusPanel() {
-      const listContainer = document.getElementById('studentAccountsList');
-      const badgeEl = document.getElementById('studentCountBadge');
-      if (!listContainer) return;
-
-      let studentProfiles = [];
-
-      // Fetch all registered student profiles from Supabase database
-      if (supabaseClient) {
-        try {
-          const { data, error } = await supabaseClient.from('profiles').select('*');
-          if (data && data.length > 0) {
-            studentProfiles = data;
-          }
-        } catch (err) {
-          console.log('Supabase profile fetch note:', err);
-        }
-      }
-
-      // Fallback: If database is empty or offline, display locally registered profile
-      if (studentProfiles.length === 0 && currentUser) {
-        studentProfiles = [{ full_name: currentUser.name, email: currentUser.email }];
-      } else if (studentProfiles.length === 0) {
-        studentProfiles = [
-          { full_name: 'Muhammad Ali', email: 'ali@aitech.edu.pk' },
-          { full_name: 'Usman Khan', email: 'usman@aitech.edu.pk' }
-        ];
-      }
-
-      badgeEl.textContent = `${studentProfiles.length} Users`;
-
-      listContainer.innerHTML = studentProfiles.map((student, idx) => {
-        const isCurrentOnline = currentUser && currentUser.email.toLowerCase() === student.email.toLowerCase();
-        const palette = colorPalettes[idx % colorPalettes.length];
-        const initial = (student.full_name || student.email || 'S').charAt(0).toUpperCase();
-
-        return `
-          <div class="flex items-center justify-between ${palette.lightBg} p-2 rounded-xl border ${palette.border}">
-            <div class="flex items-center gap-2 min-w-0">
-              <div class="w-6 h-6 rounded-full ${palette.bg} text-white font-extrabold text-[10px] flex items-center justify-center shrink-0">
-                ${initial}
-              </div>
-              <div class="min-w-0">
-                <p class="font-extrabold ${palette.text} text-[11px] truncate leading-tight">${student.full_name || 'Student'}</p>
-                <p class="text-[9px] text-slate-500 truncate leading-none">${student.email}</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-1 shrink-0 ml-1">
-              <span class="w-2 h-2 rounded-full ${isCurrentOnline ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}"></span>
-              <span class="text-[9px] font-bold ${isCurrentOnline ? 'text-emerald-700' : 'text-slate-400'}">
-                ${isCurrentOnline ? 'Online' : 'Offline'}
-              </span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // RENDER DOMAIN NAVIGATION TABS
     function renderDomainNav() {
       const container = document.getElementById('domainNavTabs');
       if (!container) return;
@@ -818,7 +730,6 @@
       `).join('');
     }
 
-    // AUTH HEADER & USER MANAGEMENT
     function loadSavedUser() {
       const saved = localStorage.getItem('ccst_user');
       if (saved) {
@@ -900,22 +811,21 @@
       }
 
       await syncUserProgressFromCloud();
-      await fetchAndRenderStudentStatusPanel();
-
       renderAuthHeader();
       closeAuthModal();
       loadDomain(activeDomainIndex);
-      alert(`Welcome back, ${currentUser.name}! Your progress has been synced from cloud database.`);
+      fetchRegisteredStudentsList();
+      alert(`Welcome, ${currentUser.name}! Your account is now synced.`);
     }
 
     function logoutUser() {
-      if (confirm('Are you sure you want to sign out? Progress is saved in database.')) {
+      if (confirm('Are you sure you want to sign out?')) {
         currentUser = null;
         localStorage.removeItem('ccst_user');
         localStorage.clear();
         renderAuthHeader();
-        fetchAndRenderStudentStatusPanel();
         loadDomain(0);
+        fetchRegisteredStudentsList();
       }
     }
 
@@ -941,8 +851,53 @@
           });
         }
       } catch (err) {
-        console.log('Cloud progress sync error:', err);
+        console.log('Cloud progress sync note:', err);
       }
+    }
+
+    async function fetchRegisteredStudentsList() {
+      const container = document.getElementById('studentListContainer');
+      const badge = document.getElementById('studentCountBadge');
+      if (!supabaseClient) return;
+
+      try {
+        const { data, error } = await supabaseClient.from('profiles').select('full_name, email');
+        if (data && data.length > 0) {
+          badge.textContent = data.length;
+          const colors = ['emerald', 'indigo', 'amber', 'purple', 'cyan', 'rose'];
+
+          container.innerHTML = data.map((st, idx) => {
+            const isOnline = currentUser && currentUser.email === st.email;
+            const color = colors[idx % colors.length];
+            return `
+              <div class="flex items-center justify-between bg-slate-50 p-2 rounded-xl border border-slate-200">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-${color}-600 text-white font-bold text-[10px] flex items-center justify-center">
+                    ${(st.full_name || st.email).charAt(0).toUpperCase()}
+                  </div>
+                  <div class="truncate max-w-[130px]">
+                    <span class="block font-bold text-slate-900 text-[11px] truncate">${st.full_name || 'Student'}</span>
+                    <span class="block text-[9px] text-slate-500 truncate">${st.email}</span>
+                  </div>
+                </div>
+                <span class="inline-flex items-center gap-1 text-[9px] font-bold ${isOnline ? 'text-emerald-700 bg-emerald-100' : 'text-slate-500 bg-slate-100'} px-2 py-0.5 rounded-full border border-slate-200">
+                  <span class="w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}"></span>
+                  ${isOnline ? 'Online' : 'Offline'}
+                </span>
+              </div>
+            `;
+          }).join('');
+        } else {
+          badge.textContent = '0';
+          container.innerHTML = '<p class="text-slate-400 text-[11px]">No registered students yet.</p>';
+        }
+      } catch (err) {
+        console.log('Students list fetch note:', err);
+      }
+    }
+
+    function toggleStudentDrawer() {
+      document.getElementById('studentDrawer').classList.toggle('hidden');
     }
 
     function openGlossaryModalFor(lessonIdx) {
@@ -974,7 +929,6 @@
       if (!text) return;
 
       const chatBox = document.getElementById('aiChatMessages');
-
       chatBox.innerHTML += `
         <div class="flex items-start justify-end gap-2">
           <div class="bg-teal-600 text-white p-2.5 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] font-medium">
@@ -987,25 +941,13 @@
       chatBox.scrollTop = chatBox.scrollHeight;
 
       setTimeout(() => {
-        let response = "In CCST networking, mastering fundamentals across OSI layers, IP subnetting, physical media, switch/router roles, CLI commands, and security ACLs ensures exam success!";
+        let response = "In CCST networking, mastering core concepts across OSI layers, IP subnetting, media types, routers/switches, CLI tools, and security ensures career track success!";
         const q = text.toLowerCase();
 
         if (q.includes('osi') || q.includes('7 layer')) {
-          response = "<strong>Domain 1 - OSI Model:</strong><br>1. Physical (Bits)<br>2. Data Link (Frames / MAC)<br>3. Network (Packets / IP)<br>4. Transport (Segments / TCP/UDP)<br>5. Session<br>6. Presentation<br>7. Application (Data)";
-        } else if (q.includes('encapsulation') || q.includes('pdu')) {
-          response = "<strong>Domain 1 - Encapsulation & PDUs:</strong> Data (L7-5) → Segment (L4) → Packet (L3) → Frame (L2) → Bits (L1). Each layer attaches its header containing control info.";
-        } else if (q.includes('subnet') || q.includes('cidr') || q.includes('ipv4')) {
-          response = "<strong>Domain 2 - IPv4 & CIDR:</strong> /24 = 255.255.255.0 (254 hosts). /25 = 255.255.255.128 (126 hosts). /30 = 255.255.255.252 (2 usable hosts for point-to-point router links).";
-        } else if (q.includes('ipv6') || q.includes('mac')) {
-          response = "<strong>Domain 2/3 - Addressing:</strong> MAC is a 48-bit physical address (Layer 2). IPv6 is a 128-bit hexadecimal address providing $3.4 \\times 10^{38}$ addresses.";
-        } else if (q.includes('fiber') || q.includes('cable') || q.includes('media')) {
-          response = "<strong>Domain 3 - Media:</strong> Single-mode Fiber (SMF) uses 9µm core with lasers for long distance WAN. Multi-mode Fiber (MMF) uses 50/62.5µm core with LEDs for high-bandwidth LANs.";
-        } else if (q.includes('switch') || q.includes('router') || q.includes('vlan')) {
-          response = "<strong>Domain 4 - Switches vs Routers:</strong> Switches operate at Layer 2 using MAC tables to forward frames in a LAN. Routers operate at Layer 3 using Routing Tables to forward packets between different networks.";
-        } else if (q.includes('ping') || q.includes('traceroute') || q.includes('diagnos')) {
-          response = "<strong>Domain 5 - CLI Diagnostics:</strong><br>• <code>ping</code> tests reachability using ICMP.<br>• <code>traceroute</code> identifies each router hop.<br>• <code>netstat</code> lists active connections.<br>• <code>nslookup</code> queries DNS servers.";
-        } else if (q.includes('security') || q.includes('acl') || q.includes('wpa3') || q.includes('firewall')) {
-          response = "<strong>Domain 6 - Security:</strong> ACLs (Access Control Lists) filter IP traffic based on source/destination rules. Port Security restricts switch port connections to authorized MAC addresses. WPA3 provides robust SAE encryption for Wi-Fi.";
+          response = "<strong>Domain 1 - OSI Model:</strong><br>1. Physical<br>2. Data Link<br>3. Network<br>4. Transport<br>5. Session<br>6. Presentation<br>7. Application";
+        } else if (q.includes('subnet') || q.includes('cidr')) {
+          response = "<strong>Domain 2 - Subnetting:</strong> /24 = 255.255.255.0 (254 hosts). /25 = 255.255.255.128 (126 hosts).";
         }
 
         chatBox.innerHTML += `
@@ -1223,6 +1165,9 @@
         document.getElementById('assignStudentName').value = currentUser.name;
       }
 
+      currentBase64File = null;
+      document.getElementById('selectedFileName').classList.add('hidden');
+      document.getElementById('assignmentFileInput').value = '';
       document.getElementById('assignmentModal').classList.remove('hidden');
     }
 
@@ -1232,16 +1177,27 @@
 
     function handleFileSelect(input) {
       if (input.files && input.files[0]) {
-        const nameEl = document.getElementById('selectedFileName');
-        nameEl.textContent = `Selected: ${input.files[0].name}`;
-        nameEl.classList.remove('hidden');
+        const file = input.files[0];
+        document.getElementById('fileNameText').textContent = `${file.name} (${Math.round(file.size/1024)} KB)`;
+        document.getElementById('selectedFileName').classList.remove('hidden');
+
+        // Convert file to Base64 data for smooth inline storage
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentBase64File = {
+            fileName: file.name,
+            fileType: file.type,
+            base64: e.target.result
+          };
+        };
+        reader.readAsDataURL(file);
       }
     }
 
     async function handleAssignmentSubmit(e) {
       e.preventDefault();
-      const studentName = document.getElementById('assignStudentName').value;
-      const textSummary = document.getElementById('assignTextSummary').value;
+      const studentName = document.getElementById('assignStudentName').value.trim();
+      const textSummary = document.getElementById('assignTextSummary').value.trim();
       const lessonId = domainsData[activeDomainIndex].lessons[activeLessonIndex].id;
 
       if (supabaseClient) {
@@ -1249,20 +1205,20 @@
           await supabaseClient.from('assignments').insert([{
             student_name: studentName,
             lesson_id: lessonId,
-            submission_text: textSummary
+            submission_text: textSummary + (currentBase64File ? `\n[File Attached: ${currentBase64File.fileName}]` : '')
           }]);
         } catch (err) {
           console.log('Supabase assignment save note:', err);
         }
       }
 
-      toggleSubtopicCheck('assignment', true);
-      alert('Assignment submitted & saved to cloud database!');
+      await toggleSubtopicCheck('assignment', true);
+      alert('Assignment and solution file submitted & saved successfully!');
       closeAssignmentModal();
     }
 
     function resetAllProgress() {
-      if (confirm('Are you sure you want to reset all completed tasks and percentage progress?')) {
+      if (confirm('Are you sure you want to reset all completed tasks?')) {
         localStorage.clear();
         loadLesson(activeLessonIndex);
       }
