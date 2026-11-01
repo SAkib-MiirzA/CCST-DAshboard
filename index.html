@@ -305,7 +305,7 @@
               </div>
             </div>
 
-            <!-- Subtopics Grid -->
+            <!-- Subtopics Grid (Stretched & Expanded evenly across both columns) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 auto-rows-fr gap-3.5 w-full" id="subtopicsContainer"></div>
           </div>
 
@@ -849,7 +849,7 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
       loadSavedUser();
-      updateHeaderAuthUI(); // Updates top right corner based on user state
+      updateHeaderAuthUI();
       renderDomainNav();
       
       if (currentUser) {
@@ -893,7 +893,6 @@
       if (saved) { currentUser = JSON.parse(saved); }
     }
 
-    // Function to toggle top-right UI between login button and student name badge
     function updateHeaderAuthUI() {
       const loginBtn = document.getElementById('loginTriggerBtn');
       const profileDisplay = document.getElementById('userProfileDisplay');
@@ -951,8 +950,6 @@
       e.preventDefault();
       const email = document.getElementById('authEmailInput').value.trim();
       const inputName = document.getElementById('authNameInput').value.trim();
-      
-      // If signing in, derive name from email prefix if name isn't entered
       const name = (authMode === 'signup' && inputName) ? inputName : email.split('@')[0];
 
       currentUser = { name: name.charAt(0).toUpperCase() + name.slice(1), email: email };
@@ -1341,27 +1338,52 @@
       const textSummary = document.getElementById('assignTextSummary').value.trim();
       const lessonId = domainsData[activeDomainIndex].lessons[activeLessonIndex].id;
 
+      if (!selectedAssignmentFile) {
+        alert('⚠️ Please select and attach a lab file or document before submitting.');
+        return;
+      }
+
       let filePublicUrl = '';
+      const assignSubmitBtn = document.getElementById('assignSubmitBtn');
+      assignSubmitBtn.disabled = true;
+      assignSubmitBtn.textContent = 'Uploading file...';
 
       if (supabaseClient && selectedAssignmentFile) {
         try {
           const fileExt = selectedAssignmentFile.name.split('.').pop().toLowerCase();
-          const folderName = (fileExt === 'pkt') ? 'Packet Tracer files' : 'Pix';
+          
+          let folderName = 'Documents';
+          if (fileExt === 'pkt') {
+            folderName = 'Packet Tracer files';
+          } else if (['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(fileExt)) {
+            folderName = 'Pix';
+          } else if (['pdf', 'doc', 'docx', 'txt', 'zip', 'rar'].includes(fileExt)) {
+            folderName = 'Documents';
+          }
+
           const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
           const filePath = `${folderName}/${lessonId}/${fileName}`;
 
-          const { error: uploadError } = await supabaseClient.storage
+          const { data: uploadData, error: uploadError } = await supabaseClient.storage
             .from('ASSIGNMENT-FILES')
             .upload(filePath, selectedAssignmentFile);
 
-          if (!uploadError) {
+          if (uploadError) {
+            console.error('Supabase Storage Upload Error:', uploadError.message);
+            alert('Upload failed: ' + uploadError.message);
+            assignSubmitBtn.disabled = false;
+            assignSubmitBtn.textContent = 'Upload & Submit Lab';
+            return;
+          }
+
+          if (uploadData) {
             const { data: publicUrlData } = supabaseClient.storage
               .from('ASSIGNMENT-FILES')
               .getPublicUrl(filePath);
             filePublicUrl = publicUrlData.publicUrl;
           }
         } catch (err) {
-          console.log('File upload exception:', err);
+          console.error('File upload exception:', err);
         }
       }
 
@@ -1377,8 +1399,10 @@
         }
       }
 
+      assignSubmitBtn.disabled = false;
+      assignSubmitBtn.textContent = 'Upload & Submit Lab';
       await toggleSubtopicCheck('assignment', true);
-      showToast('🚀 Lab submission uploaded & saved successfully!', '📤');
+      showToast('🚀 File uploaded & saved successfully!', '📤');
       closeAssignmentModal();
     }
 
