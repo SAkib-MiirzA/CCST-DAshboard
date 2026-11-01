@@ -139,9 +139,26 @@
           <i class="fa-solid fa-rotate-left text-sm"></i>
         </button>
 
-        <button onclick="openAuthModal('signin')" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
-          <i class="fa-solid fa-user-shield"></i> 🔐 Student Login / Sync
-        </button>
+        <!-- Dynamic User Profile / Login Button Container -->
+        <div id="authHeaderContainer">
+          <!-- Shown when NOT logged in -->
+          <button id="loginTriggerBtn" onclick="openAuthModal('signin')" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-user-shield"></i> 🔐 Student Login / Sync
+          </button>
+
+          <!-- Shown when LOGGED IN (Displays Name & Sign Out option) -->
+          <div id="userProfileDisplay" class="hidden items-center gap-2.5 bg-teal-50 border border-teal-200 px-3 py-1.5 rounded-xl">
+            <div class="w-7 h-7 rounded-full bg-teal-600 text-white font-extrabold text-xs flex items-center justify-center shadow-inner" id="userAvatarInitial">U</div>
+            <div class="text-xs">
+              <span class="block text-[10px] font-semibold text-slate-400 uppercase leading-none">Signed In As</span>
+              <span class="font-bold text-teal-900 truncate max-w-[120px]" id="headerUserName">Student Name</span>
+            </div>
+            <button onclick="logoutUser()" class="ml-1 text-slate-400 hover:text-rose-600 p-1 rounded-lg transition cursor-pointer" title="Sign Out">
+              <i class="fa-solid fa-right-from-bracket text-xs"></i>
+            </button>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -245,39 +262,39 @@
         </div>
       </aside>
 
-              <!-- RIGHT VIEWPORT: ACTIVE LESSON CONTENT (8 COLS) -->
-              <main class="lg:col-span-8 space-y-6">
-                <section class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-6 print-card relative transition-all">
-                  
-                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
-                    <div class="flex items-center gap-2.5 flex-wrap">
-                      <span id="activeLessonBadge" class="bg-teal-600 text-white font-black text-xs px-3 py-1 rounded-md tracking-wide shadow-sm">
-                        LESSON 1.1
-                      </span>
-                      <span class="text-xs font-semibold text-slate-400">Current Active Module</span>
-                    </div>
+      <!-- RIGHT VIEWPORT: ACTIVE LESSON CONTENT (8 COLS) -->
+      <main class="lg:col-span-8 space-y-6">
+        <section class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-6 print-card relative transition-all">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <span id="activeLessonBadge" class="bg-teal-600 text-white font-black text-xs px-3 py-1 rounded-md tracking-wide shadow-sm">
+                LESSON 1.1
+              </span>
+              <span class="text-xs font-semibold text-slate-400">Current Active Module</span>
+            </div>
 
-                    <div class="flex items-center gap-2 flex-wrap">
-                      <button onclick="openCurrentGlossary()" class="bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1.5 rounded-lg border border-teal-200/80 transition flex items-center gap-1.5 shadow-2xs cursor-pointer">
-                        <i class="fa-solid fa-book-bookmark text-teal-600"></i> 📖 Glossary
-                      </button>
-                      <button onclick="openCurrentAssignment()" class="bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-950 text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5 cursor-pointer">
-                        <i class="fa-solid fa-upload"></i> 📤 Submit Lab Work
-                      </button>
-                    </div>
-                  </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <button onclick="openCurrentGlossary()" class="bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1.5 rounded-lg border border-teal-200/80 transition flex items-center gap-1.5 shadow-2xs cursor-pointer">
+                <i class="fa-solid fa-book-bookmark text-teal-600"></i> 📖 Glossary
+              </button>
+              <button onclick="openCurrentAssignment()" class="bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-950 text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-upload"></i> 📤 Submit Lab Work
+              </button>
+            </div>
+          </div>
 
-                  <div>
-                    <h2 id="activeLessonTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                      OSI and TCP/IP Models
-                    </h2>
-                    <div class="mt-3 bg-orange-50/70 border border-teal-200/80 p-4 rounded-xl text-slate-700 text-xs sm:text-sm leading-relaxed">
-                      <p><strong class="text-teal-900 font-bold"><i class="fa-solid fa-bullseye mr-1.5 text-teal-600"></i> Learning Objective:</strong> <span id="activeLessonObjective">Master core concepts and protocol layer functions.</span></p>
-                    </div>
-                  </div>
+          <div>
+            <h2 id="activeLessonTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              OSI and TCP/IP Models
+            </h2>
+            <div class="mt-3 bg-orange-50/70 border border-teal-200/80 p-4 rounded-xl text-slate-700 text-xs sm:text-sm leading-relaxed">
+              <p><strong class="text-teal-900 font-bold"><i class="fa-solid fa-bullseye mr-1.5 text-teal-600"></i> Learning Objective:</strong> <span id="activeLessonObjective">Master core concepts and protocol layer functions.</span></p>
+            </div>
+          </div>
 
           <!-- SUBTOPICS CHECKLIST -->
-          <div class="bg-slate-80/110 rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-4">
+          <div class="bg-slate-50/80 rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-4">
             <div class="flex items-center justify-between pb-2 border-b border-slate-200">
               <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
                 <i class="fa-solid fa-list-check text-teal-600"></i> ✅ Topic Breakdown & Specific Page Info
@@ -288,7 +305,8 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="subtopicsContainer"></div>
+            <!-- Subtopics Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 auto-rows-fr gap-3.5 w-full" id="subtopicsContainer"></div>
           </div>
 
           <!-- PACKET TRACER SIMULATION CARD -->
@@ -831,6 +849,7 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
       loadSavedUser();
+      updateHeaderAuthUI(); // Updates top right corner based on user state
       renderDomainNav();
       
       if (currentUser) {
@@ -874,6 +893,30 @@
       if (saved) { currentUser = JSON.parse(saved); }
     }
 
+    // Function to toggle top-right UI between login button and student name badge
+    function updateHeaderAuthUI() {
+      const loginBtn = document.getElementById('loginTriggerBtn');
+      const profileDisplay = document.getElementById('userProfileDisplay');
+      const userNameEl = document.getElementById('headerUserName');
+      const userInitialEl = document.getElementById('userAvatarInitial');
+
+      if (currentUser) {
+        if (loginBtn) loginBtn.classList.add('hidden');
+        if (profileDisplay) {
+          profileDisplay.classList.remove('hidden');
+          profileDisplay.classList.add('flex');
+        }
+        if (userNameEl) userNameEl.textContent = currentUser.name;
+        if (userInitialEl) userInitialEl.textContent = currentUser.name.charAt(0).toUpperCase();
+      } else {
+        if (loginBtn) loginBtn.classList.remove('hidden');
+        if (profileDisplay) {
+          profileDisplay.classList.remove('flex');
+          profileDisplay.classList.add('hidden');
+        }
+      }
+    }
+
     function openAuthModal(mode) {
       setAuthTab(mode);
       document.getElementById('authModal').classList.remove('hidden');
@@ -907,19 +950,23 @@
     async function handleAuthSubmit(e) {
       e.preventDefault();
       const email = document.getElementById('authEmailInput').value.trim();
-      const name = authMode === 'signup' ? document.getElementById('authNameInput').value.trim() : email.split('@')[0];
+      const inputName = document.getElementById('authNameInput').value.trim();
+      
+      // If signing in, derive name from email prefix if name isn't entered
+      const name = (authMode === 'signup' && inputName) ? inputName : email.split('@')[0];
 
-      currentUser = { name: name || 'Student', email: email };
+      currentUser = { name: name.charAt(0).toUpperCase() + name.slice(1), email: email };
       localStorage.setItem('ccst_user', JSON.stringify(currentUser));
 
       if (supabaseClient) {
         try {
-          await supabaseClient.from('profiles').upsert([{ email: email, full_name: name }], { onConflict: 'email' });
+          await supabaseClient.from('profiles').upsert([{ email: email, full_name: currentUser.name }], { onConflict: 'email' });
         } catch (err) {
           console.log('Supabase profile sync note:', err);
         }
       }
 
+      updateHeaderAuthUI();
       await syncUserProgressFromCloud();
       closeAuthModal();
       loadDomain(activeDomainIndex);
@@ -932,6 +979,7 @@
         currentUser = null;
         localStorage.removeItem('ccst_user');
         localStorage.clear();
+        updateHeaderAuthUI();
         loadDomain(0);
         fetchRegisteredStudentsList();
         showToast('🔒 Signed out successfully.', '🛡️');
@@ -1168,7 +1216,7 @@
       let html = lesson.subtopics.map((topic, tIdx) => {
         const isChecked = !!savedChecks[tIdx];
         return `
-          <label class="aero-vista-bar p-3.5 rounded-2xl flex items-center justify-between text-xs font-bold text-slate-800 transition cursor-pointer select-none">
+          <label class="aero-vista-bar p-3.5 rounded-2xl flex items-center justify-between text-xs font-bold text-slate-800 transition cursor-pointer select-none w-full">
             <div class="flex items-center gap-3">
               <input type="checkbox" onchange="toggleSubtopicCheck('${tIdx}', this.checked)" ${isChecked ? 'checked' : ''} class="accent-teal-600 w-4 h-4 rounded cursor-pointer">
               <span class="${isChecked ? 'line-through text-slate-400' : 'text-slate-800'}">${topic}</span>
@@ -1184,7 +1232,7 @@
       const isAssignmentChecked = !!savedChecks['assignment'];
 
       html += `
-        <label class="aero-vista-bar p-3.5 rounded-2xl flex items-center justify-between text-xs font-bold text-teal-900 transition cursor-pointer select-none">
+        <label class="aero-vista-bar p-3.5 rounded-2xl flex items-center justify-between text-xs font-bold text-teal-900 transition cursor-pointer select-none w-full">
           <div class="flex items-center gap-3">
             <input type="checkbox" onchange="toggleSubtopicCheck('glossary', this.checked)" ${isGlossaryChecked ? 'checked' : ''} class="accent-teal-600 w-4 h-4 rounded cursor-pointer">
             <span class="${isGlossaryChecked ? 'line-through text-teal-600' : ''}">📖 Glossary Review</span>
@@ -1193,7 +1241,7 @@
             ${isGlossaryChecked ? 'Done' : 'Review'}
           </span>
         </label>
-        <label class="aero-vista-bar p-3.5 rounded-2xl flex items-center justify-between text-xs font-bold text-amber-900 transition cursor-pointer select-none">
+        <label class="aero-vista-bar p-3.5 rounded-2xl flex items-center justify-between text-xs font-bold text-amber-900 transition cursor-pointer select-none w-full">
           <div class="flex items-center gap-3">
             <input type="checkbox" onchange="toggleSubtopicCheck('assignment', this.checked)" ${isAssignmentChecked ? 'checked' : ''} class="accent-amber-600 w-4 h-4 rounded cursor-pointer">
             <span class="${isAssignmentChecked ? 'line-through text-amber-700' : ''}">📤 Submit Lab Task</span>
@@ -1303,12 +1351,12 @@
           const filePath = `${folderName}/${lessonId}/${fileName}`;
 
           const { error: uploadError } = await supabaseClient.storage
-            .from('assignment-files')
+            .from('ASSIGNMENT-FILES')
             .upload(filePath, selectedAssignmentFile);
 
           if (!uploadError) {
             const { data: publicUrlData } = supabaseClient.storage
-              .from('assignment-files')
+              .from('ASSIGNMENT-FILES')
               .getPublicUrl(filePath);
             filePublicUrl = publicUrlData.publicUrl;
           }
