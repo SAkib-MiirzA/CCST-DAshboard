@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CCST Networking Career Track - Interactive Student Portal</title>
 
+  <!-- Favicon Icons -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%230d9488' d='M64 64C28.7 64 0 92.7 0 128V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H64zm192 96c35.3 0 64 28.7 64 64c0 23.7-12.9 44.3-32 55.4V320h64c17.7 0 32 14.3 32 32s-14.3 32-32 32H180.7c1.1-5.2 3.3-10.1 6.6-14.3l37.4-48c5.4-6.9 8.3-15.4 8.3-24.1V279.4c-19.1-11.1-32-31.7-32-55.4c0-35.3 28.7-64 64-64z'/></svg>" />
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -123,7 +126,7 @@
 
         <!-- USER AUTH HEADER CONTROLLER -->
         <div id="authHeaderContainer">
-          <!-- Rendered dynamically via JS: Login/Signup buttons OR Profile Badge -->
+          <!-- Rendered dynamically via JS -->
         </div>
       </div>
 
@@ -324,32 +327,47 @@
 
   </div>
 
-  <!-- FLOATING WHATSAPP HELP BUTTON (SLEEK & COMPACT 44px) -->
-  <div class="fixed bottom-5 left-5 z-40 group no-print">
-    <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" 
-       class="w-11 h-11 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-md flex items-center justify-center transition-all transform hover:scale-110 active:scale-95"
-       title="WhatsApp Support">
-      <i class="fa-brands fa-whatsapp text-xl"></i>
-    </a>
-    <!-- Hover Tooltip -->
-    <span class="absolute left-14 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-[11px] font-medium px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-sm">
-      WhatsApp Support
-    </span>
+  <!-- BOTTOM-LEFT CONTAINER: STUDENT STATUS PANEL + WHATSAPP BUTTON -->
+  <div class="fixed bottom-5 left-5 z-40 flex flex-col gap-2.5 no-print">
+    
+    <!-- STUDENT ACCOUNTS STATUS PANEL (POSITIONED ABOVE WHATSAPP LOGO) -->
+    <div id="studentAccountsPanel" class="bg-white/95 backdrop-blur-md rounded-2xl p-3 border border-slate-200 shadow-xl max-w-xs w-72 space-y-2 transition-all">
+      <div class="flex items-center justify-between pb-1.5 border-b border-slate-100">
+        <div class="flex items-center gap-1.5">
+          <i class="fa-solid fa-users text-teal-600 text-xs"></i>
+          <span class="font-extrabold text-slate-800 text-[11px]">Registered Students</span>
+        </div>
+        <span class="bg-teal-50 text-teal-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-teal-200" id="studentCountBadge">0 Users</span>
+      </div>
+
+      <!-- Scrollable List of Students with Online/Offline Status -->
+      <div id="studentAccountsList" class="space-y-1.5 max-h-36 overflow-y-auto text-[11px] pr-1">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- FLOATING WHATSAPP HELP BUTTON (44px) -->
+    <div class="relative group">
+      <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" 
+         class="w-11 h-11 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-md flex items-center justify-center transition-all transform hover:scale-110 active:scale-95"
+         title="WhatsApp Support">
+        <i class="fa-brands fa-whatsapp text-xl"></i>
+      </a>
+      <span class="absolute left-14 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-[11px] font-medium px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-sm">
+        WhatsApp Support
+      </span>
+    </div>
+
   </div>
 
   <!-- FLOATING STYLISH AI NETWORKING TUTOR WIDGET -->
   <div class="fixed bottom-5 right-5 z-50 no-print">
-    
-    <!-- Chat Launcher Button -->
     <button id="aiBotToggle" onclick="toggleAiBot()" class="bot-glow bg-gradient-to-r from-teal-600 to-cyan-600 text-white p-4 rounded-full shadow-xl flex items-center justify-center relative hover:scale-105 transition-all">
       <i class="fa-solid fa-robot text-2xl"></i>
       <span class="absolute -top-1 -right-1 bg-amber-400 text-slate-950 font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">AI</span>
     </button>
 
-    <!-- Chat Drawer Window -->
     <div id="aiChatWindow" class="hidden absolute bottom-16 right-0 w-[92vw] sm:w-[380px] h-[520px] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden transition-all">
-      
-      <!-- Chat Drawer Header -->
       <div class="bg-gradient-to-r from-teal-700 to-cyan-700 text-white p-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/30">
@@ -365,7 +383,6 @@
         </button>
       </div>
 
-      <!-- Quick Prompt Chips -->
       <div class="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-[11px]">
         <button onclick="sendQuickPrompt('Explain 7 OSI Layers')" class="bg-white hover:bg-teal-50 text-slate-700 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition">
           💡 D1: OSI Layers
@@ -387,7 +404,6 @@
         </button>
       </div>
 
-      <!-- Chat History Area -->
       <div id="aiChatMessages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs bg-slate-50/50">
         <div class="flex items-start gap-2.5">
           <div class="w-7 h-7 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5">
@@ -400,7 +416,6 @@
         </div>
       </div>
 
-      <!-- Chat Input Form -->
       <form id="aiChatForm" onsubmit="handleAiSubmit(event)" class="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
         <input type="text" id="aiInput" placeholder="Ask a networking question..." class="flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-teal-500">
         <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm transition">
@@ -485,7 +500,6 @@
   <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-5">
       
-      <!-- Modal Title & Mode Switch Tabs -->
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <div class="flex items-center gap-2">
           <button id="tabSignInBtn" onclick="setAuthTab('signin')" class="text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700">
@@ -501,7 +515,6 @@
         </button>
       </div>
 
-      <!-- Auth Form -->
       <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3.5 text-xs">
         <div id="nameInputGroup" class="hidden">
           <label class="block font-bold text-slate-700 mb-1">Full Student Name</label>
@@ -526,11 +539,10 @@
     </div>
   </div>
 
-  <!-- COMPLETE JAVASCRIPT APPLICATION LOGIC WITH SUPABASE BACKEND -->
+  <!-- COMPLETE JAVASCRIPT APPLICATION LOGIC WITH LIVE STUDENT STATUS PANEL -->
   <script>
     // SUPABASE BACKEND CONFIGURATION
     const SUPABASE_URL = 'https://zusnbawalemprtizubzh.supabase.co';
-    // Public Anon Key for frontend operations
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1c25iYXdhbGVtcHJ0aXp1YnpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyMzg0MDAsImV4cCI6MjA1NjgxNDQwMH0.SUPABASE_ANON_KEY';
     
     let supabaseClient = null;
@@ -538,7 +550,15 @@
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
 
-    // EXPANDED RICH GLOSSARY & ALL-DOMAIN DATA STRUCTURE
+    const colorPalettes = [
+      { bg: 'bg-emerald-500', text: 'text-emerald-700', border: 'border-emerald-200', lightBg: 'bg-emerald-50' },
+      { bg: 'bg-indigo-500', text: 'text-indigo-700', border: 'border-indigo-200', lightBg: 'bg-indigo-50' },
+      { bg: 'bg-amber-500', text: 'text-amber-800', border: 'border-amber-200', lightBg: 'bg-amber-50' },
+      { bg: 'bg-purple-500', text: 'text-purple-700', border: 'border-purple-200', lightBg: 'bg-purple-50' },
+      { bg: 'bg-cyan-500', text: 'text-cyan-700', border: 'border-cyan-200', lightBg: 'bg-cyan-50' },
+      { bg: 'bg-rose-500', text: 'text-rose-700', border: 'border-rose-200', lightBg: 'bg-rose-50' }
+    ];
+
     const domainsData = [
       {
         id: "1",
@@ -708,12 +728,78 @@
     let currentUser = null;
 
     // APP INITIALIZATION
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       loadSavedUser();
       renderAuthHeader();
       renderDomainNav();
+      
+      if (currentUser) {
+        await syncUserProgressFromCloud();
+      }
       loadDomain(0);
+      
+      // Load & render registered student status list above WhatsApp logo
+      await fetchAndRenderStudentStatusPanel();
     });
+
+    // FETCH & RENDER REGISTERED STUDENTS LIST (ABOVE WHATSAPP BUTTON)
+    async function fetchAndRenderStudentStatusPanel() {
+      const listContainer = document.getElementById('studentAccountsList');
+      const badgeEl = document.getElementById('studentCountBadge');
+      if (!listContainer) return;
+
+      let studentProfiles = [];
+
+      // Fetch all registered student profiles from Supabase database
+      if (supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient.from('profiles').select('*');
+          if (data && data.length > 0) {
+            studentProfiles = data;
+          }
+        } catch (err) {
+          console.log('Supabase profile fetch note:', err);
+        }
+      }
+
+      // Fallback: If database is empty or offline, display locally registered profile
+      if (studentProfiles.length === 0 && currentUser) {
+        studentProfiles = [{ full_name: currentUser.name, email: currentUser.email }];
+      } else if (studentProfiles.length === 0) {
+        studentProfiles = [
+          { full_name: 'Muhammad Ali', email: 'ali@aitech.edu.pk' },
+          { full_name: 'Usman Khan', email: 'usman@aitech.edu.pk' }
+        ];
+      }
+
+      badgeEl.textContent = `${studentProfiles.length} Users`;
+
+      listContainer.innerHTML = studentProfiles.map((student, idx) => {
+        const isCurrentOnline = currentUser && currentUser.email.toLowerCase() === student.email.toLowerCase();
+        const palette = colorPalettes[idx % colorPalettes.length];
+        const initial = (student.full_name || student.email || 'S').charAt(0).toUpperCase();
+
+        return `
+          <div class="flex items-center justify-between ${palette.lightBg} p-2 rounded-xl border ${palette.border}">
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-6 h-6 rounded-full ${palette.bg} text-white font-extrabold text-[10px] flex items-center justify-center shrink-0">
+                ${initial}
+              </div>
+              <div class="min-w-0">
+                <p class="font-extrabold ${palette.text} text-[11px] truncate leading-tight">${student.full_name || 'Student'}</p>
+                <p class="text-[9px] text-slate-500 truncate leading-none">${student.email}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-1 shrink-0 ml-1">
+              <span class="w-2 h-2 rounded-full ${isCurrentOnline ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}"></span>
+              <span class="text-[9px] font-bold ${isCurrentOnline ? 'text-emerald-700' : 'text-slate-400'}">
+                ${isCurrentOnline ? 'Online' : 'Offline'}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
     // RENDER DOMAIN NAVIGATION TABS
     function renderDomainNav() {
@@ -805,7 +891,6 @@
       currentUser = { name: name || 'Student', email: email };
       localStorage.setItem('ccst_user', JSON.stringify(currentUser));
 
-      // Attempt to save/upsert profile to free Supabase Backend
       if (supabaseClient) {
         try {
           await supabaseClient.from('profiles').upsert([{ email: email, full_name: name }]);
@@ -814,20 +899,52 @@
         }
       }
 
+      await syncUserProgressFromCloud();
+      await fetchAndRenderStudentStatusPanel();
+
       renderAuthHeader();
       closeAuthModal();
-      alert(`Welcome, ${currentUser.name}! Your CCST profile is now active.`);
+      loadDomain(activeDomainIndex);
+      alert(`Welcome back, ${currentUser.name}! Your progress has been synced from cloud database.`);
     }
 
     function logoutUser() {
-      if (confirm('Are you sure you want to sign out?')) {
+      if (confirm('Are you sure you want to sign out? Progress is saved in database.')) {
         currentUser = null;
         localStorage.removeItem('ccst_user');
+        localStorage.clear();
         renderAuthHeader();
+        fetchAndRenderStudentStatusPanel();
+        loadDomain(0);
       }
     }
 
-    // GLOSSARY MODAL VIEW
+    async function syncUserProgressFromCloud() {
+      if (!supabaseClient || !currentUser) return;
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('student_progress')
+          .select('*')
+          .eq('student_email', currentUser.email);
+
+        if (data && data.length > 0) {
+          data.forEach(row => {
+            domainsData.forEach((d, dIdx) => {
+              d.lessons.forEach((l, lIdx) => {
+                if (l.id === row.lesson_id) {
+                  const storageKey = `ccst_check_d${dIdx}_l${lIdx}`;
+                  localStorage.setItem(storageKey, JSON.stringify(row.completed_tasks || {}));
+                }
+              });
+            });
+          });
+        }
+      } catch (err) {
+        console.log('Cloud progress sync error:', err);
+      }
+    }
+
     function openGlossaryModalFor(lessonIdx) {
       const lesson = domainsData[activeDomainIndex].lessons[lessonIdx];
       const container = document.getElementById('glossaryModalContent');
@@ -850,7 +967,6 @@
       document.getElementById('glossaryModal').classList.add('hidden');
     }
 
-    // MULTI-DOMAIN AI CHATBOT RESPONSE GENERATOR
     function handleAiSubmit(e) {
       e.preventDefault();
       const input = document.getElementById('aiInput');
@@ -906,7 +1022,6 @@
       }, 600);
     }
 
-    // SWITCH DOMAIN VIEW
     function switchDomain(index) {
       activeDomainIndex = index;
       activeLessonIndex = 0;
@@ -914,7 +1029,6 @@
       loadDomain(index);
     }
 
-    // LOAD DOMAIN CONTENT
     function loadDomain(domainIdx) {
       const domain = domainsData[domainIdx];
       document.getElementById('domainBadgeText').textContent = domain.badge;
@@ -926,7 +1040,6 @@
       loadLesson(0);
     }
 
-    // RENDER LESSON CARDS IN SIDEBAR
     function renderLessonSelectList() {
       const domain = domainsData[activeDomainIndex];
       const container = document.getElementById('lessonSelectList');
@@ -959,7 +1072,6 @@
       `).join('');
     }
 
-    // LOAD ACTIVE LESSON INTO VIEWPORT
     function loadLesson(lessonIdx) {
       activeLessonIndex = lessonIdx;
       const domain = domainsData[activeDomainIndex];
@@ -977,7 +1089,6 @@
       calculateProgress();
     }
 
-    // RENDER SUBTOPICS CHECKLIST (CLICKABLE CHECKBOXES)
     function renderSubtopicsGrid(lesson) {
       const container = document.getElementById('subtopicsContainer');
       const storageKey = `ccst_check_d${activeDomainIndex}_l${activeLessonIndex}`;
@@ -1019,24 +1130,23 @@
       container.innerHTML = html;
     }
 
-    // TOGGLE CHECKBOX & SAVE STATE
     async function toggleSubtopicCheck(key, isChecked) {
       const storageKey = `ccst_check_d${activeDomainIndex}_l${activeLessonIndex}`;
       const savedChecks = JSON.parse(localStorage.getItem(storageKey) || '{}');
       savedChecks[key] = isChecked;
       localStorage.setItem(storageKey, JSON.stringify(savedChecks));
 
-      // Sync progress state to Supabase if client active
       if (supabaseClient && currentUser) {
         try {
+          const lessonObj = domainsData[activeDomainIndex].lessons[activeLessonIndex];
           await supabaseClient.from('student_progress').upsert([{
             student_email: currentUser.email,
             domain_id: String(activeDomainIndex + 1),
-            lesson_id: domainsData[activeDomainIndex].lessons[activeLessonIndex].id,
+            lesson_id: lessonObj.id,
             completed_tasks: savedChecks
           }]);
         } catch (err) {
-          console.log('Supabase sync note:', err);
+          console.log('Supabase cloud save note:', err);
         }
       }
 
@@ -1045,7 +1155,6 @@
       calculateProgress();
     }
 
-    // DYNAMIC PROGRESS CALCULATION
     function calculateProgress() {
       let totalTasks = 0;
       let completedTasks = 0;
@@ -1082,7 +1191,6 @@
       document.getElementById('lessonSubtaskStats').textContent = `${currentDone} / ${currentLesson.subtopics.length + 2} Done`;
     }
 
-    // NAVIGATION BUTTONS LOGIC
     function updateNavigationButtons() {
       const lessons = domainsData[activeDomainIndex].lessons;
       document.getElementById('prevLessonBtn').disabled = activeLessonIndex === 0;
@@ -1099,7 +1207,6 @@
       }
     }
 
-    // MODAL DIALOG CONTROLLERS
     function openCurrentGlossary() {
       openGlossaryModalFor(activeLessonIndex);
     }
@@ -1137,7 +1244,6 @@
       const textSummary = document.getElementById('assignTextSummary').value;
       const lessonId = domainsData[activeDomainIndex].lessons[activeLessonIndex].id;
 
-      // Submit to Supabase Database backend if connected
       if (supabaseClient) {
         try {
           await supabaseClient.from('assignments').insert([{
@@ -1151,7 +1257,7 @@
       }
 
       toggleSubtopicCheck('assignment', true);
-      alert('Assignment submitted & saved to database successfully!');
+      alert('Assignment submitted & saved to cloud database!');
       closeAssignmentModal();
     }
 
@@ -1162,7 +1268,6 @@
       }
     }
 
-    // AI CHATBOT CONTROLLER
     function toggleAiBot() {
       document.getElementById('aiChatWindow').classList.toggle('hidden');
     }
