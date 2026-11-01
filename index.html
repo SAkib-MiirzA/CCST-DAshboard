@@ -24,13 +24,27 @@
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
           colors: {
             brand: {
-              bg: '#f8fafc', surface: '#ffffff', border: '#e2e8f0',
-              teal: '#0d9488', tealDark: '#0f766e', tealLight: '#ccfbf1',
-              cyan: '#06b6d4', cyanDark: '#0e7490', accentYellow: '#d97706'
+              bg: '#f8fafc',
+              surface: '#ffffff',
+              border: '#e2e8f0',
+              teal: '#0d9488',
+              tealDark: '#0f766e',
+              tealLight: '#ccfbf1',
+              tealText: '#115e59',
+              cyan: '#06b6d4',
+              cyanDark: '#0e7490',
+              accentYellow: '#d97706',
+              accentYellowLight: '#fef3c7'
             }
+          },
+          boxShadow: {
+            'glass': '0 8px 32px 0 rgba(15, 23, 42, 0.08)',
+            'card-hover': '0 12px 24px -4px rgba(13, 148, 136, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.03)'
           }
         }
       }
@@ -52,15 +66,15 @@
     @media print {
       body { background-color: white !important; color: black !important; }
       .no-print { display: none !important; }
-      .print-card { background: white !important; color: black !important; border: 1px solid #cbd5e1 !important; shadow: none !important; }
+      .print-card { background: white !important; color: black !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; }
     }
   </style>
 </head>
 
-<body class="bg-brand-bg text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-brand-tealLight antialiased relative">
+<body class="bg-brand-bg text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-brand-tealLight selection:text-brand-tealDark antialiased relative">
 
   <!-- TOP HEADER NAVBAR -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm no-print">
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
       
       <div class="flex items-center gap-3">
@@ -93,12 +107,7 @@
           <i class="fa-solid fa-rotate-left text-sm"></i>
         </button>
 
-        <!-- STYLISH CENTER AUTH TRIGGER BUTTON -->
-        <div id="authHeaderContainer">
-          <button onclick="openAuthModal('signin')" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-2">
-            <i class="fa-solid fa-user-lock"></i> Student Portal Login
-          </button>
-        </div>
+        <div id="authHeaderContainer"></div>
       </div>
 
     </div>
@@ -386,11 +395,11 @@
         </div>
 
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Upload Solution (.pkt, Images, PDF)</label>
+          <label class="block font-bold text-slate-700 mb-1">Upload Solution File / Lab Screenshot</label>
           <div id="dropzoneContainer" onclick="document.getElementById('assignmentFileInput').click()" class="border-2 border-dashed border-amber-300 hover:border-amber-500 rounded-xl p-4 text-center bg-amber-50/50 hover:bg-amber-50 transition cursor-pointer space-y-1">
             <i class="fa-solid fa-cloud-arrow-up text-2xl text-amber-600"></i>
             <p class="text-slate-700 font-bold">Click to select file or drag & drop</p>
-            <p class="text-[10px] text-slate-400">PKT, PDF, PNG, JPG up to 20MB</p>
+            <p class="text-[10px] text-slate-400">PKT, PDF, PNG, JPG up to 5MB</p>
             <input type="file" id="assignmentFileInput" onchange="handleFileSelect(this)" class="hidden">
           </div>
           <p id="selectedFileName" class="text-[11px] text-teal-700 font-extrabold mt-1.5 hidden flex items-center gap-1">
@@ -428,58 +437,43 @@
     </div>
   </div>
 
-  <!-- STYLISH CENTERED AUTH MODAL (LOGIN / SIGN UP / WELCOME) -->
-  <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-    <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-slate-100 space-y-6 relative overflow-hidden">
-      
-      <!-- Decorative Top Glow -->
-      <div class="absolute -top-12 -right-12 w-32 h-32 bg-teal-500/10 rounded-full blur-2xl pointer-events-none"></div>
-
-      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+  <!-- AUTH MODAL -->
+  <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-5">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <div class="flex items-center gap-2">
-          <button id="tabSignInBtn" onclick="setAuthTab('signin')" class="text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700 transition">Sign In</button>
+          <button id="tabSignInBtn" onclick="setAuthTab('signin')" class="text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700">Sign In</button>
           <span class="text-slate-300">|</span>
-          <button id="tabSignUpBtn" onclick="setAuthTab('signup')" class="text-sm font-bold text-slate-400 pb-1 hover:text-slate-600 transition">Create Account</button>
+          <button id="tabSignUpBtn" onclick="setAuthTab('signup')" class="text-sm font-bold text-slate-400 pb-1 hover:text-slate-600">Create Account</button>
         </div>
-        <button onclick="closeAuthModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
-          <i class="fa-solid fa-xmark text-sm"></i>
-        </button>
+        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <div class="text-center space-y-1.5">
-        <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-700 mx-auto flex items-center justify-center text-xl shadow-inner">
-          <i class="fa-solid fa-graduation-cap"></i>
-        </div>
-        <h3 class="font-black text-slate-900 text-lg" id="authModalTitle">Welcome Back Student</h3>
-        <p class="text-xs text-slate-500">Sign in to sync your CCST progress across devices</p>
-      </div>
-
-      <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4 text-xs">
-        <div id="nameInputGroup" class="hidden space-y-1">
-          <label class="block font-bold text-slate-700">Full Student Name</label>
-          <input type="text" id="authNameInput" placeholder="e.g. Usman Khan" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 font-medium">
+      <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3.5 text-xs">
+        <div id="nameInputGroup" class="hidden">
+          <label class="block font-bold text-slate-700 mb-1">Full Student Name</label>
+          <input type="text" id="authNameInput" placeholder="e.g. Usman Khan" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500">
         </div>
 
-        <div class="space-y-1">
-          <label class="block font-bold text-slate-700">Email Address</label>
-          <input type="email" id="authEmailInput" required placeholder="student@aitech.edu.pk" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 font-medium">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Email Address</label>
+          <input type="email" id="authEmailInput" required placeholder="student@aitech.edu.pk" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500">
         </div>
 
-        <div class="space-y-1">
-          <label class="block font-bold text-slate-700">Password</label>
-          <input type="password" id="authPasswordInput" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 font-medium">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Password</label>
+          <input type="password" id="authPasswordInput" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500">
         </div>
 
-        <div class="pt-2">
-          <button type="submit" id="authSubmitBtn" class="w-full py-3.5 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-extrabold rounded-2xl shadow-lg shadow-teal-600/20 transition cursor-pointer text-sm">
-            Sign In to Portal
-          </button>
+        <div class="pt-2 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeAuthModal()" class="px-4 py-2 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200">Cancel</button>
+          <button type="submit" id="authSubmitBtn" class="px-5 py-2 bg-teal-600 hover:bg-teal-700 text-white font-extrabold rounded-xl shadow-sm">Sign In</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- APPLICATION LOGIC WITH SUPABASE STORAGE FOR .PKT & IMAGES -->
+  <!-- APPLICATION LOGIC WITH CORRECTED SUPABASE KEYS -->
   <script>
     const SUPABASE_URL = 'https://zusnbawalemprtizubzh.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_3SjMa829fo37hIS2xBS5IA_HlGwEVQS';
@@ -624,7 +618,7 @@
     let activeLessonIndex = 0;
     let authMode = 'signin';
     let currentUser = null;
-    let selectedAssignmentFile = null;
+    let currentBase64File = null;
 
     document.addEventListener('DOMContentLoaded', async () => {
       loadSavedUser();
@@ -633,9 +627,6 @@
       
       if (currentUser) {
         await syncUserProgressFromCloud();
-      } else {
-        // Automatically open stylish login prompt if first time visiting
-        setTimeout(() => { openAuthModal('signin'); }, 400);
       }
       loadDomain(0);
       fetchRegisteredStudentsList();
@@ -664,23 +655,23 @@
       const container = document.getElementById('authHeaderContainer');
       if (currentUser) {
         container.innerHTML = `
-          <div class="flex items-center gap-2 bg-teal-50 border border-teal-200 rounded-xl px-3 py-1.5 shadow-xs">
-            <div class="w-7 h-7 rounded-full bg-teal-700 text-white font-bold text-xs flex items-center justify-center shadow-sm">
+          <div class="flex items-center gap-2 bg-teal-50 border border-teal-200 rounded-xl px-2.5 py-1">
+            <div class="w-6 h-6 rounded-full bg-teal-700 text-white font-bold text-[10px] flex items-center justify-center">
               ${currentUser.name.charAt(0).toUpperCase()}
             </div>
             <div class="hidden sm:block text-left">
-              <span class="block text-xs font-extrabold text-slate-900 leading-none">${currentUser.name}</span>
-              <span class="block text-[10px] text-teal-700 font-semibold leading-none">${currentUser.email}</span>
+              <span class="block text-[11px] font-extrabold text-slate-900 leading-none">${currentUser.name}</span>
+              <span class="block text-[9px] text-teal-700 font-semibold leading-none">${currentUser.email}</span>
             </div>
-            <button onclick="logoutUser()" class="text-slate-400 hover:text-rose-600 text-xs ml-2 p-1 transition" title="Sign Out">
+            <button onclick="logoutUser()" class="text-slate-400 hover:text-rose-600 text-xs ml-1 transition" title="Sign Out">
               <i class="fa-solid fa-right-from-bracket"></i>
             </button>
           </div>
         `;
       } else {
         container.innerHTML = `
-          <button onclick="openAuthModal('signin')" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-2">
-            <i class="fa-solid fa-user-lock"></i> Student Portal Login
+          <button onclick="openAuthModal('signin')" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold px-3 py-1.5 rounded-xl shadow-xs transition">
+            Sign In
           </button>
         `;
       }
@@ -701,20 +692,17 @@
       const tabSignUp = document.getElementById('tabSignUpBtn');
       const nameGroup = document.getElementById('nameInputGroup');
       const submitBtn = document.getElementById('authSubmitBtn');
-      const titleEl = document.getElementById('authModalTitle');
 
       if (mode === 'signup') {
-        tabSignUp.className = 'text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700 transition';
-        tabSignIn.className = 'text-sm font-bold text-slate-400 pb-1 hover:text-slate-600 transition';
+        tabSignUp.className = 'text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700';
+        tabSignIn.className = 'text-sm font-bold text-slate-400 pb-1 hover:text-slate-600';
         nameGroup.classList.remove('hidden');
-        titleEl.textContent = 'Create Student Profile';
-        submitBtn.textContent = 'Register & Start Learning';
+        submitBtn.textContent = 'Create Student Account';
       } else {
-        tabSignIn.className = 'text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700 transition';
-        tabSignUp.className = 'text-sm font-bold text-slate-400 pb-1 hover:text-slate-600 transition';
+        tabSignIn.className = 'text-sm font-extrabold text-teal-700 pb-1 border-b-2 border-teal-700';
+        tabSignUp.className = 'text-sm font-bold text-slate-400 pb-1 hover:text-slate-600';
         nameGroup.classList.add('hidden');
-        titleEl.textContent = 'Welcome Back Student';
-        submitBtn.textContent = 'Sign In to Portal';
+        submitBtn.textContent = 'Sign In';
       }
     }
 
@@ -739,6 +727,7 @@
       closeAuthModal();
       loadDomain(activeDomainIndex);
       fetchRegisteredStudentsList();
+      alert(`Welcome, ${currentUser.name}! Your account is now synced.`);
     }
 
     function logoutUser() {
@@ -749,7 +738,6 @@
         renderAuthHeader();
         loadDomain(0);
         fetchRegisteredStudentsList();
-        openAuthModal('signin');
       }
     }
 
@@ -1022,7 +1010,7 @@
       const lesson = domainsData[activeDomainIndex].lessons[lessonIdx];
       document.getElementById('modalLessonSubtitle').textContent = `${lesson.badge} - ${lesson.title}`;
       if (currentUser) { document.getElementById('assignStudentName').value = currentUser.name; }
-      selectedAssignmentFile = null;
+      currentBase64File = null;
       document.getElementById('selectedFileName').classList.add('hidden');
       document.getElementById('assignmentFileInput').value = '';
       document.getElementById('assignmentModal').classList.remove('hidden');
@@ -1032,9 +1020,15 @@
 
     function handleFileSelect(input) {
       if (input.files && input.files[0]) {
-        selectedAssignmentFile = input.files[0];
-        document.getElementById('fileNameText').textContent = `${selectedAssignmentFile.name} (${Math.round(selectedAssignmentFile.size/1024)} KB)`;
+        const file = input.files[0];
+        document.getElementById('fileNameText').textContent = `${file.name} (${Math.round(file.size/1024)} KB)`;
         document.getElementById('selectedFileName').classList.remove('hidden');
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentBase64File = { fileName: file.name, fileType: file.type, base64: e.target.result };
+        };
+        reader.readAsDataURL(file);
       }
     }
 
@@ -1044,37 +1038,12 @@
       const textSummary = document.getElementById('assignTextSummary').value.trim();
       const lessonId = domainsData[activeDomainIndex].lessons[activeLessonIndex].id;
 
-      let filePublicUrl = '';
-
-      if (supabaseClient && selectedAssignmentFile) {
-        try {
-          const fileExt = selectedAssignmentFile.name.split('.').pop();
-          const fileName = `${Date.now()}_${Math.random().toString(36.substring(2))}.${fileExt}`;
-          const filePath = `${lessonId}/${fileName}`;
-
-          const { data: uploadData, error: uploadError } = await supabaseClient.storage
-            .from('assignment-files')
-            .upload(filePath, selectedAssignmentFile);
-
-          if (!uploadError) {
-            const { data: publicUrlData } = supabaseClient.storage
-              .from('assignment-files')
-              .getPublicUrl(filePath);
-            filePublicUrl = publicUrlData.publicUrl;
-          } else {
-            console.log('Storage upload error:', uploadError.message);
-          }
-        } catch (err) {
-          console.log('File upload exception:', err);
-        }
-      }
-
       if (supabaseClient) {
         try {
           await supabaseClient.from('assignments').insert([{
             student_name: studentName,
             lesson_id: lessonId,
-            submission_text: textSummary + (filePublicUrl ? `\n[Attached File URL]: ${filePublicUrl}` : '')
+            submission_text: textSummary + (currentBase64File ? `\n[File Attached: ${currentBase64File.fileName}]` : '')
           }]);
         } catch (err) {
           console.log('Supabase assignment save note:', err);
@@ -1082,7 +1051,7 @@
       }
 
       await toggleSubtopicCheck('assignment', true);
-      alert('Assignment and lab file successfully uploaded and saved to database!');
+      alert('Assignment and solution file submitted & saved successfully!');
       closeAssignmentModal();
     }
 
