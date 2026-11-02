@@ -133,7 +133,7 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="font-extrabold text-white text-base sm:text-lg tracking-tight">CCST Networking Portal</h1>
-            <span class="bg-amber-400 text-slate-950 border border-amber-500 text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm">🌐 Adan iT Center / Cisco</span>
+            <span class="bg-amber-400 text-slate-950 border border-amber-500 text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm">🌐 Adan iT / Cisco</span>
           </div>
           <p class="text-[11px] text-teal-100 font-medium">AITECH Skills for Tomorrow • Interactive Student Track</p>
         </div>
@@ -212,7 +212,10 @@
           Create network topology diagram and explain data flow using OSI/TCP-IP models in Packet Tracer.
         </p>
       </div>
-      <div class="relative z-10 shrink-0">
+      <div class="relative z-10 shrink-0 flex items-center gap-2">
+        <button onclick="openCompleteGlossary()" class="bg-teal-900/80 hover:bg-teal-950 text-teal-100 font-bold text-[11px] px-3.5 py-2.5 rounded-xl border border-teal-400/40 shadow-md transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-book text-amber-300"></i> Master Glossary
+        </button>
         <button onclick="openCurrentAssignment()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-[11px] px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
           <i class="fa-solid fa-cloud-arrow-up"></i> 📤 Submit Lab (.pkt / Image)
         </button>
@@ -304,7 +307,7 @@
 
             <div class="flex items-center gap-2 flex-wrap">
               <button onclick="openCurrentGlossary()" class="bg-teal-50 hover:bg-teal-100 text-teal-800 text-[11px] font-bold px-3 py-1.5 rounded-lg border border-teal-200/80 transition flex items-center gap-1.5 shadow-2xs cursor-pointer">
-                <i class="fa-solid fa-book-bookmark text-teal-600"></i> 📖 Glossary
+                <i class="fa-solid fa-book-bookmark text-teal-600"></i> 📖 Lesson Glossary
               </button>
               <button onclick="openCurrentAssignment()" class="bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-950 text-[11px] font-bold px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5 cursor-pointer">
                 <i class="fa-solid fa-upload"></i> 📤 Submit Lab Work
@@ -325,7 +328,7 @@
           <div class="bg-slate-50/80 rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-4">
             <div class="flex items-center justify-between pb-2 border-b border-slate-200">
               <h3 class="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                <i class="fa-solid fa-list-check text-teal-600"></i> ✅ Topic Breakdown & Specific Page Info
+                <i class="fa-solid fa-list-check text-teal-600"></i> ✅ Topic Breakdown & Detailed Modules
               </h3>
               <div class="flex items-center gap-2">
                 <span class="text-[11px] font-bold text-slate-600" id="lessonSubtaskStats">0 / 0 Done</span>
@@ -333,7 +336,7 @@
               </div>
             </div>
 
-            <!-- Subtopics Grid (Stretched & Expanded evenly across both columns) -->
+            <!-- Subtopics Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 auto-rows-fr gap-3 w-full" id="subtopicsContainer"></div>
           </div>
 
@@ -498,18 +501,18 @@
     </div>
   </div>
 
-  <!-- CHATBOT WITH FLOATING & BLINKING EYES ANIMATION -->
+  <!-- CHATBOT WITH PROACTIVE ACTIVE TOPIC PROMPTS -->
   <div class="fixed bottom-5 right-5 z-50 no-print">
     
-    <div id="aiChatWindow" class="hidden absolute bottom-20 right-0 w-[92vw] sm:w-[360px] h-[480px] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden transition-all animate-slide-up text-[11px]">
+    <div id="aiChatWindow" class="hidden absolute bottom-20 right-0 w-[92vw] sm:w-[380px] h-[520px] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden transition-all animate-slide-up text-[11px]">
       <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3.5 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
           <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/30 text-sm shadow-sm">
             🤖
           </div>
           <div>
-            <h4 class="font-bold text-xs leading-tight">CCST AI Assistant</h4>
-            <p class="text-[10px] text-blue-100">Domains 1-6 Specialist • Active</p>
+            <h4 class="font-bold text-xs leading-tight">CCST Active Master Assistant</h4>
+            <p class="text-[10px] text-blue-100">Interactive Pro Tutor • All Topics Ready</p>
           </div>
         </div>
         <button onclick="toggleAiBot()" class="text-white/80 hover:text-white p-1 cursor-pointer">
@@ -517,13 +520,20 @@
         </button>
       </div>
 
-      <div class="p-2 bg-slate-50 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-[10px]">
-        <button onclick="sendQuickPrompt('Explain 7 OSI Layers')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">💡 D1: OSI</button>
-        <button onclick="sendQuickPrompt('How to calculate IPv4 CIDR subnet mask?')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">🔢 D2: Subnet</button>
-        <button onclick="sendQuickPrompt('Single-mode vs Multi-mode Fiber?')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">🔌 D3: Fiber</button>
-        <button onclick="sendQuickPrompt('Difference between Switch and Router?')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">🏢 D4: Hardware</button>
-        <button onclick="sendQuickPrompt('How to use ping and traceroute?')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">🔍 D5: Diagnostics</button>
-        <button onclick="sendQuickPrompt('Explain WPA3 and ACL Security')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-medium transition cursor-pointer">🛡️ D6: Security</button>
+      <!-- Quick Category Filters for Chatbot -->
+      <div class="p-2 bg-slate-100 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-[10px]">
+        <button onclick="renderBotTopicChips('all')" class="bg-blue-600 text-white px-2.5 py-1 rounded-full whitespace-nowrap font-bold transition cursor-pointer">🔥 All Topics</button>
+        <button onclick="renderBotTopicChips('d1')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-semibold cursor-pointer">D1: Standards</button>
+        <button onclick="renderBotTopicChips('d2')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-semibold cursor-pointer">D2: Subnetting</button>
+        <button onclick="renderBotTopicChips('d3')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-semibold cursor-pointer">D3: Media</button>
+        <button onclick="renderBotTopicChips('d4')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-semibold cursor-pointer">D4: Hardware</button>
+        <button onclick="renderBotTopicChips('d5')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-semibold cursor-pointer">D5: CLI Tools</button>
+        <button onclick="renderBotTopicChips('d6')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-semibold cursor-pointer">D6: Security</button>
+      </div>
+
+      <!-- Dynamic Interactive Topic Quick Prompt Chips -->
+      <div id="aiChatTopicChips" class="p-2 bg-slate-50 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-[10px]">
+        <!-- Chips injected dynamically via JS -->
       </div>
 
       <div id="aiChatMessages" class="flex-1 p-3.5 overflow-y-auto space-y-2.5 bg-slate-50/50">
@@ -531,15 +541,15 @@
           <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">
             🤖
           </div>
-          <div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 space-y-1 max-w-[85%]">
-            <p class="font-bold text-slate-900">Hello Student! 👋</p>
-            <p>I am your CCST AI Assistant. Tap any quick topic above or ask me anything across CCST Domains 1 to 6!</p>
+          <div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 space-y-1.5 max-w-[88%]">
+            <p class="font-extrabold text-slate-900">Welcome Pro Networking Student! 👋</p>
+            <p class="text-[10px] leading-relaxed">I am fully equipped with complete technical details for <strong>every single topic</strong> across Domains 1 to 6. Click any active topic chip above or ask me any question to see detailed explanations, examples, and CLI commands!</p>
           </div>
         </div>
       </div>
 
       <form id="aiChatForm" onsubmit="handleAiSubmit(event)" class="p-2.5 bg-white border-t border-slate-200 flex items-center gap-2">
-        <input type="text" id="aiInput" placeholder="Ask AI Assistant about networking..." class="flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-[11px] text-slate-800 focus:outline-none focus:border-blue-500 font-medium">
+        <input type="text" id="aiInput" placeholder="Ask details about any networking topic..." class="flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-[11px] text-slate-800 focus:outline-none focus:border-blue-500 font-medium">
         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl text-[11px] font-bold shadow-sm transition cursor-pointer">
           <i class="fa-solid fa-paper-plane"></i>
         </button>
@@ -612,23 +622,33 @@
     </div>
   </div>
 
-  <!-- GLOSSARY MODAL -->
+  <!-- GLOSSARY MODAL WITH SEARCH AND ALL DOMAINS SUPPORT -->
   <div id="glossaryModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-100 space-y-4 text-[11px]">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 space-y-4 text-[11px]">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <h3 class="font-extrabold text-slate-900 text-xs sm:text-sm flex items-center gap-2">
-          <i class="fa-solid fa-book-bookmark text-teal-600"></i> 📖 Complete CCST Technical Glossary
-        </h3>
+        <div>
+          <h3 class="font-extrabold text-slate-900 text-xs sm:text-sm flex items-center gap-2">
+            <i class="fa-solid fa-book-bookmark text-teal-600"></i> 📖 Master CCST Technical Glossary
+          </h3>
+          <p class="text-[10px] text-slate-500">Exhaustive Terminology & Concepts across Domains 1 to 6</p>
+        </div>
         <button onclick="closeGlossaryModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
+      </div>
+
+      <!-- Search Bar inside Glossary Modal -->
+      <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
+        <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
+        <input type="text" id="glossarySearchInput" onkeyup="filterGlossaryBySearch()" placeholder="Search terms, acronyms, or definitions..." class="bg-transparent text-slate-800 text-[11px] w-full focus:outline-none font-medium">
       </div>
 
       <div class="flex items-center gap-2 overflow-x-auto scrollbar-none pb-2 text-[10px]" id="glossaryFilterTabs"></div>
 
       <div id="glossaryModalContent" class="space-y-2.5 text-slate-700 max-h-96 overflow-y-auto pr-1"></div>
 
-      <div class="pt-2 flex justify-end">
+      <div class="pt-2 flex justify-between items-center border-t border-slate-100">
+        <span id="glossaryTotalCount" class="text-[10px] text-teal-800 font-bold bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200">0 Terms Loaded</span>
         <button onclick="closeGlossaryModal()" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl text-[11px] cursor-pointer">Close Glossary</button>
       </div>
     </div>
@@ -684,7 +704,7 @@
     </div>
   </div>
 
-  <!-- APPLICATION SCRIPT -->
+  <!-- APPLICATION SCRIPT WITH ENHANCED GLOSSARY & CHATBOT DATA -->
   <script>
     const SUPABASE_URL = 'https://zusnbawalemprtizubzh.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_3SjMa829fo37hIS2xBS5IA_HlGwEVQS';
@@ -694,6 +714,7 @@
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
 
+    /* COMPREHENSIVE DOMAIN DATA WITH DETAILED GLOSSARY FOR EVERY TOPIC */
     const domainsData = [
       {
         id: "1",
@@ -708,67 +729,84 @@
             badge: "LESSON 1.1",
             title: "OSI and TCP/IP Models",
             objective: "Compare and contrast the 7-layer OSI reference model with the 4-layer TCP/IP stack.",
-            subtopics: ["7 OSI Layers", "4 TCP/IP Layers", "Encapsulation", "PDUs", "Layer Functions"],
+            subtopics: ["7 OSI Layers", "4 TCP/IP Layers", "Encapsulation & Decapsulation", "PDUs (Bits, Frames, Packets, Segments)", "Layer Functions & Devices"],
             labTitle: "Explore OSI Model In Packet Tracer",
-            labDesc: "Apply osi and tcp/ip models concepts in hands-on lab environment.",
+            labDesc: "Apply OSI and TCP/IP model concepts in a hands-on simulation environment.",
             quizTitle: "Quiz 1.1: OSI and TCP/IP Models",
             glossary: [
-              { term: "OSI Reference Model", acronym: "Open Systems Interconnection", def: "A 7-layer conceptual framework standardized by ISO.", example: "Switches operate at Layer 2." },
-              { term: "TCP/IP Stack", acronym: "Transmission Control Protocol", def: "A 4-layer practical networking model forming the architectural baseline of the Internet.", example: "HTTP, DNS, and DHCP function at the Application layer." },
-              { term: "PDU", acronym: "Protocol Data Unit", def: "The specific format and unit of data transmitted at a given layer.", example: "Packets (Layer 3), Frames (Layer 2)." }
+              { term: "OSI Reference Model", acronym: "Open Systems Interconnection", def: "A 7-layer conceptual framework standardized by ISO that characterizes telecommunication protocols.", example: "Layer 7 (Application) to Layer 1 (Physical)." },
+              { term: "TCP/IP Stack", acronym: "Transmission Control Protocol / Internet Protocol", def: "A 4-layer suite (Application, Transport, Internet, Network Access) that powers the modern global Internet.", example: "HTTP operates at Application; IP operates at Internet layer." },
+              { term: "Encapsulation", acronym: "N/A", def: "The process of appending headers and trailers to data as it moves down through protocol layers.", example: "Transport layer adds port headers to create Segments." },
+              { term: "Decapsulation", acronym: "N/A", def: "The reverse process where receiving nodes strip away protocol headers layer-by-layer up to raw data.", example: "A router strips Layer 2 frame headers to examine Layer 3 IP packets." },
+              { term: "PDU", acronym: "Protocol Data Unit", def: "The technical unit of data at a specific layer: Bits (L1), Frames (L2), Packets (L3), Segments (L4), Data (L5-7).", example: "Switches process Frames; Routers process Packets." }
             ]
           },
           {
             id: "1.2",
             badge: "LESSON 1.2",
             title: "Network Topologies",
-            objective: "Analyze physical and logical network layouts, evaluating fault tolerance and scalability.",
-            subtopics: ["Star", "Bus", "Ring", "Mesh", "Hybrid", "Physical vs Logical"],
+            objective: "Analyze physical and logical network layouts, evaluating fault tolerance, redundancy, and cost.",
+            subtopics: ["Star Topology", "Bus Topology", "Ring Topology", "Mesh & Partial Mesh", "Hybrid Designs", "Physical vs Logical Layouts"],
             labTitle: "Topology Design Lab in Packet Tracer",
             labDesc: "Build redundant star and mesh topologies in Cisco Packet Tracer.",
             quizTitle: "Quiz 1.2: Network Topologies",
             glossary: [
-              { term: "Star Topology", acronym: "N/A", def: "Layout where peripheral nodes connect to a central switch.", example: "Standard office LANs." },
-              { term: "Mesh Topology", acronym: "N/A", def: "Redundant layout where every node is directly connected to every other node.", example: "Enterprise WAN backbones." }
+              { term: "Star Topology", acronym: "N/A", def: "A topology where every endpoint connects to a central central switch or hub.", example: "Standard corporate Ethernet networks." },
+              { term: "Mesh Topology", acronym: "Full/Partial Mesh", def: "A layout where nodes are interconnected directly, eliminating single points of failure.", example: "Enterprise WAN backbones." },
+              { term: "Bus Topology", acronym: "N/A", def: "A legacy single central cable architecture terminated at both ends.", example: "Coaxial 10BASE2 networks." },
+              { term: "Ring Topology", acronym: "N/A", def: "A topology where devices connect in a circular path, passing token signals.", example: "FDDI fiber rings." },
+              { term: "Logical Topology", acronym: "N/A", def: "How data actually flows across the network, independent of physical cable placement.", example: "Logical ring running over physical star switch." }
             ]
           },
           {
             id: "1.3",
             badge: "LESSON 1.3",
             title: "Bandwidth, Throughput & Latency",
-            objective: "Measure and differentiate network transmission characteristics.",
-            subtopics: ["Bandwidth vs Throughput", "Latency", "Delay", "Speed Tests", "Iperf"],
+            objective: "Measure and differentiate network performance characteristics and transmission delays.",
+            subtopics: ["Bandwidth vs Throughput", "Goodput", "Latency & Jitter", "Propagation & Queuing Delay", "Speed Tests & Speed Iperf"],
             labTitle: "Performance Testing Lab",
-            labDesc: "Measure throughput and bottlenecks across simulated links.",
+            labDesc: "Measure throughput and identify bottlenecks across simulated WAN links.",
             quizTitle: "Quiz 1.3: Performance & Latency",
             glossary: [
-              { term: "Bandwidth", acronym: "N/A", def: "Theoretical maximum data carrying capacity.", example: "Cat6 Ethernet provides up to 10 Gbps." }
+              { term: "Bandwidth", acronym: "N/A", def: "The maximum theoretical data-carrying capacity of a link measured in bps, Mbps, or Gbps.", example: "1 Gbps Cat6 link." },
+              { term: "Throughput", acronym: "N/A", def: "The actual rate of successful data transfer over a medium at a given moment.", example: "A 100Mbps link delivering 75Mbps due to overhead." },
+              { term: "Goodput", acronym: "N/A", def: "The amount of useful application data transmitted per second, excluding headers and retransmissions.", example: "Actual file download speed." },
+              { term: "Latency", acronym: "N/A", def: "The time required for a packet to travel from sender to destination.", example: "Ping response time in milliseconds." },
+              { term: "Jitter", acronym: "N/A", def: "Variation in packet arrival latency across a network stream.", example: "Degrades VoIP audio quality." }
             ]
           },
           {
             id: "1.4",
             badge: "LESSON 1.4",
             title: "Network Types (LAN, WAN, WLAN)",
-            objective: "Identify geographic scale classifications of networks.",
-            subtopics: ["LAN", "WAN", "MAN", "PAN", "WLAN", "CAN"],
+            objective: "Identify geographic scale classifications and architectural boundaries of networks.",
+            subtopics: ["LAN (Local Area Network)", "WAN (Wide Area Network)", "MAN (Metropolitan Area)", "PAN & SAN", "WLAN (Wireless LAN)", "CAN (Campus Area Network)"],
             labTitle: "Multi-Site Connectivity Lab",
-            labDesc: "Interconnect LANs and WANs using simulated routers.",
+            labDesc: "Interconnect distant LANs over simulated WAN router interfaces.",
             quizTitle: "Quiz 1.4: Network Classifications",
             glossary: [
-              { term: "LAN", acronym: "Local Area Network", def: "High-speed network spanning a small geographical area.", example: "Wi-Fi access points in a school." }
+              { term: "LAN", acronym: "Local Area Network", def: "High-speed network interconnecting devices in a small geographic area like an office.", example: "Switched Ethernet inside an office." },
+              { term: "WAN", acronym: "Wide Area Network", def: "Telecommunications network spanning large geographical distances, connecting distinct LANs.", example: "ISP MPLS links or Internet VPNs." },
+              { term: "MAN", acronym: "Metropolitan Area Network", def: "Network covering a municipality, town, or city larger than a LAN but smaller than a WAN.", example: "City government fiber loop." },
+              { term: "SAN", acronym: "Storage Area Network", def: "Dedicated high-speed network providing block-level network storage access.", example: "iSCSI or Fibre Channel storage arrays." },
+              { term: "PAN", acronym: "Personal Area Network", def: "Short-range network centered around a single person.", example: "Bluetooth connection between phone and headset." }
             ]
           },
           {
             id: "1.5",
             badge: "LESSON 1.5",
             title: "Common Protocols & Services",
-            objective: "Examine transport and application layer protocols.",
-            subtopics: ["TCP vs UDP", "HTTP/HTTPS", "FTP/SFTP", "DNS", "DHCP", "ICMP", "NTP"],
+            objective: "Examine transport, network, and application layer protocols and core infrastructure services.",
+            subtopics: ["TCP vs UDP", "HTTP / HTTPS (Ports 80/443)", "FTP / SFTP / SSH", "DNS (Port 53)", "DHCP (Ports 67/68)", "ICMP & NTP"],
             labTitle: "Protocol Capture Analysis",
-            labDesc: "Analyze DNS and DHCP packets using simulation mode.",
+            labDesc: "Analyze DNS and DHCP packets using Packet Tracer simulation mode.",
             quizTitle: "Quiz 1.5: Protocols & Services",
             glossary: [
-              { term: "DHCP", acronym: "Dynamic Host Configuration Protocol", def: "Dynamically assigns IP addresses.", example: "Connecting a device to Wi-Fi." }
+              { term: "TCP", acronym: "Transmission Control Protocol", def: "Connection-oriented, reliable L4 protocol with sequence checking and three-way handshake.", example: "Web browsing and email." },
+              { term: "UDP", acronym: "User Datagram Protocol", def: "Connectionless, low-latency L4 protocol without retransmissions or acknowledgments.", example: "VoIP and video streaming." },
+              { term: "DNS", acronym: "Domain Name System", def: "Resolves human-readable domain names into IP addresses.", example: "Maps google.com to 142.250.190.46." },
+              { term: "DHCP", acronym: "Dynamic Host Configuration Protocol", def: "Automatically assigns IP addresses, subnet masks, default gateways, and DNS servers.", example: "DORA process (Discover, Offer, Request, Acknowledge)." },
+              { term: "NTP", acronym: "Network Time Protocol", def: "Synchronizes computer system clocks over packet-switched data networks.", example: "Port 123 UDP." }
             ]
           }
         ]
@@ -779,33 +817,40 @@
         badge: "Domain 2.0",
         capstone: "IPv4 & IPv6 SUBNETTING DEPLOYMENT",
         capstoneDesc: "Calculate subnet masks, CIDR blocks, and configure IP addresses on interfaces.",
-        description: "IPv4 & IPv6 addressing schemes, subnet masks, and CIDR notation.",
+        description: "IPv4 & IPv6 addressing schemes, subnet masks, CIDR notation, and IP allocation.",
         lessons: [
           {
             id: "2.1",
             badge: "LESSON 2.1",
             title: "IPv4 Addressing & Subnetting",
-            objective: "Calculate network addresses, broadcast IPs, and host ranges.",
-            subtopics: ["IPv4 Classes", "Subnet Masks", "CIDR Notation", "Private vs Public IPs", "APIPA"],
-            labTitle: "Subnet Calculator & Packet Tracer Lab",
-            labDesc: "Configure /24 and /26 subnets across multiple VLAN switches.",
+            objective: "Calculate network addresses, broadcast IPs, usable host ranges, and custom subnetting.",
+            subtopics: ["IPv4 Classes (A, B, C, D, E)", "Subnet Masks & CIDR", "Private IP Ranges (RFC 1918)", "APIPA (169.254.x.x)", "Subnetting Math & Formulas"],
+            labTitle: "Subnet Calculator & Switch Config Lab",
+            labDesc: "Configure /24, /26, and /30 subnets across switches in Packet Tracer.",
             quizTitle: "Quiz 2.1: IPv4 Subnetting",
             glossary: [
-              { term: "CIDR Notation", acronym: "Classless Inter-Domain Routing", def: "Syntax representing IP address and subnet mask length.", example: "192.168.1.0/24." },
-              { term: "IPv6", acronym: "Internet Protocol Version 6", def: "128-bit address space utilizing hexadecimal format.", example: "2001:db8::1" }
+              { term: "CIDR Notation", acronym: "Classless Inter-Domain Routing", def: "Slash notation (/24, /26) indicating the number of binary 1 bits in the subnet mask.", example: "192.168.1.0/24 equals 255.255.255.0." },
+              { term: "RFC 1918", acronym: "Private IPv4 Address Standard", def: "Defines non-routable private IP spaces: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.", example: "Home router LAN IPs." },
+              { term: "APIPA", acronym: "Automatic Private IP Addressing", def: "Self-assigned IPv4 address range (169.254.0.0/16) when DHCP server is unreachable.", example: "Device assigned 169.254.12.44." },
+              { term: "Broadcast Address", acronym: "N/A", def: "The last IP address in a subnet used to send data to all hosts in that subnet.", example: "192.168.1.255/24." },
+              { term: "Network ID", acronym: "N/A", def: "The first IP address in a subnet representing the network itself; cannot be assigned to hosts.", example: "192.168.1.0/24." }
             ]
           },
           {
             id: "2.2",
             badge: "LESSON 2.2",
             title: "IPv6 Addressing & Configuration",
-            objective: "Understand global unicast, link-local, and unique local addresses.",
-            subtopics: ["IPv6 Format", "Global Unicast", "Link-Local", "EUI-64", "SLAAC"],
+            objective: "Understand 128-bit hexadecimal IPv6 addressing, link-local, global unicast, and SLAAC.",
+            subtopics: ["IPv6 128-bit Format", "Global Unicast (2000::/3)", "Link-Local (fe80::/10)", "Unique Local (fc00::/7)", "SLAAC & EUI-64 Autoconfiguration"],
             labTitle: "IPv6 Dual-Stack Lab",
             labDesc: "Configure IPv6 addresses alongside IPv4 on routers and switches.",
             quizTitle: "Quiz 2.2: IPv6 Fundamentals",
             glossary: [
-              { term: "SLAAC", acronym: "Stateless Address Autoconfiguration", def: "Enables devices to configure their own IPv6 address automatically.", example: "Router Advertisement messages." }
+              { term: "Global Unicast Address", acronym: "GUA", def: "Globally unique public IPv6 address routable across the public Internet.", example: "Starts with 2000::/3." },
+              { term: "Link-Local Address", acronym: "LLA", def: "IPv6 address automatically assigned to an interface for local subnet communication.", example: "Starts with fe80::/10." },
+              { term: "SLAAC", acronym: "Stateless Address Autoconfiguration", def: "Method allowing devices to generate their own IPv6 address using Router Advertisements.", example: "Uses ICMPv6 RA messages." },
+              { term: "EUI-64", acronym: "Extended Unique Identifier", def: "Formats a 64-bit interface ID from a 48-bit MAC address by inserting FF:FE in the middle.", example: "Auto-generating host IDs." },
+              { term: "Dual-Stack", acronym: "N/A", def: "Coexistence mechanism where devices run IPv4 and IPv6 simultaneously on the same link.", example: "Modern operating system networking." }
             ]
           }
         ]
@@ -815,33 +860,41 @@
         title: "3. Endpoints & Media",
         badge: "Domain 3.0",
         capstone: "CABLE PLANT & FIBER OPTICS SETUP",
-        capstoneDesc: "Select appropriate cabling standards and wireless frequencies for business connectivity.",
-        description: "Physical cabling types, fiber optics, and wireless frequencies.",
+        capstoneDesc: "Select appropriate cabling standards, connectors, and wireless frequencies for business connectivity.",
+        description: "Copper cabling, fiber optics, connectors, pinouts, and wireless standards.",
         lessons: [
           {
             id: "3.1",
             badge: "LESSON 3.1",
             title: "Cabling & Connector Types",
-            objective: "Identify twisted pair Ethernet cables and fiber optic modes.",
-            subtopics: ["Cat5e/Cat6/Cat6a", "Single-mode vs Multi-mode Fiber", "RJ-45 & T568B", "Coaxial"],
+            objective: "Identify twisted pair Ethernet cables, copper pinouts, single-mode and multi-mode fiber.",
+            subtopics: ["Cat5e / Cat6 / Cat6a Standards", "T568A vs T568B Wiring", "Straight-Through vs Crossover Cables", "Single-mode vs Multi-mode Fiber", "RJ-45, LC, SC, ST Connectors"],
             labTitle: "Cabling Specifications Lab",
             labDesc: "Test copper pinouts and fiber patch cords in simulation.",
             quizTitle: "Quiz 3.1: Cabling Standards",
             glossary: [
-              { term: "Single-Mode Fiber", acronym: "SMF", def: "Uses small core (9µm) with laser light for long distances.", example: "Building interconnects." }
+              { term: "T568B Standard", acronym: "N/A", def: "Commercial wiring standard ordering: Orange-White, Orange, Green-White, Blue, Blue-White, Green, Brown-White, Brown.", example: "Standard patch cable." },
+              { term: "Single-Mode Fiber", acronym: "SMF", def: "Fiber optic cable with small core (9 microns) using laser light for long-distance transmissions.", example: "WAN spans up to 40km+." },
+              { term: "Multi-Mode Fiber", acronym: "MMF", def: "Fiber optic cable with wider core (50-62.5 microns) using LED light for shorter distances.", example: "Data center switch trunks." },
+              { term: "Straight-Through Cable", acronym: "N/A", def: "Ethernet cable wired identically on both ends (T568B to T568B), connecting different device types.", example: "PC to Switch connection." },
+              { term: "Crossover Cable", acronym: "N/A", def: "Ethernet cable with TX and RX swapped on one end (T568A to T568B), connecting like devices.", example: "Switch to Switch (without Auto-MDIX)." }
             ]
           },
           {
             id: "3.2",
             badge: "LESSON 3.2",
             title: "Wireless Standards & Channels",
-            objective: "Compare 802.11 standards and 2.4GHz vs 5GHz frequency bands.",
-            subtopics: ["802.11 a/b/g/n/ac/ax", "2.4GHz vs 5GHz", "Channels & SSID", "Wireless Security"],
+            objective: "Compare Wi-Fi standards (802.11a/b/g/n/ac/ax) and frequency bands.",
+            subtopics: ["802.11a/b/g/n/ac/ax (Wi-Fi 4/5/6)", "2.4GHz vs 5GHz Frequencies", "Non-overlapping Channels (1, 6, 11)", "SSID Configuration", "WPA2 vs WPA3 Wireless Security"],
             labTitle: "WLAN Access Point Setup Lab",
             labDesc: "Configure wireless router SSIDs and WPA3 security in Packet Tracer.",
             quizTitle: "Quiz 3.2: Wireless Networks",
             glossary: [
-              { term: "SSID", acronym: "Service Set Identifier", def: "The user-facing name of a wireless local area network.", example: "Company_Guest_WiFi" }
+              { term: "SSID", acronym: "Service Set Identifier", def: "The configurable name assigned to a wireless network.", example: "Company_Guest_WiFi" },
+              { term: "2.4 GHz Band", acronym: "N/A", def: "Wireless spectrum providing longer range and better wall penetration, but prone to interference.", example: "Channels 1, 6, and 11." },
+              { term: "5 GHz Band", acronym: "N/A", def: "Wireless spectrum offering higher speeds and more non-overlapping channels, but shorter physical range.", example: "Wi-Fi 5 (802.11ac) networks." },
+              { term: "WPA3", acronym: "Wi-Fi Protected Access 3", def: "The latest Wi-Fi security standard featuring SAE (Simultaneous Authentication of Equals) encryption.", example: "Protects against dictionary attacks." },
+              { term: "MIMO", acronym: "Multiple-Input Multiple-Output", def: "Antenna technology using multiple transmitters and receivers to boost wireless throughput.", example: "Wi-Fi 6 spatial streams." }
             ]
           }
         ]
@@ -852,32 +905,40 @@
         badge: "Domain 4.0",
         capstone: "ROUTER & SWITCH CONFIGURATION",
         capstoneDesc: "Deploy enterprise switches, routers, and access points with secure VLANs.",
-        description: "Switches, routers, firewalls, and access points.",
+        description: "Switches, routers, firewalls, access points, VLANs, and routing concepts.",
         lessons: [
           {
             id: "4.1",
             badge: "LESSON 4.1",
             title: "Network Device Roles",
-            objective: "Differentiate layer 2 switching from layer 3 routing.",
-            subtopics: ["Layer 2 Switches", "Layer 3 Routers", "Wireless Access Points", "Firewalls"],
+            objective: "Differentiate Layer 2 switching from Layer 3 routing and firewall filtering.",
+            subtopics: ["Layer 2 Switches", "Layer 3 Switches", "Routers & Gateways", "Wireless Access Points (WAPs)", "Next-Gen Firewalls"],
             labTitle: "Cisco Catalyst Switch Setup Lab",
-            labDesc: "Configure basic switch management IPs and trunking.",
+            labDesc: "Configure basic switch management IPs, hostnames, and passwords.",
             quizTitle: "Quiz 4.1: Infrastructure Devices",
             glossary: [
-              { term: "Layer 2 Switch", acronym: "MAC Switch", def: "Forwards frames inside a LAN using MAC tables.", example: "Cisco Catalyst 2960." }
+              { term: "Layer 2 Switch", acronym: "MAC Switch", def: "High-speed LAN device that forwards Ethernet frames based on hardware MAC address tables.", example: "Cisco Catalyst 2960." },
+              { term: "Router", acronym: "N/A", def: "Layer 3 device that interconnects separate subnets and forwards IP packets across networks.", example: "Cisco ISR 4331." },
+              { term: "MAC Address Table", acronym: "CAM Table", def: "Memory database mapping MAC addresses to physical switch ports.", example: "Populated automatically via source MAC learning." },
+              { term: "Default Gateway", acronym: "N/A", def: "The router interface address hosts send outbound traffic to when reaching remote networks.", example: "192.168.1.1." },
+              { term: "Firewall", acronym: "N/A", def: "Security device monitoring and filtering network traffic based on predefined security rules.", example: "Stateful inspection appliance." }
             ]
           },
           {
             id: "4.2",
             badge: "LESSON 4.2",
             title: "VLANs & Trunking",
-            objective: "Configure Virtual Local Area Networks and 802.1Q trunking.",
-            subtopics: ["VLAN Concepts", "Access Ports", "Trunk Ports", "802.1Q Tagging", "Inter-VLAN Routing"],
+            objective: "Configure Virtual Local Area Networks, 802.1Q trunking, and inter-VLAN routing.",
+            subtopics: ["VLAN Concepts & Benefits", "Access Ports vs Trunk Ports", "802.1Q Frame Tagging", "Native VLAN", "Router-on-a-Stick Inter-VLAN Routing"],
             labTitle: "VLAN Configuration Lab",
-            labDesc: "Segment switches into departments and enable inter-VLAN routing.",
+            labDesc: "Segment switches into departments and enable inter-VLAN routing in Packet Tracer.",
             quizTitle: "Quiz 4.2: VLANs & Trunking",
             glossary: [
-              { term: "802.1Q", acronym: "VLAN Tagging Standard", def: "Inserts a 4-byte tag into Ethernet frames to identify VLAN membership.", example: "Trunk link traffic segregation." }
+              { term: "VLAN", acronym: "Virtual Local Area Network", def: "Logical broadcast domain created on switches to isolate traffic without separate cabling.", example: "VLAN 10 (Sales), VLAN 20 (HR)." },
+              { term: "802.1Q", acronym: "Dot1q Trunking Standard", def: "IEEE standard inserting a 4-byte header tag into Ethernet frames traveling across trunk links.", example: "Trunk carrying multiple VLANs." },
+              { term: "Trunk Port", acronym: "N/A", def: "Switch port configured to carry traffic for multiple VLANs simultaneously across switches.", example: "Inter-switch link." },
+              { term: "Access Port", acronym: "N/A", def: "Switch port assigned to a single specific VLAN for end-user PC or printer connection.", example: "Port connected to desk PC." },
+              { term: "Native VLAN", acronym: "N/A", def: "VLAN whose traffic passes across an 802.1Q trunk link without receiving a frame tag.", example: "Default VLAN 1." }
             ]
           }
         ]
@@ -887,20 +948,24 @@
         title: "5. Diagnostics & Troubleshooting",
         badge: "Domain 5.0",
         capstone: "CLI NETWORK TROUBLESHOOTING",
-        capstoneDesc: "Isolate network faults using ping, traceroute, and show commands.",
-        description: "Command-line diagnostic tools and troubleshooting methodology.",
+        capstoneDesc: "Isolate network faults using ping, traceroute, and Cisco IOS show commands.",
+        description: "Command-line diagnostic tools, interface error analysis, and structured troubleshooting.",
         lessons: [
           {
             id: "5.1",
             badge: "LESSON 5.1",
             title: "Command-Line Diagnostics",
-            objective: "Utilize ping, traceroute, ipconfig, and netstat.",
-            subtopics: ["Ping & ICMP", "Traceroute / Tracert", "Ipconfig / Ifconfig", "Nslookup", "Netstat"],
+            objective: "Utilize ping, traceroute, ipconfig, nslookup, and netstat to isolate connectivity faults.",
+            subtopics: ["Ping & ICMP Echo", "Traceroute / Tracert (TTL Hops)", "Ipconfig / Ifconfig / IP address show", "Nslookup & Dig", "Netstat & Arp -a"],
             labTitle: "Troubleshooting Faulty Networks Lab",
-            labDesc: "Diagnose broken connectivity using CLI diagnostic tools.",
+            labDesc: "Diagnose broken connectivity using CLI diagnostic tools in Packet Tracer.",
             quizTitle: "Quiz 5.1: CLI Diagnostics",
             glossary: [
-              { term: "Traceroute", acronym: "Tracert", def: "Displays the path and transit delays of packets across IP hops.", example: "Identifies router hop drops." }
+              { term: "Ping", acronym: "Packet Internet Groper", def: "Diagnostic utility sending ICMP Echo Requests to verify Layer 3 IP reachability.", example: "ping 8.8.8.8" },
+              { term: "Traceroute", acronym: "Tracert", def: "Tool tracking packet path and latency across router hops using ICMP/UDP TTL expiry.", example: "tracert google.com" },
+              { term: "ARP", acronym: "Address Resolution Protocol", def: "Resolves known Layer 3 IP addresses into Layer 2 hardware MAC addresses.", example: "arp -a shows cached entries." },
+              { term: "Nslookup", acronym: "Name Server Lookup", def: "CLI utility querying DNS servers to verify domain name resolution and A records.", example: "nslookup cisco.com" },
+              { term: "Netstat", acronym: "Network Statistics", def: "Displays active TCP connections, listening ports, and routing tables on host OS.", example: "netstat -ano" }
             ]
           }
         ]
@@ -911,19 +976,23 @@
         badge: "Domain 6.0",
         capstone: "SECURITY HARDENING & ACLS",
         capstoneDesc: "Implement password policies, port security, and standard ACL filters.",
-        description: "Network access control, WPA3 wireless encryption, and ACL filters.",
+        description: "Network access control, WPA3 wireless encryption, SSH configuration, and ACL filters.",
         lessons: [
           {
             id: "6.1",
             badge: "LESSON 6.1",
-            title: "Access Control & Authentication",
-            objective: "Implement basic security mechanisms including firewalls and ACLs.",
-            subtopics: ["Authentication Methods", "Password Policies", "ACLs", "Port Security", "WPA2/WPA3"],
+            title: "Access Control & Hardening",
+            objective: "Implement basic security mechanisms including SSH, Port Security, and Access Control Lists.",
+            subtopics: ["Authentication (AAA & RADIUS)", "Port Security (MAC sticky)", "Standard & Extended ACLs", "SSH vs Telnet Encryption", "Wireless WPA2/WPA3 Enterprise"],
             labTitle: "Port Security & ACL Lab",
-            labDesc: "Restrict unauthorized switch port access and filter traffic with ACLs.",
+            labDesc: "Restrict unauthorized switch port access and filter traffic with ACLs in Packet Tracer.",
             quizTitle: "Quiz 6.1: Security & ACLs",
             glossary: [
-              { term: "Access Control List", acronym: "ACL", def: "Sequential set of permit/deny rules applied to filter IP traffic.", example: "Filtering destination ports." }
+              { term: "ACL", acronym: "Access Control List", def: "Sequential permit/deny rules applied to router interfaces to filter traffic by IP or port.", example: "Standard ACL (1-99) or Extended ACL (100-199)." },
+              { term: "Port Security", acronym: "Switchport Hardening", def: "Feature limiting allowed MAC addresses on a switch port to prevent rogue device connections.", example: "switchport port-security mac-address sticky." },
+              { term: "SSH", acronym: "Secure Shell", def: "Encrypted remote terminal protocol (Port 22) replacing insecure cleartext Telnet (Port 23).", example: "Connecting to switch CLI securely." },
+              { term: "AAA", acronym: "Authentication, Authorization, Accounting", def: "Security framework controlling user login, permission privileges, and command logging.", example: "RADIUS or TACACS+ server." },
+              { term: "Principle of Least Privilege", acronym: "PoLP", def: "Security rule granting users only the minimum access rights required to perform their duties.", example: "Read-only operator roles." }
             ]
           }
         ]
@@ -949,6 +1018,7 @@
       }
       loadDomain(0);
       fetchRegisteredStudentsList();
+      renderBotTopicChips('all');
     });
 
     function showToast(message, icon = '⚡') {
@@ -1242,6 +1312,9 @@
       }
     }
 
+    /* GLOSSARY MODAL LOGIC & SEARCH */
+    let currentGlossaryTerms = [];
+
     function openGlossaryModalFor(lessonIdx) {
       const lesson = domainsData[activeDomainIndex].lessons[lessonIdx];
       renderGlossaryFilterTabs();
@@ -1259,7 +1332,7 @@
 
     function renderGlossaryFilterTabs() {
       const tabsContainer = document.getElementById('glossaryFilterTabs');
-      let html = `<button onclick="filterGlossary('all')" class="bg-teal-600 text-white font-bold px-3 py-1 rounded-full whitespace-nowrap cursor-pointer">🌐 All Terms</button>`;
+      let html = `<button onclick="filterGlossary('all')" class="bg-teal-600 text-white font-bold px-3 py-1 rounded-full whitespace-nowrap cursor-pointer">🌐 All Domains</button>`;
       
       domainsData.forEach((d, dIdx) => {
         html += `<button onclick="filterGlossary(${dIdx})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-1 rounded-full whitespace-nowrap cursor-pointer">Domain ${dIdx + 1}</button>`;
@@ -1268,6 +1341,7 @@
     }
 
     function filterGlossary(domainIndex) {
+      document.getElementById('glossarySearchInput').value = '';
       let terms = [];
       if (domainIndex === 'all') {
         domainsData.forEach(d => d.lessons.forEach(l => terms.push(...l.glossary)));
@@ -1277,26 +1351,70 @@
       renderGlossaryContent(terms);
     }
 
-    function renderGlossaryContent(termsList) {
+    function filterGlossaryBySearch() {
+      const query = document.getElementById('glossarySearchInput').value.toLowerCase().trim();
+      if (!query) {
+        renderGlossaryContent(currentGlossaryTerms);
+        return;
+      }
+      const filtered = currentGlossaryTerms.filter(g => 
+        g.term.toLowerCase().includes(query) || 
+        (g.acronym && g.acronym.toLowerCase().includes(query)) || 
+        g.def.toLowerCase().includes(query)
+      );
+      renderGlossaryContent(filtered, true);
+    }
+
+    function renderGlossaryContent(termsList, isSubSearch = false) {
+      if (!isSubSearch) currentGlossaryTerms = termsList;
       const container = document.getElementById('glossaryModalContent');
+      const countEl = document.getElementById('glossaryTotalCount');
+      
+      if (countEl) countEl.textContent = `${termsList.length} Terms Available`;
+
       if (!termsList || termsList.length === 0) {
-        container.innerHTML = `<p class="text-slate-400 italic">No glossary terms available for this section.</p>`;
+        container.innerHTML = `<p class="text-slate-400 italic text-center py-6">No matching glossary terms found.</p>`;
         return;
       }
 
       container.innerHTML = termsList.map(g => `
-        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1 hover:border-teal-400 transition">
+        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-1.5 hover:border-teal-400 transition">
           <div class="flex items-center justify-between">
-            <h5 class="font-extrabold text-teal-900 text-xs">📖 ${g.term}</h5>
+            <h5 class="font-extrabold text-teal-900 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-book-open text-teal-600"></i> ${g.term}
+            </h5>
             ${g.acronym && g.acronym !== 'N/A' ? `<span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded-md border border-teal-200">${g.acronym}</span>` : ''}
           </div>
-          <p class="text-slate-700 leading-relaxed text-[11px]">${g.def}</p>
-          ${g.example ? `<div class="bg-white p-2 rounded-lg border border-slate-200/80 text-[10px] text-slate-600 font-medium"><strong>💡 Example:</strong> ${g.example}</div>` : ''}
+          <p class="text-slate-700 leading-relaxed text-[11px] font-medium">${g.def}</p>
+          ${g.example ? `<div class="bg-white p-2 rounded-xl border border-slate-200/80 text-[10px] text-slate-600 font-medium"><strong>💡 Example / Application:</strong> ${g.example}</div>` : ''}
         </div>
       `).join('');
     }
 
     function closeGlossaryModal() { document.getElementById('glossaryModal').classList.add('hidden'); }
+
+    /* CHATBOT PROACTIVE ACTIVE TOPICS SYSTEM */
+    function renderBotTopicChips(filter) {
+      const container = document.getElementById('aiChatTopicChips');
+      if (!container) return;
+
+      let subtopics = [];
+      domainsData.forEach((d, dIdx) => {
+        if (filter === 'all' || filter === `d${dIdx + 1}`) {
+          d.lessons.forEach(l => {
+            l.subtopics.forEach(st => {
+              subtopics.push({ topic: st, domain: d.badge });
+            });
+          });
+        }
+      });
+
+      container.innerHTML = subtopics.map(item => `
+        <button onclick="sendQuickPrompt('Explain detailed topic: ${item.topic}')" class="bg-white hover:bg-blue-50 text-slate-800 border border-slate-200 px-2.5 py-1 rounded-full whitespace-nowrap font-bold text-[10px] transition cursor-pointer shadow-2xs">
+          💡 ${item.topic}
+        </button>
+      `).join('');
+    }
 
     function handleAiSubmit(e) {
       e.preventDefault();
@@ -1310,26 +1428,106 @@
       chatBox.scrollTop = chatBox.scrollHeight;
 
       setTimeout(() => {
-        let response = "In CCST networking, mastering core concepts across OSI layers, IP subnetting, media types, routers/switches, CLI tools, and security ensures career track success!";
-        const q = text.toLowerCase();
-
-        if (q.includes('osi') || q.includes('layer') || q.includes('tcp')) {
-          response = "<strong>Domain 1 - OSI & TCP/IP:</strong><br>• 7 Layers: Physical, Data Link, Network, Transport, Session, Presentation, Application.<br>• Encapsulation wraps data downwards from L7 to L1.";
-        } else if (q.includes('subnet') || q.includes('cidr') || q.includes('ipv4') || q.includes('ip')) {
-          response = "<strong>Domain 2 - Addressing & Subnetting:</strong><br>• /24 = 255.255.255.0 (254 usable hosts).<br>• /30 = point-to-point links.<br>• IPv4 is 32-bit; IPv6 is 128-bit hex.";
-        } else if (q.includes('fiber') || q.includes('cable') || q.includes('media') || q.includes('cat')) {
-          response = "<strong>Domain 3 - Endpoints & Media:</strong><br>• Single-mode Fiber uses lasers for long WAN spans.<br>• Multi-mode Fiber uses LEDs for data centers.<br>• Cat6 supports up to 10 Gbps.";
-        } else if (q.includes('switch') || q.includes('router') || q.includes('hardware') || q.includes('firewall')) {
-          response = "<strong>Domain 4 - Infrastructure:</strong><br>• Layer 2 Switches forward frames based on MAC tables.<br>• Layer 3 Routers route packets between different subnets using IP routing tables.";
-        } else if (q.includes('ping') || q.includes('traceroute') || q.includes('diagnos') || q.includes('troubleshoot')) {
-          response = "<strong>Domain 5 - Diagnostics:</strong><br>• <code>ping</code> tests reachability via ICMP.<br>• <code>traceroute</code> maps router hops.<br>• <code>ipconfig</code> views local adapter configs.";
-        } else if (q.includes('security') || q.includes('acl') || q.includes('wpa3') || q.includes('port security')) {
-          response = "<strong>Domain 6 - Security:</strong><br>• ACLs filter packets based on rules.<br>• Port Security binds MAC addresses to switch ports.<br>• WPA3 secures wireless networks.";
-        }
-
-        chatBox.innerHTML += `<div class="flex items-start gap-2"><div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div><div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 max-w-[85%] leading-relaxed">${response}</div></div>`;
+        let response = generateProBotResponse(text);
+        chatBox.innerHTML += `<div class="flex items-start gap-2"><div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div><div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 max-w-[88%] leading-relaxed">${response}</div></div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
-      }, 600);
+      }, 500);
+    }
+
+    function generateProBotResponse(text) {
+      const q = text.toLowerCase();
+
+      // Detailed responses for every topic across Domains 1 to 6
+      if (q.includes('osi') || q.includes('layer') || q.includes('7 osi')) {
+        return "<strong>Domain 1 - 7 OSI Layers Breakdown:</strong><br>" +
+               "• <strong>Layer 7 (Application):</strong> HTTP, DNS, DHCP, FTP.<br>" +
+               "• <strong>Layer 6 (Presentation):</strong> Encryption (SSL/TLS), formatting.<br>" +
+               "• <strong>Layer 5 (Session):</strong> Manages session dialogs (NetBIOS).<br>" +
+               "• <strong>Layer 4 (Transport):</strong> TCP/UDP, Port numbers, Segments.<br>" +
+               "• <strong>Layer 3 (Network):</strong> IP Addressing, Routers, Packets.<br>" +
+               "• <strong>Layer 2 (Data Link):</strong> MAC Addressing, Switches, Frames.<br>" +
+               "• <strong>Layer 1 (Physical):</strong> Cables, Hubs, Bits.";
+      }
+      if (q.includes('tcp') || q.includes('4 tcp') || q.includes('encapsulation') || q.includes('pdu')) {
+        return "<strong>Domain 1 - TCP/IP & Encapsulation:</strong><br>" +
+               "• <strong>4 TCP/IP Layers:</strong> Application, Transport, Internet, Network Access.<br>" +
+               "• <strong>Encapsulation Order:</strong> Data → Segment (L4) → Packet (L3) → Frame (L2) → Bits (L1).<br>" +
+               "• <strong>Decapsulation:</strong> Receiving node strips L2 headers, then L3 IP headers, up to payload data.";
+      }
+      if (q.includes('topology') || q.includes('star') || q.includes('mesh') || q.includes('bus')) {
+        return "<strong>Domain 1 - Network Topologies:</strong><br>" +
+               "• <strong>Star:</strong> Central switch connection; easy troubleshooting.<br>" +
+               "• <strong>Mesh:</strong> Full redundancy ($N(N-1)/2$ links); used in WAN backbones.<br>" +
+               "• <strong>Bus/Ring:</strong> Legacy single-cable or circular token architectures.";
+      }
+      if (q.includes('bandwidth') || q.includes('throughput') || q.includes('latency') || q.includes('jitter')) {
+        return "<strong>Domain 1 - Network Performance Metrics:</strong><br>" +
+               "• <strong>Bandwidth:</strong> Max theoretical rate (e.g., 1 Gbps Cat6).<br>" +
+               "• <strong>Throughput:</strong> Actual measured transfer speed.<br>" +
+               "• <strong>Latency:</strong> Round-trip delay in ms (Ping).<br>" +
+               "• <strong>Jitter:</strong> Variance in packet arrival delay affecting VoIP.";
+      }
+      if (q.includes('lan') || q.includes('wan') || q.includes('wlan') || q.includes('man') || q.includes('san')) {
+        return "<strong>Domain 1 - Network Geographic Types:</strong><br>" +
+               "• <strong>LAN:</strong> Local area switch network within a building.<br>" +
+               "• <strong>WAN:</strong> Wide area interconnecting separate offices over ISP links.<br>" +
+               "• <strong>WLAN:</strong> 802.11 Wireless LAN.<br>" +
+               "• <strong>SAN:</strong> Dedicated block-level storage network (Fibre Channel/iSCSI).";
+      }
+      if (q.includes('subnet') || q.includes('cidr') || q.includes('ipv4') || q.includes('classes') || q.includes('apipa')) {
+        return "<strong>Domain 2 - IPv4 & Subnetting Math:</strong><br>" +
+               "• <strong>Class A, B, C Private IPs (RFC 1918):</strong> 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.<br>" +
+               "• <strong>CIDR Masks:</strong> /24 = 255.255.255.0 (254 hosts); /26 = 255.255.255.192 (62 hosts); /30 = point-to-point (2 hosts).<br>" +
+               "• <strong>APIPA:</strong> 169.254.x.x assigned automatically if DHCP fails.";
+      }
+      if (q.includes('ipv6') || q.includes('slaac') || q.includes('eui-64') || q.includes('global unicast')) {
+        return "<strong>Domain 2 - IPv6 Architecture:</strong><br>" +
+               "• 128-bit hexadecimal addresses.<br>" +
+               "• <strong>Global Unicast (2000::/3):</strong> Public routable Internet addresses.<br>" +
+               "• <strong>Link-Local (fe80::/10):</strong> Auto-configured on local subnets.<br>" +
+               "• <strong>SLAAC & EUI-64:</strong> Auto-generates host address using MAC address + ICMPv6 RA.";
+      }
+      if (q.includes('cable') || q.includes('cat6') || q.includes('fiber') || q.includes('t568b') || q.includes('connector')) {
+        return "<strong>Domain 3 - Media & Cabling:</strong><br>" +
+               "• <strong>Cat5e/Cat6:</strong> Copper twisted pair up to 100 meters.<br>" +
+               "• <strong>T568B Order:</strong> Orange-White, Orange, Green-White, Blue, Blue-White, Green, Brown-White, Brown.<br>" +
+               "• <strong>Single-Mode Fiber (SMF):</strong> Laser optics for long WAN distances.<br>" +
+               "• <strong>Multi-Mode Fiber (MMF):</strong> LED optics for local data centers.";
+      }
+      if (q.includes('wifi') || q.includes('wireless') || q.includes('802.11') || q.includes('2.4ghz') || q.includes('wpa3')) {
+        return "<strong>Domain 3 - Wireless Standards:</strong><br>" +
+               "• <strong>802.11n (Wi-Fi 4), 802.11ac (Wi-Fi 5), 802.11ax (Wi-Fi 6).</strong><br>" +
+               "• <strong>2.4 GHz vs 5 GHz:</strong> 2.4GHz penetrates walls better (Channels 1, 6, 11); 5GHz offers faster speed.<br>" +
+               "• <strong>WPA3 Security:</strong> Uses SAE encryption for robust protection.";
+      }
+      if (q.includes('switch') || q.includes('router') || q.includes('gateway') || q.includes('mac address table')) {
+        return "<strong>Domain 4 - Network Hardware Roles:</strong><br>" +
+               "• <strong>Layer 2 Switch:</strong> Forwards frames based on MAC address table.<br>" +
+               "• <strong>Layer 3 Router:</strong> Routes packets between different subnets using IP routing tables.<br>" +
+               "• <strong>Default Gateway:</strong> Router IP where PCs send outbound traffic.";
+      }
+      if (q.includes('vlan') || q.includes('trunk') || q.includes('802.1q') || q.includes('access port')) {
+        return "<strong>Domain 4 - VLANs & Trunking:</strong><br>" +
+               "• <strong>VLAN:</strong> Broadcast domain isolation at Layer 2.<br>" +
+               "• <strong>802.1Q Trunking:</strong> Inserts a 4-byte frame tag to send traffic for multiple VLANs over a single link.<br>" +
+               "• <strong>Router-on-a-Stick:</strong> Subinterfaces on router for inter-VLAN routing.";
+      }
+      if (q.includes('ping') || q.includes('traceroute') || q.includes('tracert') || q.includes('nslookup') || q.includes('arp')) {
+        return "<strong>Domain 5 - Command-Line Diagnostics:</strong><br>" +
+               "• <code>ping [IP]</code>: ICMP Echo test for L3 connectivity.<br>" +
+               "• <code>tracert [Domain]</code>: Shows every router hop along path.<br>" +
+               "• <code>nslookup [Domain]</code>: Queries DNS server records.<br>" +
+               "• <code>arp -a</code>: Displays MAC-to-IP resolution table.";
+      }
+      if (q.includes('acl') || q.includes('port security') || q.includes('ssh') || q.includes('security') || q.includes('aaa')) {
+        return "<strong>Domain 6 - Security & Hardening:</strong><br>" +
+               "• <strong>ACL:</strong> Sequential permit/deny filters for IP traffic.<br>" +
+               "• <strong>Port Security:</strong> Binds switch port to sticky MAC addresses to block rogues.<br>" +
+               "• <strong>SSH:</strong> Encrypted CLI administration (Port 22).";
+      }
+
+      return `<strong>Topic Details for: "${text}"</strong><br>` +
+             `In CCST Networking, mastering this topic involves understanding its function across the OSI model, configuring it on Cisco IOS switches/routers, and verifying operations using CLI commands. Select any active topic chip above for exact technical breakdowns!`;
     }
 
     function switchDomain(index) {
@@ -1365,7 +1563,7 @@
           <h4 class="font-extrabold text-[11px] ${idx === activeLessonIndex ? 'text-purple-900' : 'text-slate-900'} group-hover:text-purple-700 transition">${lesson.title}</h4>
           
           <div class="flex items-center justify-between pt-2 mt-2 border-t border-slate-200/60 text-[10px]">
-            <span class="text-teal-700 font-bold hover:underline" onclick="event.stopPropagation(); openGlossaryModalFor(${idx})">📖 Glossary</span>
+            <span class="text-teal-700 font-bold hover:underline" onclick="event.stopPropagation(); openGlossaryModalFor(${idx})">📖 Lesson Glossary</span>
             <span class="text-amber-800 font-extrabold bg-amber-100 px-2 py-0.5 rounded border border-amber-300/80" onclick="event.stopPropagation(); openAssignmentModalFor(${idx})">📤 Submit Lab</span>
           </div>
         </div>
@@ -1378,7 +1576,6 @@
       const lesson = domain.lessons[lessonIdx];
 
       document.getElementById('activeLessonBadge').textContent = lesson.badge;
-      document.querySelectorAll('.activeLessonBadgeInline').forEach(el => el.textContent = lesson.badge);
       document.getElementById('activeLessonTitle').textContent = lesson.title;
       document.getElementById('activeLessonObjective').textContent = lesson.objective;
       document.getElementById('lessonTopicBadge').textContent = `${lesson.subtopics.length} Topics`;
