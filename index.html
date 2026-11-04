@@ -181,8 +181,8 @@
     </div>
   </header>
 
-  <!-- MAIN WRAPPER CONTAINER (FULL WIDTH) -->
-  <div class="w-full px-4 sm:px-6 py-6 space-y-6 flex-1">
+  <!-- MAIN WRAPPER CONTAINER (VISIBLE AT ALL TIMES, BLURRED WHEN UNAUTHENTICATED) -->
+  <div id="portalMainWrapper" class="w-full px-4 sm:px-6 py-6 space-y-6 flex-1 transition-all duration-300">
 
     <!-- DOMAIN TABS NAVIGATION WITH VISTA ACTIVE GREEN PROGRESS BAR ON RIGHT -->
     <section class="bg-white rounded-2xl p-2.5 border border-slate-200 shadow-sm no-print w-full flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -654,8 +654,8 @@
     </div>
   </div>
 
-  <!-- AUTH MODAL -->
-  <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+  <!-- AUTH MODAL (UPDATED OVERLAY: BLURS BACKGROUND WITHOUT VANISHING IT) -->
+  <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/20 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
     <div class="bg-white rounded-3xl max-w-md w-full p-7 shadow-2xl border border-slate-100 space-y-5 relative overflow-hidden text-[11px]">
       
       <div class="absolute -top-12 -right-12 w-32 h-32 bg-teal-500/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -666,7 +666,7 @@
           <span class="text-slate-300">|</span>
           <button id="tabSignUpBtn" onclick="setAuthTab('signup')" class="text-xs font-bold text-slate-400 pb-1 hover:text-slate-600 transition cursor-pointer">✨ Create Account</button>
         </div>
-        <button onclick="closeAuthModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer">
+        <button id="authCloseBtn" onclick="closeAuthModal()" class="hidden w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer">
           <i class="fa-solid fa-xmark text-xs"></i>
         </button>
       </div>
@@ -1011,15 +1011,31 @@
       renderDomainNav();
       
       if (currentUser) {
+        unlockPortal();
         await syncUserProgressFromCloud();
         showToast('👋 Welcome back, ' + currentUser.name + '!', '⚡');
+        loadDomain(0);
+        fetchRegisteredStudentsList();
+        renderBotTopicChips('all');
       } else {
-        setTimeout(() => { openAuthModal('signin'); }, 600);
+        lockPortal();
+        openAuthModal('signin');
       }
-      loadDomain(0);
-      fetchRegisteredStudentsList();
-      renderBotTopicChips('all');
     });
+
+    function lockPortal() {
+      const wrapper = document.getElementById('portalMainWrapper');
+      if (wrapper) {
+        wrapper.classList.add('blur-sm', 'pointer-events-none', 'select-none');
+      }
+    }
+
+    function unlockPortal() {
+      const wrapper = document.getElementById('portalMainWrapper');
+      if (wrapper) {
+        wrapper.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
+      }
+    }
 
     function showToast(message, icon = '⚡') {
       const bar = document.getElementById('toastMessageBar');
@@ -1077,10 +1093,22 @@
 
     function openAuthModal(mode) {
       setAuthTab(mode);
+      const closeBtn = document.getElementById('authCloseBtn');
+      if (currentUser) {
+        if (closeBtn) closeBtn.classList.remove('hidden');
+      } else {
+        if (closeBtn) closeBtn.classList.add('hidden'); // Force login before close if unauthenticated
+      }
       document.getElementById('authModal').classList.remove('hidden');
     }
 
-    function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
+    function closeAuthModal() {
+      if (!currentUser) {
+        showToast('🔒 Please sign in to access the student portal.', '🛡️');
+        return;
+      }
+      document.getElementById('authModal').classList.add('hidden');
+    }
 
     function setAuthTab(mode) {
       authMode = mode;
@@ -1123,10 +1151,12 @@
       }
 
       updateHeaderAuthUI();
+      unlockPortal();
       await syncUserProgressFromCloud();
       closeAuthModal();
       loadDomain(activeDomainIndex);
       fetchRegisteredStudentsList();
+      renderBotTopicChips('all');
       showToast(`🎉 Successfully logged in as ${currentUser.name}!`, '⚡');
     }
 
@@ -1136,8 +1166,7 @@
         localStorage.removeItem('ccst_user');
         localStorage.clear();
         updateHeaderAuthUI();
-        loadDomain(0);
-        fetchRegisteredStudentsList();
+        lockPortal();
         showToast('🔒 Signed out successfully.', '🛡️');
         openAuthModal('signin');
       }
