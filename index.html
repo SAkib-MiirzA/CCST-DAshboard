@@ -140,6 +140,12 @@
       </div>
 
       <div class="flex items-center gap-3">
+        <!-- DIGITAL CLOCK WIDGET -->
+        <div class="bg-black/20 border border-white/20 rounded-xl px-3 py-1.5 flex items-center gap-2 text-xs backdrop-blur-sm text-teal-100 font-bold">
+          <i class="fa-regular fa-clock text-amber-300"></i>
+          <span id="digitalClockTime">00:00:00</span>
+        </div>
+
         <div class="bg-black/20 border border-white/20 rounded-xl px-3 py-1.5 flex items-center gap-3 text-xs backdrop-blur-sm">
           <div>
             <span class="text-teal-200 block text-[9px] font-semibold uppercase">Overall Progress</span>
@@ -217,7 +223,7 @@
           <i class="fa-solid fa-book text-amber-300"></i> Master Glossary
         </button>
         <button onclick="openCurrentAssignment()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-[11px] px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
-          <i class="fa-solid fa-cloud-arrow-up"></i> 📤 Submit Lab (.pkt / Image)
+          <i class="fa-solid fa-cloud-arrow-up"></i> 📤 Submit Lab (.pkt / .pka / Image)
         </button>
       </div>
       <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -600,11 +606,11 @@
         </div>
 
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Upload Solution File (.pkt, PNG, JPG, PDF)</label>
+          <label class="block font-bold text-slate-700 mb-1">Upload Solution File (.pkt, .pka, PNG, JPG, PDF)</label>
           <div id="dropzoneContainer" onclick="document.getElementById('assignmentFileInput').click()" class="border-2 border-dashed border-amber-300 hover:border-amber-500 rounded-2xl p-3.5 text-center bg-amber-50/40 hover:bg-amber-50 transition cursor-pointer space-y-1">
             <i class="fa-solid fa-cloud-arrow-up text-xl text-amber-600 mb-1"></i>
             <p class="text-slate-700 font-bold">Click to select file or drag & drop</p>
-            <p class="text-[9px] text-slate-400">PKT, PDF, PNG, JPG up to 20MB</p>
+            <p class="text-[9px] text-slate-400">PKT, PKA, PDF, PNG, JPG up to 20MB</p>
             <input type="file" id="assignmentFileInput" onchange="handleFileSelect(this)" class="hidden">
           </div>
           <p id="selectedFileName" class="text-[10px] text-teal-700 font-extrabold mt-1.5 hidden flex items-center gap-1">
@@ -1009,6 +1015,7 @@
       loadSavedUser();
       updateHeaderAuthUI();
       renderDomainNav();
+      startDigitalClock();
       
       if (currentUser) {
         unlockPortal();
@@ -1022,6 +1029,18 @@
         openAuthModal('signin');
       }
     });
+
+    function startDigitalClock() {
+      function updateClock() {
+        const now = new Date();
+        const clockEl = document.getElementById('digitalClockTime');
+        if (clockEl) {
+          clockEl.textContent = now.toLocaleTimeString();
+        }
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    }
 
     function lockPortal() {
       const wrapper = document.getElementById('portalMainWrapper');
@@ -1209,7 +1228,8 @@
           const colors = ['emerald', 'indigo', 'amber', 'purple', 'cyan', 'rose'];
 
           container.innerHTML = data.map((st, idx) => {
-            const isOnline = currentUser && currentUser.email === st.email;
+            // Disabled online status exclusively for sakib00786@gmail.com
+            const isOnline = currentUser && currentUser.email === st.email && st.email !== 'sakib00786@gmail.com';
             const color = colors[idx % colors.length];
             return `
               <div class="flex items-center justify-between bg-slate-50 p-2 rounded-xl border border-slate-200">
@@ -1466,7 +1486,6 @@
     function generateProBotResponse(text) {
       const q = text.toLowerCase();
 
-      // Detailed responses for every topic across Domains 1 to 6
       if (q.includes('osi') || q.includes('layer') || q.includes('7 osi')) {
         return "<strong>Domain 1 - 7 OSI Layers Breakdown:</strong><br>" +
                "• <strong>Layer 7 (Application):</strong> HTTP, DNS, DHCP, FTP.<br>" +
@@ -1773,7 +1792,8 @@
           const fileExt = selectedAssignmentFile.name.split('.').pop().toLowerCase();
           
           let folderName = 'Documents';
-          if (fileExt === 'pkt') {
+          // Added .pka support alongside .pkt in Packet Tracer files folder list
+          if (fileExt === 'pkt' || fileExt === 'pka') {
             folderName = 'Packet Tracer files';
           } else if (['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(fileExt)) {
             folderName = 'Pix';
