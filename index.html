@@ -41,17 +41,12 @@
   </script>
 
   <style>
-    /* Global font size reduction */
-    html {
-      font-size: 13.5px;
-    }
-
+    html { font-size: 13.5px; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #0d9488; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #0f766e; }
 
-    /* Aero Vista Glassmorphism Style */
     .aero-vista-bar {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.9) 100%);
       backdrop-filter: blur(12px);
@@ -64,7 +59,6 @@
       box-shadow: 0 6px 24px -2px rgba(13, 148, 136, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
     }
 
-    /* Retro Flip Clock Card Design - High Contrast Visibility */
     .flip-card {
       background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
       border: 1.5px solid rgba(13, 148, 136, 0.6);
@@ -74,15 +68,11 @@
     .flip-card::after {
       content: '';
       position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
+      top: 50%; left: 0; right: 0; height: 1px;
       background: rgba(0, 0, 0, 0.8);
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
-    /* Vista Active Green Glass Progress Bar */
     .vista-progress-container {
       background: linear-gradient(135deg, rgba(15, 118, 110, 0.2) 0%, rgba(13, 148, 136, 0.15) 100%);
       backdrop-filter: blur(8px);
@@ -94,24 +84,17 @@
       box-shadow: 0 0 12px rgba(52, 211, 153, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.6);
     }
 
-    /* Mascot Floating Animation */
     @keyframes mascotFloat {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-7px); }
     }
-    .mascot-floating {
-      animation: mascotFloat 3.5s ease-in-out infinite;
-    }
+    .mascot-floating { animation: mascotFloat 3.5s ease-in-out infinite; }
 
-    /* Blinking Eyes Animation */
     @keyframes blinkEyes {
       0%, 90%, 100% { transform: scaleY(1); }
       95% { transform: scaleY(0.1); }
     }
-    .blinking-eyes {
-      animation: blinkEyes 4s infinite;
-      transform-origin: center;
-    }
+    .blinking-eyes { animation: blinkEyes 4s infinite; transform-origin: center; }
 
     @media print {
       body { background-color: white !important; color: black !important; }
@@ -134,7 +117,6 @@
   <!-- TOP HEADER NAVBAR -->
   <header class="sticky top-0 z-40 bg-gradient-to-r from-teal-600 via-teal-700 to-cyan-800 text-white backdrop-blur-md border-b border-teal-800/30 shadow-md no-print w-full">
     <div class="w-full px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
-      
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center text-white shadow-inner">
           <i class="fa-solid fa-network-wired text-lg"></i>
@@ -149,8 +131,7 @@
       </div>
 
       <div class="flex items-center gap-3 flex-wrap">
-        
-        <!-- VISIBLE RETRO FLIP CLOCK DISPLAY -->
+        <!-- RETRO FLIP CLOCK DISPLAY -->
         <div class="bg-slate-950 border border-teal-500/40 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-2xl backdrop-blur-sm">
           <div class="flex flex-col items-center">
             <span class="text-[7.5px] font-bold text-amber-400 uppercase tracking-widest leading-tight">Hour</span>
@@ -201,7 +182,6 @@
           <i class="fa-solid fa-rotate-left text-xs"></i>
         </button>
 
-        <!-- Dynamic User Profile / Login Button Container -->
         <div id="authHeaderContainer">
           <button id="loginTriggerBtn" onclick="openAuthModal('signin')" class="bg-amber-400 hover:bg-amber-500 text-slate-950 text-[11px] font-black px-3.5 py-2 rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-user-shield"></i> 🔐 Student Login
@@ -218,16 +198,14 @@
             </button>
           </div>
         </div>
-
       </div>
-
     </div>
   </header>
 
   <!-- MAIN WRAPPER CONTAINER -->
   <div id="portalMainWrapper" class="w-full px-4 sm:px-6 py-6 space-y-6 flex-1 transition-all duration-300">
 
-    <!-- LATEST SUBMITTED FILES BANNER (STATIC DISPLAY WITHOUT SLIDE ANIMATION) -->
+    <!-- SUBMITTED FILES BANNER -->
     <section id="submittedFilesBannerSection" class="hidden bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-xl border border-teal-500/30 no-print w-full relative overflow-hidden">
       <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
         <div class="flex items-center gap-2.5">
@@ -446,7 +424,6 @@
 
   <!-- FLOATING ICONS (BOTTOM LEFT) -->
   <div class="fixed bottom-5 left-5 z-40 flex flex-col items-start gap-2.5 no-print">
-    
     <div class="relative group">
       <button onclick="openInstructorPortalPrompt()" class="w-10 h-10 rounded-2xl bg-teal-800 hover:bg-teal-900 text-amber-300 shadow-xl border border-teal-600 flex items-center justify-center transition hover:scale-110 cursor-pointer" title="Instructor Portal">
         <i class="fa-solid fa-user-tie text-base"></i>
@@ -471,11 +448,8 @@
         <h4 class="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs">
           <i class="fa-solid fa-user-graduate text-teal-600"></i> 🎓 Registered Accounts
         </h4>
-        <button onclick="toggleStudentDrawer()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        <button onclick="toggleStudentDrawer()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
       </div>
-
       <div id="studentListContainer" class="max-h-56 overflow-y-auto space-y-2 pr-1">
         <p class="text-slate-400 text-[10px] italic">Loading registered students...</p>
       </div>
@@ -567,7 +541,7 @@
           <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div>
           <div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 space-y-1.5 max-w-[88%]">
             <p class="font-extrabold text-slate-900">Welcome Pro Networking Student! 👋</p>
-            <p class="text-[10px] leading-relaxed">I am fully equipped with complete technical details for <strong>every single topic</strong> across Domains 1 to 6.</p>
+            <p class="text-[10px] leading-relaxed">I am connected to live AI to assist you with every single networking topic across Domains 1 to 6.</p>
           </div>
         </div>
       </div>
@@ -679,7 +653,6 @@
   <!-- AUTH MODAL -->
   <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/20 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
     <div class="bg-white rounded-3xl max-w-md w-full p-7 shadow-2xl border border-slate-100 space-y-5 relative overflow-hidden text-[11px]">
-      
       <div class="absolute -top-12 -right-12 w-32 h-32 bg-teal-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -730,7 +703,7 @@
   <script>
     const SUPABASE_URL = 'https://zusnbawalemprtizubzh.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_3SjMa829fo37hIS2xBS5IA_HlGwEVQS';
-    const NOTIFICATION_EMAIL = 'sakib00786@gmail.com';
+    const NOTIFICATION_EMAIL = 'sakib00786@gmail.com'; //
     
     let supabaseClient = null;
     if (window.supabase) {
@@ -890,7 +863,7 @@
             badge: "LESSON 3.1",
             title: "Cabling & Connector Types",
             objective: "Identify twisted pair Ethernet cables, copper pinouts, single-mode and multi-mode fiber.",
-            subtopics: ["Cat5e / Cat6 / Cat6a Standards <details class='relative inline-block ml-3 align-middle group'><summary class='list-none cursor-pointer inline-block bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-lg hover:bg-sky-200 transition'>Cables</summary><div class='absolute z-[99999] bottom-full left-1/2 -translate-x-1/2 flex items-end gap-3 pb-2'><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 -rotate-12'></div><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 rotate-12'></div><a href='https://ipcisco.com/lesson/network-cabling/' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>1</a><a href='https://www.geeksforgeeks.org/computer-networks/types-of-ethernet-cable/' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatDown 3s ease-in-out infinite'>2</a><a href='https://www.instagram.com/p/DaBNEtGxkL1/' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>3</a></div></details>", "T568A vs T568B Wiring <details class='relative inline-block ml-3 align-middle group'><summary class='list-none cursor-pointer inline-block bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-lg hover:bg-sky-200 transition'>Wiring</summary><div class='absolute z-[99999] bottom-full left-1/2 -translate-x-1/2 flex items-end gap-3 pb-2'><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 -rotate-12'></div><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 rotate-12'></div><a href='https://www.computercablestore.com/what-are-ethernet-crossover-cables' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>1</a><a href='https://www.router-switch.com/faq/what-are-straight-and-crossover-cable.html' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatDown 3s ease-in-out infinite'>2</a><a href='https://www.slideshare.net/slideshow/04-the-purpose-of-straightthrough-and-crossover-cablespptx/251955731' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>3</a></div></details>", "Straight-Through vs Crossover Cables <details class='relative inline-block ml-3 align-middle group'><summary class='list-none cursor-pointer bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-lg hover:bg-sky-200 transition'>Vs</summary><div class='absolute z-[99999] bottom-full left-1/2 -translate-x-1/2 flex items-end gap-3 pb-2'><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 -rotate-12'></div><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 rotate-12'></div><a href='https://www.cablify.ca/straight-through-vs-crossover-in-data-cabling/' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>1</a><a href='https://www.slideshare.net/slideshow/04-the-purpose-of-straightthrough-and-crossover-cablespptx/251955731' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatDown 3s ease-in-out infinite'>2</a><a href='https://www.router-switch.com/faq/what-are-straight-and-crossover-cable.html' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>3</a></div></details>", "Single-mode vs Multi-mode Fiber <details class='relative inline-block ml-3 align-middle group'><summary class='list-none cursor-pointer bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-lg hover:bg-sky-200 transition'>Fiber</summary><div class='absolute z-[99999] bottom-full left-1/2 -translate-x-1/2 flex items-end gap-3 pb-2'><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 -rotate-12'></div><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 rotate-12'></div><a href='https://www.vsolcn.com/blog/single-mode-vs-multimode-fiber.html' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>1</a></div></details>", "RJ-45, LC, SC, ST Connectors <details class='relative inline-block ml-3 align-middle group'><summary class='list-none cursor-pointer inline-block bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-lg hover:bg-sky-200 transition'>Connectors</summary><div class='absolute z-[99999] bottom-full left-1/2 -translate-x-1/2 flex items-end gap-3 pb-2'><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 -rotate-12'></div><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 rotate-12'></div><a href='https://www.showmecables.com/blog/post/types-of-fiber-optic-connectors-%E2%80%93-simplex-duplex-lc-st-sc-and-more?srsltid=AYCX9vLqkdbaWlI8WNtd99ssbyN-SSSI4zpcNv6fuXAweGmknFVCk_Fo' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>1</a><a href='https://ipcisco.com/lesson/networking-connectors/' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatDown 3s ease-in-out infinite'>2</a><a href='https://www.naddod.com/blog/differences-between-st-sc-fc-and-lc-fiber-connectors?srsltid=AYCX9vJXmMDhadCIy9nuW2qjbcQ3hGjxywwzsNXIB7YLmNEycai3_ifj' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>3</a></div></details>"],            
+            subtopics: ["Cat5e / Cat6 / Cat6a Standards", "T568A vs T568B Wiring", "Straight-Through vs Crossover Cables", "Single-mode vs Multi-mode Fiber", "RJ-45, LC, SC, ST Connectors"],
             labTitle: "Cabling Specifications Lab",
             labDesc: "Test copper pinouts and fiber patch cords in simulation.",
             quizTitle: "Quiz 3.1: Cabling Standards",
@@ -1049,7 +1022,6 @@
       }
     });
 
-    /* RETRO FLIP CLOCK LOGIC */
     function startRetroFlipClock() {
       function updateClock() {
         const now = new Date();
@@ -1081,7 +1053,6 @@
       setInterval(updateClock, 1000);
     }
 
-    /* SUBMITTED FILES CAROUSEL CONTROLS (WITH TYPED MESSAGES) */
     async function loadSubmittedFilesCarousel() {
       const container = document.getElementById('submittedFilesSliderContainer');
       const counter = document.getElementById('submissionSlideCounter');
@@ -1188,15 +1159,8 @@
       `;
     }
 
-    function prevSubmittedSlide() {
-      currentSubmissionSlide--;
-      renderCurrentSubmissionSlide();
-    }
-
-    function nextSubmittedSlide() {
-      currentSubmissionSlide++;
-      renderCurrentSubmissionSlide();
-    }
+    function prevSubmittedSlide() { currentSubmissionSlide--; renderCurrentSubmissionSlide(); }
+    function nextSubmittedSlide() { currentSubmissionSlide++; renderCurrentSubmissionSlide(); }
 
     function lockPortal() {
       const wrapper = document.getElementById('portalMainWrapper');
@@ -1216,9 +1180,7 @@
       setTimeout(() => { hideToast(); }, 4000);
     }
 
-    function hideToast() {
-      document.getElementById('toastMessageBar').classList.add('hidden');
-    }
+    function hideToast() { document.getElementById('toastMessageBar').classList.add('hidden'); }
 
     function renderDomainNav() {
       const container = document.getElementById('domainNavTabs');
@@ -1268,20 +1230,15 @@
           profileDisplay.classList.remove('flex');
           profileDisplay.classList.add('hidden');
         }
-        if (bannerSection) {
-          bannerSection.classList.add('hidden');
-        }
+        if (bannerSection) { bannerSection.classList.add('hidden'); }
       }
     }
 
     function openAuthModal(mode) {
       setAuthTab(mode);
       const closeBtn = document.getElementById('authCloseBtn');
-      if (currentUser) {
-        if (closeBtn) closeBtn.classList.remove('hidden');
-      } else {
-        if (closeBtn) closeBtn.classList.add('hidden');
-      }
+      if (currentUser) { if (closeBtn) closeBtn.classList.remove('hidden'); }
+      else { if (closeBtn) closeBtn.classList.add('hidden'); }
       document.getElementById('authModal').classList.remove('hidden');
     }
 
@@ -1358,7 +1315,6 @@
 
     async function syncUserProgressFromCloud() {
       if (!supabaseClient || !currentUser) return;
-
       try {
         const { data } = await supabaseClient
           .from('student_progress')
@@ -1381,7 +1337,6 @@
       }
     }
 
-    /* FETCH REGISTERED STUDENTS LIST */
     async function fetchRegisteredStudentsList() {
       const container = document.getElementById('studentListContainer');
       const badge = document.getElementById('studentCountBadge');
@@ -1430,18 +1385,12 @@
       }
     }
 
-    function toggleStudentDrawer() { 
-      const drawer = document.getElementById('studentDrawer');
-      drawer.classList.toggle('hidden'); 
-    }
+    function toggleStudentDrawer() { document.getElementById('studentDrawer').classList.toggle('hidden'); }
 
     function openInstructorPortalPrompt() {
       const pin = prompt('🔒 Enter Instructor Security PIN to access all student progress:');
-      if (pin === 'admin00786') {
-        openInstructorModal();
-      } else if (pin !== null) {
-        alert('❌ Incorrect PIN. Access denied.');
-      }
+      if (pin === 'admin00786') { openInstructorModal(); }
+      else if (pin !== null) { alert('❌ Incorrect PIN. Access denied.'); }
     }
 
     async function openInstructorModal() {
@@ -1664,22 +1613,90 @@
       `).join('');
     }
 
-    function handleAiSubmit(e) {
-      e.preventDefault();
+    /* 🤖 LIVE FREE AI CHATBOT AGENT INTEGRATION (GEMINI API) */
+    async function handleAiSubmit(event) {
+      event.preventDefault();
       const input = document.getElementById('aiInput');
       const text = input.value.trim();
       if (!text) return;
 
       const chatBox = document.getElementById('aiChatMessages');
-      chatBox.innerHTML += `<div class="flex items-start justify-end gap-2"><div class="bg-blue-600 text-white p-2.5 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] font-medium">${text}</div></div>`;
+      
+      // 1. Display User Message
+      chatBox.innerHTML += `
+        <div class="flex items-start justify-end gap-2">
+          <div class="bg-blue-600 text-white p-2.5 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] font-medium">
+            ${text}
+          </div>
+        </div>`;
       input.value = '';
       chatBox.scrollTop = chatBox.scrollHeight;
 
-      setTimeout(() => {
-        let response = "<strong>Topic Details:</strong><br>In CCST Networking, mastering this topic involves understanding its function across the OSI model, configuring it on Cisco IOS switches/routers, and verifying operations using CLI commands.";
-        chatBox.innerHTML += `<div class="flex items-start gap-2"><div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div><div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 max-w-[88%] leading-relaxed">${response}</div></div>`;
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }, 500);
+      // 2. Display Typing Indicator
+      const loadingId = 'bot-loading-' + Date.now();
+      chatBox.innerHTML += `
+        <div id="${loadingId}" class="flex items-start gap-2">
+          <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div>
+          <div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-500 text-[11px] max-w-[88%] italic">
+            <i class="fa-solid fa-spinner animate-spin text-blue-600"></i> Thinking & retrieving answer...
+          </div>
+        </div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // 3. Live API Call to Gemini (Free Service Endpoint)
+      const API_KEY = 'AQ.Ab8RN6JeMkWxvk5BJp9NppWBEr_5nCtUux1bUe5w6WAQo3nrdA'; // Replace with your free Google AI Studio key
+      const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+      try {
+        const response = await fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              role: 'user',
+              parts: [{
+                text: `You are an expert Cisco Certified Support Technician (CCST) Networking Tutor assisting students. Answer concisely and accurately: ${text}`
+              }]
+            }]
+          })
+        });
+
+        const data = await response.json();
+        const loadingElem = document.getElementById(loadingId);
+        
+        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+          let aiResponseText = data.candidates[0].content.parts[0].text;
+          aiResponseText = aiResponseText.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+          
+          if (loadingElem) {
+            loadingElem.innerHTML = `
+              <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div>
+              <div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 max-w-[88%] leading-relaxed">
+                ${aiResponseText}
+              </div>`;
+          }
+        } else {
+          if (loadingElem) {
+            loadingElem.innerHTML = `
+              <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div>
+              <div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-rose-200 text-rose-600 max-w-[88%]">
+                ⚠️ Please configure your valid Gemini API Key in the script to enable live AI chat responses.
+              </div>`;
+          }
+        }
+      } catch (error) {
+        console.error('Chatbot API Error:', error);
+        const loadingElem = document.getElementById(loadingId);
+        if (loadingElem) {
+          loadingElem.innerHTML = `
+            <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div>
+            <div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-rose-200 text-rose-600 max-w-[88%]">
+              ⚠️ Network error connecting to live AI service.
+            </div>`;
+        }
+      }
+
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     function switchDomain(index) {
@@ -1893,24 +1910,15 @@
       if (supabaseClient && selectedAssignmentFile) {
         try {
           const fileExt = selectedAssignmentFile.name.split('.').pop().toLowerCase();
-          
-          // Folder routing based on file extension
           let folderName = 'Mix Files';
           const picExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'jfif', 'tif', 'tiff', 'svg', 'ico', 'avif', 'heic', 'heif', 'raw', 'psd', 'eps', 'ai', 'cdr', 'jp2', 'jxl', 'tga', 'dds', 'exr'];
 
-          if (fileExt === 'pkt' || fileExt === 'pka') {
-            folderName = 'Packet Tracer Files';
-          } else if (picExtensions.includes(fileExt)) {
-            folderName = 'Submitted Pix';
-          } else if (fileExt === 'txt' || fileExt === 'md' || fileExt === 'docx' || fileExt === 'doc') {
-            folderName = 'Text Files';
-          } else if (fileExt === 'html') {
-            folderName = 'Html Files';
-          } else if (fileExt === 'pdf') {
-            folderName = 'PDF Files';
-          }
+          if (fileExt === 'pkt' || fileExt === 'pka') { folderName = 'Packet Tracer Files'; }
+          else if (picExtensions.includes(fileExt)) { folderName = 'Submitted Pix'; }
+          else if (fileExt === 'txt' || fileExt === 'md' || fileExt === 'docx' || fileExt === 'doc') { folderName = 'Text Files'; }
+          else if (fileExt === 'html') { folderName = 'Html Files'; }
+          else if (fileExt === 'pdf') { folderName = 'PDF Files'; }
 
-          // Format clean student prefix for tracking in Storage
           const safeStudentPrefix = (currentUser && currentUser.email) ? currentUser.email.split('@')[0] : (studentName.replace(/[^a-zA-Z0-9]/g, '_'));
           const fileName = `${safeStudentPrefix}_${Date.now()}.${fileExt}`;
           const filePath = `${folderName}/lesson_${lessonId}/${fileName}`;
@@ -1937,7 +1945,6 @@
         }
       }
 
-      // Save submission to Supabase assignments table with student email & typed message
       if (supabaseClient) {
         try {
           const formattedSubmissionText = `[Student Email]: ${currentUser ? currentUser.email : 'N/A'}\n[Typed Message]: ${textSummary}` + (filePublicUrl ? `\n[Attached File URL]: ${filePublicUrl}` : '');
@@ -1972,8 +1979,7 @@
       document.getElementById('aiInput').value = promptText;
       handleAiSubmit(new Event('submit'));
     }
-  
-    /* ROBUST BLOB DOWNLOAD HELPER */
+
     async function downloadSubmittedFile(url, filename) {
       if (!url || url === '#') {
         showToast('⚠️ File URL not available for download.', '🛡️');
@@ -2004,7 +2010,6 @@
         showToast('✅ Download triggered!', '⚡');
       }
     }
-
   </script>
 </body>
 </html>
