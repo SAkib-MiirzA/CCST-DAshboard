@@ -12,10 +12,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Inter & Oswald for Flip Clock -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
 
   <!-- Supabase Client JS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -24,7 +24,10 @@
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          fontFamily: { 
+            sans: ['Inter', 'sans-serif'],
+            clock: ['Oswald', 'sans-serif']
+          },
           colors: {
             brand: {
               bg: '#f8fafc', surface: '#ffffff', border: '#e2e8f0',
@@ -61,6 +64,24 @@
       box-shadow: 0 6px 24px -2px rgba(13, 148, 136, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
     }
 
+    /* Retro Flip Clock Card Design - High Contrast Visibility */
+    .flip-card {
+      background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+      border: 1.5px solid rgba(13, 148, 136, 0.6);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+    .flip-card::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
     /* Vista Active Green Glass Progress Bar */
     .vista-progress-container {
       background: linear-gradient(135deg, rgba(15, 118, 110, 0.2) 0%, rgba(13, 148, 136, 0.15) 100%);
@@ -92,18 +113,6 @@
       transform-origin: center;
     }
 
-    @keyframes slideUpMenu {
-      from { transform: translateY(15px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    .animate-slide-up { animation: slideUpMenu 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-    @keyframes slideDownCenter {
-      from { transform: translate(-50%, -30px); opacity: 0; }
-      to { transform: translate(-50%, 0); opacity: 1; }
-    }
-    .animate-slide-down-center { animation: slideDownCenter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
     @media print {
       body { background-color: white !important; color: black !important; }
       .no-print { display: none !important; }
@@ -114,7 +123,7 @@
 <body class="bg-brand-bg text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-brand-tealLight antialiased relative w-full m-0 p-0">
 
   <!-- TOP CENTER SUCCESS & NOTIFICATION MESSAGE BAR -->
-  <div id="toastMessageBar" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden max-w-lg w-[92%] bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-teal-500/40 flex items-center justify-between gap-3 animate-slide-down-center backdrop-blur-xl">
+  <div id="toastMessageBar" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden max-w-lg w-[92%] bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-teal-500/40 flex items-center justify-between gap-3 backdrop-blur-xl">
     <div class="flex items-center gap-3 text-xs sm:text-sm">
       <span id="toastIcon" class="text-teal-400 text-lg">⚡</span>
       <span id="toastText" class="font-bold tracking-wide">Success message here...</span>
@@ -122,9 +131,9 @@
     <button onclick="hideToast()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
   </div>
 
-  <!-- TOP HEADER NAVBAR (MATCHED GREEN LIKE DOMAIN BANNER) -->
+  <!-- TOP HEADER NAVBAR -->
   <header class="sticky top-0 z-40 bg-gradient-to-r from-teal-600 via-teal-700 to-cyan-800 text-white backdrop-blur-md border-b border-teal-800/30 shadow-md no-print w-full">
-    <div class="w-full px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+    <div class="w-full px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
       
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center text-white shadow-inner">
@@ -139,11 +148,41 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-3">
-        <!-- DIGITAL CLOCK WIDGET -->
-        <div class="bg-black/20 border border-white/20 rounded-xl px-3 py-1.5 flex items-center gap-2 text-xs backdrop-blur-sm text-teal-100 font-bold">
-          <i class="fa-regular fa-clock text-amber-300"></i>
-          <span id="digitalClockTime">00:00:00</span>
+      <div class="flex items-center gap-3 flex-wrap">
+        
+        <!-- VISIBLE RETRO FLIP CLOCK DISPLAY -->
+        <div class="bg-slate-950 border border-teal-500/40 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-2xl backdrop-blur-sm">
+          <div class="flex flex-col items-center">
+            <span class="text-[7.5px] font-bold text-amber-400 uppercase tracking-widest leading-tight">Hour</span>
+            <div class="flip-card px-2 py-0.5 rounded text-white font-clock text-xs sm:text-sm font-black tracking-wider" id="flipHour">00</div>
+          </div>
+          <span class="text-amber-400 font-black text-xs -mt-1 animate-pulse">:</span>
+          <div class="flex flex-col items-center">
+            <span class="text-[7.5px] font-bold text-amber-400 uppercase tracking-widest leading-tight">Minutes</span>
+            <div class="flip-card px-2 py-0.5 rounded text-white font-clock text-xs sm:text-sm font-black tracking-wider" id="flipMinutes">00</div>
+          </div>
+          <span class="text-amber-400 font-black text-xs -mt-1 animate-pulse">:</span>
+          <div class="flex flex-col items-center">
+            <span class="text-[7.5px] font-bold text-cyan-300 uppercase tracking-widest leading-tight">Sec</span>
+            <div class="flip-card px-2 py-0.5 rounded text-cyan-300 font-clock text-xs sm:text-sm font-black tracking-wider" id="flipSeconds">00</div>
+          </div>
+          <div class="w-px h-6 bg-white/20 mx-0.5"></div>
+          <div class="flex flex-col items-center">
+            <span class="text-[7.5px] font-bold text-red-400 uppercase tracking-widest leading-tight">Day</span>
+            <div class="flip-card px-2 py-0.5 rounded text-red-400 font-clock text-xs sm:text-sm font-black tracking-wider" id="flipDayName">MON</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-[7.5px] font-bold text-red-400 uppercase tracking-widest leading-tight">Date</span>
+            <div class="flip-card px-2 py-0.5 rounded text-red-400 font-clock text-xs sm:text-sm font-black tracking-wider" id="flipDay">01</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-[7.5px] font-bold text-red-400 uppercase tracking-widest leading-tight">Month</span>
+            <div class="flip-card px-2 py-0.5 rounded text-red-400 font-clock text-xs sm:text-sm font-black tracking-wider" id="flipMonth">01</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-[7.5px] font-bold text-red-300 uppercase tracking-widest leading-tight">Year</span>
+            <div class="flip-card px-2 py-0.5 rounded text-amber-300 font-clock text-xs sm:text-sm font-black tracking-wider" id="flipYear">26</div>
+          </div>
         </div>
 
         <div class="bg-black/20 border border-white/20 rounded-xl px-3 py-1.5 flex items-center gap-3 text-xs backdrop-blur-sm">
@@ -164,12 +203,10 @@
 
         <!-- Dynamic User Profile / Login Button Container -->
         <div id="authHeaderContainer">
-          <!-- Shown when NOT logged in -->
           <button id="loginTriggerBtn" onclick="openAuthModal('signin')" class="bg-amber-400 hover:bg-amber-500 text-slate-950 text-[11px] font-black px-3.5 py-2 rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-user-shield"></i> 🔐 Student Login
           </button>
 
-          <!-- Shown when LOGGED IN (Displays Name & Sign Out option) -->
           <div id="userProfileDisplay" class="hidden items-center gap-2 bg-white/15 border border-white/25 px-3 py-1.5 rounded-xl backdrop-blur-sm">
             <div class="w-6 h-6 rounded-full bg-amber-400 text-slate-950 font-black text-[11px] flex items-center justify-center shadow-inner" id="userAvatarInitial">U</div>
             <div class="text-[11px]">
@@ -187,14 +224,45 @@
     </div>
   </header>
 
-  <!-- MAIN WRAPPER CONTAINER (VISIBLE AT ALL TIMES, BLURRED WHEN UNAUTHENTICATED) -->
+  <!-- MAIN WRAPPER CONTAINER -->
   <div id="portalMainWrapper" class="w-full px-4 sm:px-6 py-6 space-y-6 flex-1 transition-all duration-300">
 
-    <!-- DOMAIN TABS NAVIGATION WITH VISTA ACTIVE GREEN PROGRESS BAR ON RIGHT -->
+    <!-- LATEST SUBMITTED FILES BANNER (STATIC DISPLAY WITHOUT SLIDE ANIMATION) -->
+    <section id="submittedFilesBannerSection" class="hidden bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-xl border border-teal-500/30 no-print w-full relative overflow-hidden">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md">
+            <i class="fa-solid fa-folder-open text-base"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-white text-xs sm:text-sm tracking-wide flex items-center gap-2">
+              <span>📥 Latest Submitted Student Files & Typed Messages</span>
+              <span class="bg-teal-500/30 text-teal-300 text-[9px] font-bold px-2 py-0.5 rounded-full border border-teal-400/40">Live Submissions</span>
+            </h3>
+            <p class="text-[10px] text-teal-200">Real-time student lab submissions & typed notes • Direct notifications sent to <span class="text-amber-300 font-bold">sakib00786@gmail.com</span></p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="prevSubmittedSlide()" class="w-7 h-7 rounded-xl bg-white/10 hover:bg-white/20 text-teal-200 flex items-center justify-center transition cursor-pointer" title="Previous Item">
+            <i class="fa-solid fa-chevron-left text-xs"></i>
+          </button>
+          <span class="text-[10px] font-extrabold text-teal-300 px-2" id="submissionSlideCounter">1 / 1</span>
+          <button onclick="nextSubmittedSlide()" class="w-7 h-7 rounded-xl bg-white/10 hover:bg-white/20 text-teal-200 flex items-center justify-center transition cursor-pointer" title="Next Item">
+            <i class="fa-solid fa-chevron-right text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="submittedFilesSliderContainer" class="relative min-h-[90px] flex items-center">
+        <div class="w-full text-center py-4 text-slate-400 text-xs italic">Loading latest student submissions...</div>
+      </div>
+    </section>
+
+    <!-- DOMAIN TABS NAVIGATION -->
     <section class="bg-white rounded-2xl p-2.5 border border-slate-200 shadow-sm no-print w-full flex flex-col sm:flex-row items-center justify-between gap-3">
       <div class="flex items-center gap-2 overflow-x-auto scrollbar-none w-full sm:w-auto" id="domainNavTabs"></div>
       
-      <!-- Vista Active Green Bar Progress Indicator -->
       <div class="vista-progress-container px-3.5 py-2 rounded-xl flex items-center gap-3 shrink-0 w-full sm:w-auto justify-between sm:justify-end">
         <div class="text-right">
           <span class="block text-[9px] font-bold text-teal-900 uppercase tracking-wider">Domain Track Progress</span>
@@ -232,7 +300,7 @@
     <!-- MAIN TWO-COLUMN DASHBOARD GRID -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start w-full">
 
-      <!-- LEFT SIDEBAR: LESSON SELECTION (4 COLS) -->
+      <!-- LEFT SIDEBAR: LESSON SELECTION -->
       <aside class="lg:col-span-4 space-y-5 no-print">
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
           <div class="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -250,7 +318,6 @@
           <div class="space-y-2.5" id="lessonSelectList"></div>
         </div>
 
-        <!-- PROGRESS BAR CARD -->
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3 print-card">
           <div class="flex items-center justify-between">
             <h4 class="font-bold text-slate-900 text-[11px] uppercase tracking-wider flex items-center gap-2">
@@ -269,7 +336,6 @@
           </div>
         </div>
 
-        <!-- EXAM DOMAINS & TOOLS GRID -->
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-4">
           <div>
             <h4 class="font-bold text-slate-900 text-[11px] uppercase tracking-wider mb-2 flex items-center gap-1.5">
@@ -284,22 +350,10 @@
               <div class="bg-slate-50 border border-slate-200 p-2 rounded-xl flex items-center justify-between"><span>Security</span><span class="text-teal-700 font-bold">10%</span></div>
             </div>
           </div>
-
-          <div class="pt-2 border-t border-slate-100">
-            <h4 class="font-bold text-slate-900 text-[11px] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <i class="fa-solid fa-screwdriver-wrench text-teal-600"></i> Tools & Technologies
-            </h4>
-            <div class="flex flex-wrap gap-1.5 text-[10px] font-semibold">
-              <span class="bg-teal-50 text-teal-800 border border-teal-200 px-2 py-0.5 rounded-lg">Packet Tracer</span>
-              <span class="bg-teal-50 text-teal-800 border border-teal-200 px-2 py-0.5 rounded-lg">Cisco IOS</span>
-              <span class="bg-teal-50 text-teal-800 border border-teal-200 px-2 py-0.5 rounded-lg">Wireshark</span>
-              <span class="bg-teal-50 text-teal-800 border border-teal-200 px-2 py-0.5 rounded-lg">CLI Tools</span>
-            </div>
-          </div>
         </div>
       </aside>
 
-      <!-- RIGHT VIEWPORT: ACTIVE LESSON CONTENT (8 COLS) -->
+      <!-- RIGHT VIEWPORT: ACTIVE LESSON CONTENT -->
       <main class="lg:col-span-8 space-y-6">
         <section class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-6 print-card relative transition-all">
           
@@ -330,7 +384,6 @@
             </div>
           </div>
 
-          <!-- SUBTOPICS CHECKLIST -->
           <div class="bg-slate-50/80 rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-4">
             <div class="flex items-center justify-between pb-2 border-b border-slate-200">
               <h3 class="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
@@ -342,11 +395,9 @@
               </div>
             </div>
 
-            <!-- Subtopics Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 auto-rows-fr gap-3 w-full" id="subtopicsContainer"></div>
           </div>
 
-          <!-- PACKET TRACER SIMULATION CARD -->
           <div class="bg-gradient-to-r from-purple-100 to-violet-100/100 p-4 sm:p-5 rounded-2xl border border-purple-200 space-y-3">
             <div class="flex items-center justify-between">
               <span class="bg-purple-700 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">Packet Tracer Lab</span>
@@ -363,7 +414,6 @@
             </div>
           </div>
 
-          <!-- QUIZ MODULE -->
           <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="space-y-1">
               <div class="flex items-center gap-2">
@@ -372,25 +422,8 @@
               </div>
               <p class="text-[11px] text-slate-500 pl-8">Complete this quiz after studying all topics</p>
             </div>
-            <div class="flex items-center gap-3 text-[11px] font-bold text-slate-700 pl-8 sm:pl-0">
-              <div class="text-center">
-                <span class="block text-slate-400 text-[9px] uppercase font-semibold">Questions</span>
-                <span class="text-xs font-extrabold text-slate-900">5</span>
-              </div>
-              <div class="w-px h-5 bg-slate-200"></div>
-              <div class="text-center">
-                <span class="block text-slate-400 text-[9px] uppercase font-semibold">Pass Mark</span>
-                <span class="text-xs font-extrabold text-teal-700">70%</span>
-              </div>
-              <div class="w-px h-5 bg-slate-200"></div>
-              <div class="text-center">
-                <span class="block text-slate-400 text-[9px] uppercase font-semibold">Attempts</span>
-                <span class="text-xs font-extrabold text-slate-900">∞</span>
-              </div>
-            </div>
           </div>
 
-          <!-- FOOTER ACTIONS -->
           <div class="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 no-print">
             <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3.5 py-2 rounded-xl text-[11px] sm:text-xs border border-slate-300 transition flex items-center gap-2 cursor-pointer">
               <i class="fa-solid fa-print"></i> 🖨️ Print Summary
@@ -411,10 +444,9 @@
 
   </div>
 
-  <!-- FLOATING ICONS ONLY (BOTTOM LEFT) - EXPAND ON CLICK -->
+  <!-- FLOATING ICONS (BOTTOM LEFT) -->
   <div class="fixed bottom-5 left-5 z-40 flex flex-col items-start gap-2.5 no-print">
     
-    <!-- INSTRUCTOR EXCLUSIVE ADMIN PORTAL TRIGGER (Icon Only) -->
     <div class="relative group">
       <button onclick="openInstructorPortalPrompt()" class="w-10 h-10 rounded-2xl bg-teal-800 hover:bg-teal-900 text-amber-300 shadow-xl border border-teal-600 flex items-center justify-center transition hover:scale-110 cursor-pointer" title="Instructor Portal">
         <i class="fa-solid fa-user-tie text-base"></i>
@@ -424,7 +456,6 @@
       </span>
     </div>
 
-    <!-- STUDENTS LIST TRIGGER (Icon Only with Badge) -->
     <div class="relative group">
       <button onclick="toggleStudentDrawer()" class="w-10 h-10 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white shadow-lg border border-slate-700 flex items-center justify-center transition hover:scale-110 cursor-pointer relative" title="Students List">
         <i class="fa-solid fa-users text-teal-400 text-base"></i>
@@ -435,7 +466,6 @@
       </span>
     </div>
 
-    <!-- Student Drawer Popup -->
     <div id="studentDrawer" class="hidden w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3.5 space-y-2.5 text-[11px] transition-all absolute left-14 bottom-0 animate-slide-up">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100">
         <h4 class="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs">
@@ -451,7 +481,6 @@
       </div>
     </div>
 
-    <!-- WHATSAPP SUPPORT (Icon Only) -->
     <div class="relative group">
       <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" 
          class="w-10 h-10 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl shadow-md flex items-center justify-center transition-all transform hover:scale-110 active:scale-95"
@@ -464,7 +493,7 @@
     </div>
   </div>
 
-  <!-- INSTRUCTOR EXCLUSIVE ADMIN PORTAL MODAL -->
+  <!-- INSTRUCTOR MODAL -->
   <div id="instructorModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-3xl w-full p-7 shadow-2xl border border-slate-200 space-y-5 text-[11px] relative">
       <div class="flex items-center justify-between border-b border-slate-200 pb-3.5">
@@ -474,7 +503,7 @@
           </div>
           <div>
             <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">🔐 Instructor Exclusive: Student Progress Monitor</h3>
-            <p class="text-[10px] text-slate-500">Authorized Access Only • View All Student Accounts & Progress</p>
+            <p class="text-[10px] text-slate-500">Authorized Access Only • View All Student Accounts, Progress & Submitted Files/Messages</p>
           </div>
         </div>
         <button onclick="closeInstructorModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition cursor-pointer">
@@ -507,26 +536,20 @@
     </div>
   </div>
 
-  <!-- CHATBOT WITH PROACTIVE ACTIVE TOPIC PROMPTS -->
+  <!-- CHATBOT -->
   <div class="fixed bottom-5 right-5 z-50 no-print">
-    
     <div id="aiChatWindow" class="hidden absolute bottom-20 right-0 w-[92vw] sm:w-[380px] h-[520px] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden transition-all animate-slide-up text-[11px]">
       <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3.5 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/30 text-sm shadow-sm">
-            🤖
-          </div>
+          <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/30 text-sm shadow-sm">🤖</div>
           <div>
             <h4 class="font-bold text-xs leading-tight">CCST Active Master Assistant</h4>
             <p class="text-[10px] text-blue-100">Interactive Pro Tutor • All Topics Ready</p>
           </div>
         </div>
-        <button onclick="toggleAiBot()" class="text-white/80 hover:text-white p-1 cursor-pointer">
-          <i class="fa-solid fa-xmark text-base"></i>
-        </button>
+        <button onclick="toggleAiBot()" class="text-white/80 hover:text-white p-1 cursor-pointer"><i class="fa-solid fa-xmark text-base"></i></button>
       </div>
 
-      <!-- Quick Category Filters for Chatbot -->
       <div class="p-2 bg-slate-100 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-[10px]">
         <button onclick="renderBotTopicChips('all')" class="bg-blue-600 text-white px-2.5 py-1 rounded-full whitespace-nowrap font-bold transition cursor-pointer">🔥 All Topics</button>
         <button onclick="renderBotTopicChips('d1')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-semibold cursor-pointer">D1: Standards</button>
@@ -537,19 +560,14 @@
         <button onclick="renderBotTopicChips('d6')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-2 py-1 rounded-full whitespace-nowrap font-semibold cursor-pointer">D6: Security</button>
       </div>
 
-      <!-- Dynamic Interactive Topic Quick Prompt Chips -->
-      <div id="aiChatTopicChips" class="p-2 bg-slate-50 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-[10px]">
-        <!-- Chips injected dynamically via JS -->
-      </div>
+      <div id="aiChatTopicChips" class="p-2 bg-slate-50 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-[10px]"></div>
 
       <div id="aiChatMessages" class="flex-1 p-3.5 overflow-y-auto space-y-2.5 bg-slate-50/50">
         <div class="flex items-start gap-2">
-          <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">
-            🤖
-          </div>
+          <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div>
           <div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 space-y-1.5 max-w-[88%]">
             <p class="font-extrabold text-slate-900">Welcome Pro Networking Student! 👋</p>
-            <p class="text-[10px] leading-relaxed">I am fully equipped with complete technical details for <strong>every single topic</strong> across Domains 1 to 6. Click any active topic chip above or ask me any question to see detailed explanations, examples, and CLI commands!</p>
+            <p class="text-[10px] leading-relaxed">I am fully equipped with complete technical details for <strong>every single topic</strong> across Domains 1 to 6.</p>
           </div>
         </div>
       </div>
@@ -562,7 +580,6 @@
       </form>
     </div>
 
-    <!-- CHATBOT AVATAR -->
     <button id="aiBotToggle" onclick="toggleAiBot()" class="mascot-floating bg-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center relative transition-transform cursor-pointer border-2 border-blue-500/40 group overflow-hidden" title="CCST AI Assistant">
       <div class="w-full h-full bg-gradient-to-tr from-blue-700 via-blue-500 to-cyan-400 flex items-center justify-center text-white relative">
         <div class="absolute inset-1 rounded-full bg-gradient-to-b from-blue-600 to-indigo-800 flex items-center justify-center shadow-inner">
@@ -585,7 +602,7 @@
             <i class="fa-solid fa-file-arrow-up text-base"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-slate-900 text-xs sm:text-sm">📤 Submit Packet Tracer Lab</h3>
+            <h3 class="font-extrabold text-slate-900 text-xs sm:text-sm">📤 Submit Packet Tracer Lab & Message</h3>
             <p class="text-[10px] text-slate-500" id="modalLessonSubtitle">Lesson 1.1 Submission</p>
           </div>
         </div>
@@ -601,8 +618,8 @@
         </div>
 
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Packet Tracer Link / Lab Summary</label>
-          <textarea id="assignTextSummary" rows="3" required placeholder="Paste Google Drive/GitHub link or describe lab configuration..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500 font-medium"></textarea>
+          <label class="block font-bold text-slate-700 mb-1">Typed Message / Lab Summary</label>
+          <textarea id="assignTextSummary" rows="3" required placeholder="Type your lab message, notes, or configuration details here..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500 font-medium"></textarea>
         </div>
 
         <div>
@@ -628,7 +645,7 @@
     </div>
   </div>
 
-  <!-- GLOSSARY MODAL WITH SEARCH AND ALL DOMAINS SUPPORT -->
+  <!-- GLOSSARY MODAL -->
   <div id="glossaryModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 space-y-4 text-[11px]">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -643,7 +660,6 @@
         </button>
       </div>
 
-      <!-- Search Bar inside Glossary Modal -->
       <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
         <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
         <input type="text" id="glossarySearchInput" onkeyup="filterGlossaryBySearch()" placeholder="Search terms, acronyms, or definitions..." class="bg-transparent text-slate-800 text-[11px] w-full focus:outline-none font-medium">
@@ -660,7 +676,7 @@
     </div>
   </div>
 
-  <!-- AUTH MODAL (UPDATED OVERLAY: BLURS BACKGROUND WITHOUT VANISHING IT) -->
+  <!-- AUTH MODAL -->
   <div id="authModal" class="hidden fixed inset-0 z-50 bg-slate-900/20 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
     <div class="bg-white rounded-3xl max-w-md w-full p-7 shadow-2xl border border-slate-100 space-y-5 relative overflow-hidden text-[11px]">
       
@@ -710,17 +726,17 @@
     </div>
   </div>
 
-  <!-- APPLICATION SCRIPT WITH ENHANCED GLOSSARY & CHATBOT DATA -->
+  <!-- APPLICATION SCRIPT -->
   <script>
     const SUPABASE_URL = 'https://zusnbawalemprtizubzh.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_3SjMa829fo37hIS2xBS5IA_HlGwEVQS';
+    const NOTIFICATION_EMAIL = 'sakib00786@gmail.com';
     
     let supabaseClient = null;
     if (window.supabase) {
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
 
-    /* COMPREHENSIVE DOMAIN DATA WITH DETAILED GLOSSARY FOR EVERY TOPIC */
     const domainsData = [
       {
         id: "1",
@@ -1010,16 +1026,19 @@
     let authMode = 'signin';
     let currentUser = null;
     let selectedAssignmentFile = null;
+    let submittedFilesList = [];
+    let currentSubmissionSlide = 0;
 
     document.addEventListener('DOMContentLoaded', async () => {
       loadSavedUser();
       updateHeaderAuthUI();
       renderDomainNav();
-      startDigitalClock();
+      startRetroFlipClock();
       
       if (currentUser) {
         unlockPortal();
         await syncUserProgressFromCloud();
+        await loadSubmittedFilesCarousel();
         showToast('👋 Welcome back, ' + currentUser.name + '!', '⚡');
         loadDomain(0);
         fetchRegisteredStudentsList();
@@ -1030,30 +1049,163 @@
       }
     });
 
-    function startDigitalClock() {
+    /* RETRO FLIP CLOCK LOGIC */
+    function startRetroFlipClock() {
       function updateClock() {
         const now = new Date();
-        const clockEl = document.getElementById('digitalClockTime');
-        if (clockEl) {
-          clockEl.textContent = now.toLocaleTimeString();
-        }
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const dayName = now.toLocaleString('en-US', { weekday: 'short' }).toUpperCase();
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const year = String(now.getFullYear()).slice(-2);
+
+        const hEl = document.getElementById('flipHour');
+        const mEl = document.getElementById('flipMinutes');
+        const sEl = document.getElementById('flipSeconds');
+        const dnEl = document.getElementById('flipDayName');
+        const dEl = document.getElementById('flipDay');
+        const moEl = document.getElementById('flipMonth');
+        const yEl = document.getElementById('flipYear');
+
+        if (hEl) hEl.textContent = hours;
+        if (mEl) mEl.textContent = minutes;
+        if (sEl) sEl.textContent = seconds;
+        if (dnEl) dnEl.textContent = dayName;
+        if (dEl) dEl.textContent = day;
+        if (moEl) moEl.textContent = month;
+        if (yEl) yEl.textContent = year;
       }
       updateClock();
       setInterval(updateClock, 1000);
     }
 
+    /* SUBMITTED FILES CAROUSEL CONTROLS (WITH TYPED MESSAGES) */
+    async function loadSubmittedFilesCarousel() {
+      const container = document.getElementById('submittedFilesSliderContainer');
+      const counter = document.getElementById('submissionSlideCounter');
+
+      if (!supabaseClient) {
+        submittedFilesList = [
+          { student_name: "Muhammad Ali", lesson_id: "1.1", created_at: new Date().toISOString(), file_name: "Lab1.1_OSI_Model.pkt", url: "#", summary: "Configured OSI topology with 7 layers." },
+          { student_name: "Usman Khan", lesson_id: "2.1", created_at: new Date(Date.now() - 3600000).toISOString(), file_name: "Subnetting_Config.pka", url: "#", summary: "Subnetted /24 into 4 subnets." }
+        ];
+      } else {
+        try {
+          const { data } = await supabaseClient
+            .from('assignments')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(15);
+
+          if (data && data.length > 0) {
+            submittedFilesList = data.reverse().map(item => {
+              let extractedUrl = '#';
+              let fileName = 'Lab_Submission_File.pkt';
+              let textMsg = item.submission_text || '';
+
+              if (textMsg.includes('[Attached File URL]:')) {
+                const partsArr = textMsg.split('[Attached File URL]:');
+                extractedUrl = partsArr[1].trim();
+                textMsg = partsArr[0].replace(/\[Student Email\]:[^\n]*\n?/, '').replace(/\[Typed Message\]:/, '').trim();
+                const urlParts = extractedUrl.split('/');
+                fileName = decodeURIComponent(urlParts[urlParts.length - 1]);
+              }
+
+              return {
+                student_name: item.student_name || 'Student',
+                lesson_id: item.lesson_id || '1.1',
+                created_at: item.created_at || new Date().toISOString(),
+                file_name: fileName,
+                url: extractedUrl,
+                summary: textMsg
+              };
+            });
+          } else {
+            submittedFilesList = [
+              { student_name: "Adan iT Portal", lesson_id: "System", created_at: new Date().toISOString(), file_name: "No submissions yet", url: "#", summary: "Waiting for student submissions." }
+            ];
+          }
+        } catch (err) {
+          console.log('Submission fetch note:', err);
+        }
+      }
+
+      currentSubmissionSlide = submittedFilesList.length - 1;
+      renderCurrentSubmissionSlide();
+    }
+
+    function renderCurrentSubmissionSlide() {
+      const container = document.getElementById('submittedFilesSliderContainer');
+      const counter = document.getElementById('submissionSlideCounter');
+
+      if (!submittedFilesList || submittedFilesList.length === 0) {
+        container.innerHTML = `<p class="text-slate-400 text-xs italic text-center w-full">No submitted files yet.</p>`;
+        counter.textContent = "0 / 0";
+        return;
+      }
+
+      if (currentSubmissionSlide >= submittedFilesList.length) currentSubmissionSlide = 0;
+      if (currentSubmissionSlide < 0) currentSubmissionSlide = submittedFilesList.length - 1;
+
+      counter.textContent = `${currentSubmissionSlide + 1} / ${submittedFilesList.length}`;
+      const item = submittedFilesList[currentSubmissionSlide];
+
+      const ext = item.file_name.split('.').pop().toLowerCase();
+      let icon = 'fa-file';
+      if (['pkt', 'pka'].includes(ext)) icon = 'fa-diagram-project text-teal-400';
+      else if (['png', 'jpg', 'jpeg'].includes(ext)) icon = 'fa-image text-cyan-400';
+      else if (ext === 'pdf') icon = 'fa-file-pdf text-rose-400';
+
+      const timeStr = new Date(item.created_at).toLocaleString();
+
+      container.innerHTML = `
+        <div class="w-full bg-white/5 border border-white/15 rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 backdrop-blur-sm">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-400/30 flex items-center justify-center text-teal-300 text-lg shadow-inner shrink-0 mt-0.5">
+              <i class="fa-solid ${icon}"></i>
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="font-extrabold text-white text-xs sm:text-sm">${item.student_name}</span>
+                <span class="bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[9px] font-extrabold px-2 py-0.5 rounded-full">Lesson ${item.lesson_id}</span>
+              </div>
+              ${item.summary ? `<p class="text-slate-200 text-[11px] bg-slate-950/40 p-2 rounded-lg border border-white/10 italic">💬 "${item.summary}"</p>` : ''}
+              <p class="text-teal-200 text-[10px] font-mono truncate max-w-xs sm:max-w-md"><i class="fa-solid fa-paperclip text-teal-400 mr-1"></i> ${item.file_name}</p>
+              <p class="text-[9px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i> ${timeStr}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+            ${item.url !== '#' ? `
+              <button onclick="downloadSubmittedFile('${item.url}', '${item.file_name}')" class="bg-teal-500 hover:bg-teal-600 text-slate-950 font-black text-[10px] px-3.5 py-1.5 rounded-lg shadow transition flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-download"></i> Download File
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function prevSubmittedSlide() {
+      currentSubmissionSlide--;
+      renderCurrentSubmissionSlide();
+    }
+
+    function nextSubmittedSlide() {
+      currentSubmissionSlide++;
+      renderCurrentSubmissionSlide();
+    }
+
     function lockPortal() {
       const wrapper = document.getElementById('portalMainWrapper');
-      if (wrapper) {
-        wrapper.classList.add('blur-sm', 'pointer-events-none', 'select-none');
-      }
+      if (wrapper) { wrapper.classList.add('blur-sm', 'pointer-events-none', 'select-none'); }
     }
 
     function unlockPortal() {
       const wrapper = document.getElementById('portalMainWrapper');
-      if (wrapper) {
-        wrapper.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
-      }
+      if (wrapper) { wrapper.classList.remove('blur-sm', 'pointer-events-none', 'select-none'); }
     }
 
     function showToast(message, icon = '⚡') {
@@ -1092,6 +1244,7 @@
       const profileDisplay = document.getElementById('userProfileDisplay');
       const userNameEl = document.getElementById('headerUserName');
       const userInitialEl = document.getElementById('userAvatarInitial');
+      const bannerSection = document.getElementById('submittedFilesBannerSection');
 
       if (currentUser) {
         if (loginBtn) loginBtn.classList.add('hidden');
@@ -1101,11 +1254,22 @@
         }
         if (userNameEl) userNameEl.textContent = currentUser.name;
         if (userInitialEl) userInitialEl.textContent = currentUser.name.charAt(0).toUpperCase();
+
+        if (bannerSection) {
+          if (currentUser.email === NOTIFICATION_EMAIL) {
+            bannerSection.classList.remove('hidden');
+          } else {
+            bannerSection.classList.add('hidden');
+          }
+        }
       } else {
         if (loginBtn) loginBtn.classList.remove('hidden');
         if (profileDisplay) {
           profileDisplay.classList.remove('flex');
           profileDisplay.classList.add('hidden');
+        }
+        if (bannerSection) {
+          bannerSection.classList.add('hidden');
         }
       }
     }
@@ -1116,7 +1280,7 @@
       if (currentUser) {
         if (closeBtn) closeBtn.classList.remove('hidden');
       } else {
-        if (closeBtn) closeBtn.classList.add('hidden'); // Force login before close if unauthenticated
+        if (closeBtn) closeBtn.classList.add('hidden');
       }
       document.getElementById('authModal').classList.remove('hidden');
     }
@@ -1172,6 +1336,7 @@
       updateHeaderAuthUI();
       unlockPortal();
       await syncUserProgressFromCloud();
+      await loadSubmittedFilesCarousel();
       closeAuthModal();
       loadDomain(activeDomainIndex);
       fetchRegisteredStudentsList();
@@ -1216,6 +1381,7 @@
       }
     }
 
+    /* FETCH REGISTERED STUDENTS LIST */
     async function fetchRegisteredStudentsList() {
       const container = document.getElementById('studentListContainer');
       const badge = document.getElementById('studentCountBadge');
@@ -1224,12 +1390,18 @@
       try {
         const { data } = await supabaseClient.from('profiles').select('full_name, email');
         if (data && data.length > 0) {
-          badge.textContent = data.length;
+          const filteredStudents = data.filter(st => {
+            if (st.email === NOTIFICATION_EMAIL) {
+              return currentUser && currentUser.email === NOTIFICATION_EMAIL;
+            }
+            return true;
+          });
+
+          badge.textContent = filteredStudents.length;
           const colors = ['emerald', 'indigo', 'amber', 'purple', 'cyan', 'rose'];
 
-          container.innerHTML = data.map((st, idx) => {
-            // Disabled online status exclusively for sakib00786@gmail.com
-            const isOnline = currentUser && currentUser.email === st.email && st.email !== 'sakib00786@gmail.com';
+          container.innerHTML = filteredStudents.map((st, idx) => {
+            const isOnline = currentUser && currentUser.email === st.email;
             const color = colors[idx % colors.length];
             return `
               <div class="flex items-center justify-between bg-slate-50 p-2 rounded-xl border border-slate-200">
@@ -1263,7 +1435,6 @@
       drawer.classList.toggle('hidden'); 
     }
 
-    /* INSTRUCTOR PORTAL SECURITY & LOGIC (PIN: admin00786) */
     function openInstructorPortalPrompt() {
       const pin = prompt('🔒 Enter Instructor Security PIN to access all student progress:');
       if (pin === 'admin00786') {
@@ -1278,9 +1449,7 @@
       await loadInstructorTelemetry();
     }
 
-    function closeInstructorModal() {
-      document.getElementById('instructorModal').classList.add('hidden');
-    }
+    function closeInstructorModal() { document.getElementById('instructorModal').classList.add('hidden'); }
 
     async function refreshInstructorData() {
       await loadInstructorTelemetry();
@@ -1297,10 +1466,9 @@
       }
 
       try {
-        const { data: profiles, error: profError } = await supabaseClient.from('profiles').select('full_name, email');
-        const { data: progressData, error: progError } = await supabaseClient.from('student_progress').select('*');
-
-        if (profError) throw profError;
+        const { data: profiles } = await supabaseClient.from('profiles').select('full_name, email');
+        const { data: progressData } = await supabaseClient.from('student_progress').select('*');
+        const { data: assignmentsData } = await supabaseClient.from('assignments').select('*').order('created_at', { ascending: false });
 
         if (profiles && profiles.length > 0) {
           totalStudentsBadge.textContent = profiles.length;
@@ -1312,8 +1480,8 @@
                   <tr class="bg-slate-100 text-slate-700 text-[10px] uppercase font-extrabold border-b border-slate-200">
                     <th class="p-2.5">Student Name</th>
                     <th class="p-2.5">Email Address</th>
-                    <th class="p-2.5">Completed Lessons</th>
-                    <th class="p-2.5">Status</th>
+                    <th class="p-2.5">Completed Tasks</th>
+                    <th class="p-2.5">Submitted Files & Typed Messages</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -1328,6 +1496,39 @@
               }
             });
 
+            const studentFiles = assignmentsData ? assignmentsData.filter(a => 
+              (a.student_name && a.student_name.toLowerCase() === (st.full_name || '').toLowerCase()) ||
+              (st.email && a.submission_text && a.submission_text.includes(st.email))
+            ) : [];
+
+            let filesHtml = `<span class="text-slate-400 italic text-[10px]">No submissions yet</span>`;
+            if (studentFiles.length > 0) {
+              filesHtml = `<div class="space-y-1.5">` + studentFiles.map(file => {
+                let fileName = 'Lab_Submission.pkt';
+                let fileUrl = '#';
+                let typedMsg = file.submission_text || '';
+
+                if (typedMsg.includes('[Attached File URL]:')) {
+                  const parts = typedMsg.split('[Attached File URL]:');
+                  fileUrl = parts[1].trim();
+                  typedMsg = parts[0].replace(/\[Student Email\]:[^\n]*\n?/, '').replace(/\[Typed Message\]:/, '').trim();
+                  const urlParts = fileUrl.split('/');
+                  fileName = decodeURIComponent(urlParts[urlParts.length - 1]);
+                }
+
+                return `
+                  <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-[10px] space-y-1">
+                    <div class="flex items-center gap-1.5">
+                      <i class="fa-solid fa-file-code text-teal-600"></i>
+                      ${fileUrl !== '#' ? `<a href="${fileUrl}" target="_blank" class="font-bold text-teal-700 hover:underline truncate max-w-[150px] inline-block">${fileName}</a>` : `<span class="font-semibold text-slate-700 truncate max-w-[150px] inline-block">${fileName}</span>`}
+                      <span class="text-[9px] bg-amber-100 text-amber-900 px-1.5 py-0.2 rounded font-extrabold">L${file.lesson_id}</span>
+                    </div>
+                    ${typedMsg ? `<p class="text-slate-600 text-[9.5px] italic pl-4">💬 "${typedMsg}"</p>` : ''}
+                  </div>
+                `;
+              }).join('') + `</div>`;
+            }
+
             html += `
               <tr class="hover:bg-slate-50 transition">
                 <td class="p-2.5 font-extrabold text-slate-900 flex items-center gap-2">
@@ -1339,11 +1540,11 @@
                 <td class="p-2.5 text-slate-600 font-medium">${st.email}</td>
                 <td class="p-2.5">
                   <span class="bg-teal-50 text-teal-800 font-bold px-2.5 py-1 rounded-lg border border-teal-200">
-                    ${completedCount} tasks completed
+                    ${completedCount} tasks done
                   </span>
                 </td>
                 <td class="p-2.5">
-                  <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full text-[10px]">Active Track</span>
+                  ${filesHtml}
                 </td>
               </tr>
             `;
@@ -1361,7 +1562,6 @@
       }
     }
 
-    /* GLOSSARY MODAL LOGIC & SEARCH */
     let currentGlossaryTerms = [];
 
     function openGlossaryModalFor(lessonIdx) {
@@ -1442,7 +1642,6 @@
 
     function closeGlossaryModal() { document.getElementById('glossaryModal').classList.add('hidden'); }
 
-    /* CHATBOT PROACTIVE ACTIVE TOPICS SYSTEM */
     function renderBotTopicChips(filter) {
       const container = document.getElementById('aiChatTopicChips');
       if (!container) return;
@@ -1477,105 +1676,10 @@
       chatBox.scrollTop = chatBox.scrollHeight;
 
       setTimeout(() => {
-        let response = generateProBotResponse(text);
+        let response = "<strong>Topic Details:</strong><br>In CCST Networking, mastering this topic involves understanding its function across the OSI model, configuring it on Cisco IOS switches/routers, and verifying operations using CLI commands.";
         chatBox.innerHTML += `<div class="flex items-start gap-2"><div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div><div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 max-w-[88%] leading-relaxed">${response}</div></div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
       }, 500);
-    }
-
-    function generateProBotResponse(text) {
-      const q = text.toLowerCase();
-
-      if (q.includes('osi') || q.includes('layer') || q.includes('7 osi')) {
-        return "<strong>Domain 1 - 7 OSI Layers Breakdown:</strong><br>" +
-               "• <strong>Layer 7 (Application):</strong> HTTP, DNS, DHCP, FTP.<br>" +
-               "• <strong>Layer 6 (Presentation):</strong> Encryption (SSL/TLS), formatting.<br>" +
-               "• <strong>Layer 5 (Session):</strong> Manages session dialogs (NetBIOS).<br>" +
-               "• <strong>Layer 4 (Transport):</strong> TCP/UDP, Port numbers, Segments.<br>" +
-               "• <strong>Layer 3 (Network):</strong> IP Addressing, Routers, Packets.<br>" +
-               "• <strong>Layer 2 (Data Link):</strong> MAC Addressing, Switches, Frames.<br>" +
-               "• <strong>Layer 1 (Physical):</strong> Cables, Hubs, Bits.";
-      }
-      if (q.includes('tcp') || q.includes('4 tcp') || q.includes('encapsulation') || q.includes('pdu')) {
-        return "<strong>Domain 1 - TCP/IP & Encapsulation:</strong><br>" +
-               "• <strong>4 TCP/IP Layers:</strong> Application, Transport, Internet, Network Access.<br>" +
-               "• <strong>Encapsulation Order:</strong> Data → Segment (L4) → Packet (L3) → Frame (L2) → Bits (L1).<br>" +
-               "• <strong>Decapsulation:</strong> Receiving node strips L2 headers, then L3 IP headers, up to payload data.";
-      }
-      if (q.includes('topology') || q.includes('star') || q.includes('mesh') || q.includes('bus')) {
-        return "<strong>Domain 1 - Network Topologies:</strong><br>" +
-               "• <strong>Star:</strong> Central switch connection; easy troubleshooting.<br>" +
-               "• <strong>Mesh:</strong> Full redundancy ($N(N-1)/2$ links); used in WAN backbones.<br>" +
-               "• <strong>Bus/Ring:</strong> Legacy single-cable or circular token architectures.";
-      }
-      if (q.includes('bandwidth') || q.includes('throughput') || q.includes('latency') || q.includes('jitter')) {
-        return "<strong>Domain 1 - Network Performance Metrics:</strong><br>" +
-               "• <strong>Bandwidth:</strong> Max theoretical rate (e.g., 1 Gbps Cat6).<br>" +
-               "• <strong>Throughput:</strong> Actual measured transfer speed.<br>" +
-               "• <strong>Latency:</strong> Round-trip delay in ms (Ping).<br>" +
-               "• <strong>Jitter:</strong> Variance in packet arrival delay affecting VoIP.";
-      }
-      if (q.includes('lan') || q.includes('wan') || q.includes('wlan') || q.includes('man') || q.includes('san')) {
-        return "<strong>Domain 1 - Network Geographic Types:</strong><br>" +
-               "• <strong>LAN:</strong> Local area switch network within a building.<br>" +
-               "• <strong>WAN:</strong> Wide area interconnecting separate offices over ISP links.<br>" +
-               "• <strong>WLAN:</strong> 802.11 Wireless LAN.<br>" +
-               "• <strong>SAN:</strong> Dedicated block-level storage network (Fibre Channel/iSCSI).";
-      }
-      if (q.includes('subnet') || q.includes('cidr') || q.includes('ipv4') || q.includes('classes') || q.includes('apipa')) {
-        return "<strong>Domain 2 - IPv4 & Subnetting Math:</strong><br>" +
-               "• <strong>Class A, B, C Private IPs (RFC 1918):</strong> 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.<br>" +
-               "• <strong>CIDR Masks:</strong> /24 = 255.255.255.0 (254 hosts); /26 = 255.255.255.192 (62 hosts); /30 = point-to-point (2 hosts).<br>" +
-               "• <strong>APIPA:</strong> 169.254.x.x assigned automatically if DHCP fails.";
-      }
-      if (q.includes('ipv6') || q.includes('slaac') || q.includes('eui-64') || q.includes('global unicast')) {
-        return "<strong>Domain 2 - IPv6 Architecture:</strong><br>" +
-               "• 128-bit hexadecimal addresses.<br>" +
-               "• <strong>Global Unicast (2000::/3):</strong> Public routable Internet addresses.<br>" +
-               "• <strong>Link-Local (fe80::/10):</strong> Auto-configured on local subnets.<br>" +
-               "• <strong>SLAAC & EUI-64:</strong> Auto-generates host address using MAC address + ICMPv6 RA.";
-      }
-      if (q.includes('cable') || q.includes('cat6') || q.includes('fiber') || q.includes('t568b') || q.includes('connector')) {
-        return "<strong>Domain 3 - Media & Cabling:</strong><br>" +
-               "• <strong>Cat5e/Cat6:</strong> Copper twisted pair up to 100 meters.<br>" +
-               "• <strong>T568B Order:</strong> Orange-White, Orange, Green-White, Blue, Blue-White, Green, Brown-White, Brown.<br>" +
-               "• <strong>Single-Mode Fiber (SMF):</strong> Laser optics for long WAN distances.<br>" +
-               "• <strong>Multi-Mode Fiber (MMF):</strong> LED optics for local data centers.";
-      }
-      if (q.includes('wifi') || q.includes('wireless') || q.includes('802.11') || q.includes('2.4ghz') || q.includes('wpa3')) {
-        return "<strong>Domain 3 - Wireless Standards:</strong><br>" +
-               "• <strong>802.11n (Wi-Fi 4), 802.11ac (Wi-Fi 5), 802.11ax (Wi-Fi 6).</strong><br>" +
-               "• <strong>2.4 GHz vs 5 GHz:</strong> 2.4GHz penetrates walls better (Channels 1, 6, 11); 5GHz offers faster speed.<br>" +
-               "• <strong>WPA3 Security:</strong> Uses SAE encryption for robust protection.";
-      }
-      if (q.includes('switch') || q.includes('router') || q.includes('gateway') || q.includes('mac address table')) {
-        return "<strong>Domain 4 - Network Hardware Roles:</strong><br>" +
-               "• <strong>Layer 2 Switch:</strong> Forwards frames based on MAC address table.<br>" +
-               "• <strong>Layer 3 Router:</strong> Routes packets between different subnets using IP routing tables.<br>" +
-               "• <strong>Default Gateway:</strong> Router IP where PCs send outbound traffic.";
-      }
-      if (q.includes('vlan') || q.includes('trunk') || q.includes('802.1q') || q.includes('access port')) {
-        return "<strong>Domain 4 - VLANs & Trunking:</strong><br>" +
-               "• <strong>VLAN:</strong> Broadcast domain isolation at Layer 2.<br>" +
-               "• <strong>802.1Q Trunking:</strong> Inserts a 4-byte frame tag to send traffic for multiple VLANs over a single link.<br>" +
-               "• <strong>Router-on-a-Stick:</strong> Subinterfaces on router for inter-VLAN routing.";
-      }
-      if (q.includes('ping') || q.includes('traceroute') || q.includes('tracert') || q.includes('nslookup') || q.includes('arp')) {
-        return "<strong>Domain 5 - Command-Line Diagnostics:</strong><br>" +
-               "• <code>ping [IP]</code>: ICMP Echo test for L3 connectivity.<br>" +
-               "• <code>tracert [Domain]</code>: Shows every router hop along path.<br>" +
-               "• <code>nslookup [Domain]</code>: Queries DNS server records.<br>" +
-               "• <code>arp -a</code>: Displays MAC-to-IP resolution table.";
-      }
-      if (q.includes('acl') || q.includes('port security') || q.includes('ssh') || q.includes('security') || q.includes('aaa')) {
-        return "<strong>Domain 6 - Security & Hardening:</strong><br>" +
-               "• <strong>ACL:</strong> Sequential permit/deny filters for IP traffic.<br>" +
-               "• <strong>Port Security:</strong> Binds switch port to sticky MAC addresses to block rogues.<br>" +
-               "• <strong>SSH:</strong> Encrypted CLI administration (Port 22).";
-      }
-
-      return `<strong>Topic Details for: "${text}"</strong><br>` +
-             `In CCST Networking, mastering this topic involves understanding its function across the OSI model, configuring it on Cisco IOS switches/routers, and verifying operations using CLI commands. Select any active topic chip above for exact technical breakdowns!`;
     }
 
     function switchDomain(index) {
@@ -1732,7 +1836,6 @@
       document.getElementById('sidebarProgressBar').style.width = pct + '%';
       document.getElementById('sidebarTaskFraction').textContent = `${completedTasks} / ${totalTasks}`;
 
-      // Update Domain Row Vista Active Green Progress Bar
       document.getElementById('domainRowProgressText').textContent = pct + '% Complete';
       document.getElementById('domainRowProgressBar').style.width = pct + '%';
     }
@@ -1791,25 +1894,32 @@
         try {
           const fileExt = selectedAssignmentFile.name.split('.').pop().toLowerCase();
           
-          let folderName = 'Documents';
-          // Added .pka support alongside .pkt in Packet Tracer files folder list
+          // Folder routing based on file extension
+          let folderName = 'Mix Files';
+          const picExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'jfif', 'tif', 'tiff', 'svg', 'ico', 'avif', 'heic', 'heif', 'raw', 'psd', 'eps', 'ai', 'cdr', 'jp2', 'jxl', 'tga', 'dds', 'exr'];
+
           if (fileExt === 'pkt' || fileExt === 'pka') {
-            folderName = 'Packet Tracer files';
-          } else if (['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(fileExt)) {
-            folderName = 'Pix';
-          } else if (['pdf', 'doc', 'docx', 'txt', 'zip', 'rar'].includes(fileExt)) {
-            folderName = 'Documents';
+            folderName = 'Packet Tracer Files';
+          } else if (picExtensions.includes(fileExt)) {
+            folderName = 'Submitted Pix';
+          } else if (fileExt === 'txt' || fileExt === 'md' || fileExt === 'docx' || fileExt === 'doc') {
+            folderName = 'Text Files';
+          } else if (fileExt === 'html') {
+            folderName = 'Html Files';
+          } else if (fileExt === 'pdf') {
+            folderName = 'PDF Files';
           }
 
-          const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-          const filePath = `${folderName}/${lessonId}/${fileName}`;
+          // Format clean student prefix for tracking in Storage
+          const safeStudentPrefix = (currentUser && currentUser.email) ? currentUser.email.split('@')[0] : (studentName.replace(/[^a-zA-Z0-9]/g, '_'));
+          const fileName = `${safeStudentPrefix}_${Date.now()}.${fileExt}`;
+          const filePath = `${folderName}/lesson_${lessonId}/${fileName}`;
 
           const { data: uploadData, error: uploadError } = await supabaseClient.storage
             .from('ASSIGNMENT-FILES')
             .upload(filePath, selectedAssignmentFile);
 
           if (uploadError) {
-            console.error('Supabase Storage Upload Error:', uploadError.message);
             alert('Upload failed: ' + uploadError.message);
             assignSubmitBtn.disabled = false;
             assignSubmitBtn.textContent = 'Upload & Submit Lab';
@@ -1827,23 +1937,26 @@
         }
       }
 
+      // Save submission to Supabase assignments table with student email & typed message
       if (supabaseClient) {
         try {
+          const formattedSubmissionText = `[Student Email]: ${currentUser ? currentUser.email : 'N/A'}\n[Typed Message]: ${textSummary}` + (filePublicUrl ? `\n[Attached File URL]: ${filePublicUrl}` : '');
           await supabaseClient.from('assignments').insert([{
             student_name: studentName,
             lesson_id: lessonId,
-            submission_text: textSummary + (filePublicUrl ? `\n[Attached File URL]: ${filePublicUrl}` : '')
+            submission_text: formattedSubmissionText
           }]);
         } catch (err) {
-          console.log('Supabase assignment save note:', err);
+          console.log('Supabase submission note:', err);
         }
       }
 
       assignSubmitBtn.disabled = false;
       assignSubmitBtn.textContent = 'Upload & Submit Lab';
       await toggleSubtopicCheck('assignment', true);
-      showToast('🚀 File uploaded & saved successfully!', '📤');
+      showToast(`🚀 File & message uploaded successfully!`, '📤');
       closeAssignmentModal();
+      await loadSubmittedFilesCarousel();
     }
 
     function resetAllProgress() {
@@ -1859,6 +1972,39 @@
       document.getElementById('aiInput').value = promptText;
       handleAiSubmit(new Event('submit'));
     }
+  
+    /* ROBUST BLOB DOWNLOAD HELPER */
+    async function downloadSubmittedFile(url, filename) {
+      if (!url || url === '#') {
+        showToast('⚠️ File URL not available for download.', '🛡️');
+        return;
+      }
+      showToast('📥 Preparing file download...', '⚡');
+      try {
+        const response = await fetch(url, { mode: 'cors' });
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = filename || 'Lab_Submission_File.pkt';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+        showToast('✅ File downloaded successfully!', '⚡');
+      } catch (err) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename || 'Lab_Submission_File.pkt';
+        a.target = '_self';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('✅ Download triggered!', '⚡');
+      }
+    }
+
   </script>
 </body>
 </html>
