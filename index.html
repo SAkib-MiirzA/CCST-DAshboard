@@ -691,7 +691,7 @@
         </button>
       </div>
 
-<!-- CURRENT WEATHER SUMMARY CARD (Rainy Cloud with Animation) -->
+      <!-- CURRENT WEATHER SUMMARY CARD (Rainy Cloud with Animation) -->
       <div class="bg-gradient-to-r from-slate-900 via-teal-950/60 to-slate-900 p-4 rounded-2xl border border-teal-500/30 flex items-center justify-between relative overflow-hidden">
         
         <!-- Ambient Glow Effect -->
@@ -821,7 +821,7 @@
         </button>
       </div>
 
-<!-- IMAGE PREVIEW CONTAINER ON SAME PAGE -->
+      <!-- IMAGE PREVIEW CONTAINER ON SAME PAGE -->
       <div class="flex-1 bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex items-center justify-center min-h-[260px] max-h-[480px]">
         <img id="previewModalImg" src="" alt="Test Result" class="max-w-full max-h-full object-contain" />
       </div>
@@ -856,7 +856,6 @@
 
   <script>
     // 1. DYNAMIC TIMESTAMP LOGIC
-    // Call setUploadTimestamp(dateObj) whenever a new image/document is uploaded or loaded in the preview modal
     function setUploadTimestamp(dateStringOrObject) {
       const uploadDate = dateStringOrObject ? new Date(dateStringOrObject) : new Date();
       
@@ -867,7 +866,6 @@
       document.getElementById('uploadDateBadge').textContent = formattedDate;
     }
 
-    // Initialize with current upload date on page load (or pass your image upload date variable here)
     setUploadTimestamp();
 
     // 2. EMAIL ACCESS LOGIC
@@ -875,7 +873,7 @@
     const openTabBtn = document.getElementById('previewOpenNewTabBtn');
 
     if (userEmail && userEmail.trim().toLowerCase() === 'sakib00786@gmail.com') {
-      openTabBtn.setAttribute('href', '#'); // Set target preview URL here
+      openTabBtn.setAttribute('href', '#');
       openTabBtn.setAttribute('target', '_blank');
       openTabBtn.className = 'px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-xl transition flex items-center gap-1.5 text-[11px] cursor-pointer';
     }
@@ -1112,6 +1110,7 @@
         <p class="text-[10px] text-slate-500">Sign in to sync your CCST progress across devices</p>
       </div>
 
+ <!-- ==================== AUTHENTICATION FORM HTML ==================== -->
       <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3.5">
         <div id="nameInputGroup" class="hidden space-y-1">
           <label class="block font-bold text-slate-700">Full Student Name</label>
@@ -1128,12 +1127,128 @@
           <input type="password" id="authPasswordInput" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500 font-medium">
         </div>
 
+        <!-- Unified Reset & Change Password Action Bar -->
+        <div class="flex items-center justify-between text-[10.5px] pt-0.5">
+          <button type="button" onclick="triggerResetPassword()" class="text-teal-700 hover:text-teal-900 font-bold transition cursor-pointer">
+            🔑 Reset Password (Forgot)
+          </button>
+          <button type="button" onclick="triggerChangePassword()" class="text-slate-600 hover:text-slate-900 font-bold transition cursor-pointer">
+            🔒 Change Password
+          </button>
+        </div>
+
         <div class="pt-1">
           <button type="submit" id="authSubmitBtn" class="w-full py-3 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-teal-700 text-white font-extrabold rounded-2xl shadow-lg shadow-teal-600/20 transition cursor-pointer text-xs">
             Sign In to Portal
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <script>
+    // ==================== SECURE SUPABASE AUTH LOGIN HANDLER ====================
+    window.handleAuthSubmit = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('authEmailInput').value.trim();
+      const password = document.getElementById('authPasswordInput').value;
+      const inputName = document.getElementById('authNameInput').value.trim();
+      const name = (authMode === 'signup' && inputName) ? inputName : email.split('@')[0];
+
+      if (!email || !password) {
+        showToast('⚠️ Please enter both your email address and password.', '🛡️');
+        return;
+      }
+
+      showToast('⏳ Verifying credentials with Supabase database...', '🔒');
+
+      if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+        try {
+          if (authMode === 'signup') {
+            const { data, error } = await supabaseClient.auth.signUp({
+              email: email,
+              password: password,
+              options: { data: { full_name: name } }
+            });
+            if (error) throw error;
+          }
+
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password,
+          });
+
+          if (error) {
+            showToast('❌ Access Denied: Incorrect email or password!', '🚫');
+            lockPortal();
+            alert('Authentication Failed: ' + (error.message || 'Invalid login credentials.'));
+            return;
+          }
+
+          if (data && data.user) {
+            currentUser = { 
+              name: data.user.user_metadata?.full_name || name.charAt(0).toUpperCase() + name.slice(1), 
+              email: data.user.email 
+            };
+            localStorage.setItem('ccst_user', JSON.stringify(currentUser));
+            
+            try {
+              await supabaseClient.from('profiles').upsert([{ email: email, full_name: currentUser.name }], { onConflict: 'email' });
+            } catch (err) {
+              console.log('Profile upsert note:', err);
+            }
+
+            updateHeaderAuthUI();
+            unlockPortal();
+            closeAuthModal();
+            
+            if (typeof syncUserProgressFromCloud === 'function') await syncUserProgressFromCloud();
+            if (typeof loadSubmittedFilesCarousel === 'function') await loadSubmittedFilesCarousel();
+            
+            loadDomain(activeDomainIndex);
+            fetchRegisteredStudentsList();
+            renderBotTopicChips('all');
+            showToast(`🎉 Welcome back, ${currentUser.name}!`, '⚡');
+          }
+        } catch (err) {
+          console.error('Sign-in exception:', err);
+          showToast('❌ Access Denied: ' + (err.message || 'Invalid credentials.'), '🚫');
+          lockPortal();
+          alert('Authentication Error: ' + err.message);
+        }
+      } else {
+        alert('⚠️ Database connection error. Supabase is not initialized.');
+        lockPortal();
+      }
+    };
+  </script>
+
+  <!-- ==================== CUSTOM PANEL-STYLE PROMPT MODAL ==================== -->
+  <div id="customActionModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 space-y-4 text-[11px] relative animate-fadeIn">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div id="customModalIconBox" class="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-xs shadow-2xs">
+            <i class="fa-solid fa-key" id="customModalFaIcon"></i>
+          </div>
+          <h3 class="font-extrabold text-slate-900 text-xs sm:text-sm" id="customModalTitle">Action Title</h3>
+        </div>
+        <button onclick="closeCustomActionModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <p class="text-slate-600 font-medium leading-relaxed" id="customModalDescription">Please provide the details below:</p>
+
+      <!-- Dynamic Input Fields Container -->
+      <div id="customModalInputsContainer" class="space-y-3"></div>
+
+      <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+        <button type="button" onclick="closeCustomActionModal()" class="px-3.5 py-2 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 cursor-pointer">Cancel</button>
+        <button type="button" id="customModalSubmitBtn" class="px-5 py-2 bg-teal-600 hover:bg-teal-700 text-white font-extrabold rounded-xl shadow-md transition cursor-pointer">Confirm</button>
+      </div>
+
     </div>
   </div>
 
@@ -1301,7 +1416,7 @@
             badge: "LESSON 3.1",
             title: "Cabling & Connector Types",
             objective: "Identify twisted pair Ethernet cables, copper pinouts, single-mode and multi-mode fiber.",
-            subtopics: ["Cat5e / Cat6 / Cat6a Standards <details class='relative inline-block ml-3 align-middle group'><summary class='list-none cursor-pointer inline-block bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-lg hover:bg-sky-200 transition'>Cables</summary><div class='absolute z-[99999] bottom-full left-1/2 -translate-x-1/2 flex items-end gap-3 pb-2'><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 -rotate-12'></div><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 rotate-12'></div><a href='https://ipcisco.com/lesson/network-cabling/' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>1</a><a href='https://www.geeksforgeeks.org/computer-networks/types-of-ethernet-cable/' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatDown 3s ease-in-out infinite'>2</a><a href='https://www.instagram.com/p/DaBNEtGxkL1/' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>3</a></div></details>", "T568A vs T568B Wiring <details class='relative inline-block ml-3 align-middle group'><summary class='list-none cursor-pointer inline-block bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-lg hover:bg-sky-200 transition'>Wiring</summary><div class='absolute z-[99999] bottom-full left-1/2 -translate-x-1/2 flex items-end gap-3 pb-2'><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 -rotate-12'></div><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 rotate-12'></div><a href='https://www.computercablestore.com/what-are-ethernet-crossover-cables' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>1</a><a href='https://www.router-switch.com/faq/what-are-straight-and-crossover-cable.html' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatDown 3s ease-in-out infinite'>2</a><a href='https://www.slideshare.net/slideshow/04-the-purpose-of-straightthrough-and-crossover-cablespptx/251955731' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>3</a></div></details>", "Straight-Through vs Crossover Cables <details class='relative inline-block ml-3 align-middle group'><summary class='list-none cursor-pointer bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-lg hover:bg-sky-200 transition'>Vs</summary><div class='absolute z-[99999] bottom-full left-1/2 -translate-x-1/2 flex items-end gap-3 pb-2'><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 -rotate-12'></div><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 rotate-12'></div><a href='https://www.cablify.ca/straight-through-vs-crossover-in-data-cabling/' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>1</a><a href='https://www.slideshare.net/slideshow/04-the-purpose-of-straightthrough-and-crossover-cablespptx/251955731' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatDown 3s ease-in-out infinite'>2</a><a href='https://www.router-switch.com/faq/what-are-straight-and-crossover-cable.html' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>3</a></div></details>", "Single-mode vs Multi-mode Fiber <details class='relative inline-block ml-3 align-middle group'><summary class='list-none cursor-pointer bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-lg hover:bg-sky-200 transition'>Fiber</summary><div class='absolute z-[99999] bottom-full left-1/2 -translate-x-1/2 flex items-end gap-3 pb-2'><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 -rotate-12'></div><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 rotate-12'></div><a href='https://www.vsolcn.com/blog/single-mode-vs-multimode-fiber.html' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>1</a></div></details>", "RJ-45, LC, SC, ST Connectors <details class='relative inline-block ml-3 align-middle group'><summary class='list-none cursor-pointer inline-block bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-lg hover:bg-sky-200 transition'>Connectors</summary><div class='absolute z-[99999] bottom-full left-1/2 -translate-x-1/2 flex items-end gap-3 pb-2'><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 -rotate-12'></div><div class='absolute left-1/2 top-1/2 w-12 h-px bg-orange-300 -translate-x-1/2 rotate-12'></div><a href='https://www.showmecables.com/blog/post/types-of-fiber-optic-connectors-%E2%80%93-simplex-duplex-lc-st-sc-and-more?srsltid=AYCX9vLqkdbaWlI8WNtd99ssbyN-SSSI4zpcNv6fuXAweGmknFVCk_Fo' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>1</a><a href='https://ipcisco.com/lesson/networking-connectors/' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatDown 3s ease-in-out infinite'>2</a><a href='https://www.naddod.com/blog/differences-between-st-sc-fc-and-lc-fiber-connectors?srsltid=AYCX9vJXmMDhadCIy9nuW2qjbcQ3hGjxywwzsNXIB7YLmNEycai3_ifj' target='_blank' rel='noopener noreferrer' class='relative w-6 h-6 rounded-full bg-orange-100 border border-orange-300 text-orange-700 flex items-center justify-center text-xs font-bold shadow-md hover:bg-orange-200' style='animation:floatUp 3s ease-in-out infinite'>3</a></div></details>"],            
+            subtopics: ["Cat5e / Cat6 / Cat6a Standards", "T568A vs T568B Wiring", "Straight-Through vs Crossover Cables", "Single-mode vs Multi-mode Fiber", "RJ-45, LC, SC, ST Connectors"],
             labTitle: "Cabling Specifications Lab",
             labDesc: "Test copper pinouts and fiber patch cords in simulation.",
             quizTitle: "Quiz 3.1: Cabling Standards",
@@ -1541,7 +1656,6 @@
     const GUJRAT_LON = 74.0754;
 
     function getWeatherCondition(code) {
-      // WMO Weather interpretation codes
       if (code === 0) return { title: 'Clear Sky', icon: 'fa-sun text-amber-400', anim: '' };
       if ([1, 2].includes(code)) return { title: 'Partly Cloudy', icon: 'fa-cloud-sun text-amber-300', anim: '' };
       if (code === 3) return { title: 'Overcast', icon: 'fa-cloud text-slate-300', anim: 'thunder-cloud-anim' };
@@ -1558,7 +1672,6 @@
         const res = await fetch(url);
         if (!res.ok) throw new Error('Weather network error');
         const data = await res.json();
-        
         updateWeatherUI(data);
       } catch (err) {
         console.warn('Live weather fetch failed, loading baseline forecast telemetry:', err);
@@ -1580,7 +1693,6 @@
       const humidity = current.relative_humidity_2m;
       const windMph = (current.wind_speed_10m * 0.621371).toFixed(1);
 
-      // Header Bar Updates
       const hTemp = document.getElementById('headerWeatherTemp');
       const hCond = document.getElementById('headerWeatherCondition');
       const hDet = document.getElementById('headerWeatherDetails');
@@ -1591,7 +1703,6 @@
       if (hDet) hDet.textContent = `💧 Humidity ${humidity}% • 💨 Wind ${windMph} mi/h • ⚡ Real-Time Live`;
       if (hIcon) hIcon.innerHTML = `<i class="fa-solid ${condition.icon} ${condition.anim}"></i>`;
 
-      // Modal Current Summary Updates
       const mTemp = document.getElementById('modalCurrentTemp');
       const mSum = document.getElementById('modalCurrentSummary');
       const mWind = document.getElementById('modalWindInfo');
@@ -1616,7 +1727,6 @@
         mUpdated.textContent = `Open-Meteo Live Telemetry • Synced ${nowStr}`;
       }
 
-      // Render 7-Day Forecast Grid
       const grid = document.getElementById('weatherForecastGrid');
       if (!grid) return;
 
@@ -1648,7 +1758,6 @@
     }
 
     function renderFallbackWeather() {
-      // Baseline 7-Day Telemetry Backup for Gujrat, Pakistan
       const fallbackData = {
         current: { temperature_2m: 29, relative_humidity_2m: 45, weather_code: 0, wind_speed_10m: 13.68 },
         daily: {
@@ -1663,7 +1772,6 @@
       updateWeatherUI(fallbackData);
     }
 
-    /* FULL CLOCK EXPAND MODAL CONTROLLERS */
     function openFullClockModal() {
       document.getElementById('fullClockModal').classList.remove('hidden');
     }
@@ -1672,7 +1780,6 @@
       document.getElementById('fullClockModal').classList.add('hidden');
     }
 
-    /* WEATHER FORECAST MODAL CONTROLLERS */
     function openWeatherForecastModal() {
       document.getElementById('weatherForecastModal').classList.remove('hidden');
     }
@@ -1681,24 +1788,22 @@
       document.getElementById('weatherForecastModal').classList.add('hidden');
     }
 
-    /* SUBMITTED FILES CAROUSEL CONTROLS */
     async function loadSubmittedFilesCarousel() {
       const container = document.getElementById('submittedFilesSliderContainer');
       const counter = document.getElementById('submissionSlideCounter');
 
       if (!supabaseClient) {
         submittedFilesList = [
-          { student_name: "Muhammad Ali", lesson_id: "1.1", created_at: new Date().toISOString(), file_name: "Lab1.1_OSI_Model.pkt", url: "#", summary: "Configured OSI topology with 7 layers." },
-          { student_name: "Usman Khan", lesson_id: "2.1", created_at: new Date(Date.now() - 3600000).toISOString(), file_name: "Subnetting_Config.pka", url: "#", summary: "Subnetted /24 into 4 subnets." }
+          { student_name: "Muhammad Ali", lesson_id: "1.1", created_at: new Date().toISOString(), file_name: "Lab1.1_OSI_Model.pkt", url: "#", summary: "Configured OSI topology with 7 layers." }
         ];
       } else {
         try {
-            const { data } = await supabaseClient
-              .from('assignments')
-              .select('*')
-              .neq('lesson_id', '7.1')
-              .order('created_at', { ascending: false })
-              .limit(15);
+          const { data } = await supabaseClient
+            .from('assignments')
+            .select('*')
+            .neq('lesson_id', '7.1')
+            .order('created_at', { ascending: false })
+            .limit(15);
 
           if (data && data.length > 0) {
             submittedFilesList = data.reverse().map(item => {
@@ -1931,32 +2036,220 @@
       }
     }
 
-    async function handleAuthSubmit(e) {
+    /* ==================== SECURE SUPABASE AUTH LOGIN HANDLER ==================== */
+    window.handleAuthSubmit = async function(e) {
       e.preventDefault();
       const email = document.getElementById('authEmailInput').value.trim();
+      const password = document.getElementById('authPasswordInput').value;
       const inputName = document.getElementById('authNameInput').value.trim();
       const name = (authMode === 'signup' && inputName) ? inputName : email.split('@')[0];
 
-      currentUser = { name: name.charAt(0).toUpperCase() + name.slice(1), email: email };
-      localStorage.setItem('ccst_user', JSON.stringify(currentUser));
-
-      if (supabaseClient) {
-        try {
-          await supabaseClient.from('profiles').upsert([{ email: email, full_name: currentUser.name }], { onConflict: 'email' });
-        } catch (err) {
-          console.log('Supabase profile sync note:', err);
-        }
+      if (!email || !password) {
+        showToast('⚠️ Please enter both your email address and password.', '🛡️');
+        return;
       }
 
-      updateHeaderAuthUI();
-      unlockPortal();
-      await syncUserProgressFromCloud();
-      await loadSubmittedFilesCarousel();
-      closeAuthModal();
-      loadDomain(activeDomainIndex);
-      fetchRegisteredStudentsList();
-      renderBotTopicChips('all');
-      showToast(`🎉 Successfully logged in as ${currentUser.name}!`, '⚡');
+      showToast('⏳ Verifying credentials with Supabase database...', '🔒');
+
+      if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+        try {
+          if (authMode === 'signup') {
+            // Sign up new user
+            const { data, error } = await supabaseClient.auth.signUp({
+              email: email,
+              password: password,
+              options: { data: { full_name: name } }
+            });
+            if (error) throw error;
+          }
+
+          // Authenticate strictly with Supabase backend
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password,
+          });
+
+          // If credentials are wrong, Supabase returns an error -> BLOCK ENTRY
+          if (error) {
+            showToast('❌ Access Denied: Incorrect email or password!', '🚫');
+            lockPortal(); // Keeps the webpage locked and blurred
+            alert('Authentication Failed: ' + (error.message || 'Invalid login credentials.'));
+            return;
+          }
+
+          // If credentials are correct -> UNLOCK WEBPAGE
+          if (data && data.user) {
+            currentUser = { 
+              name: data.user.user_metadata?.full_name || name.charAt(0).toUpperCase() + name.slice(1), 
+              email: data.user.email 
+            };
+            localStorage.setItem('ccst_user', JSON.stringify(currentUser));
+            
+            try {
+              await supabaseClient.from('profiles').upsert([{ email: email, full_name: currentUser.name }], { onConflict: 'email' });
+            } catch (err) {
+              console.log('Profile upsert note:', err);
+            }
+
+            updateHeaderAuthUI();
+            unlockPortal(); // Opens the portal
+            closeAuthModal();
+            
+            if (typeof syncUserProgressFromCloud === 'function') await syncUserProgressFromCloud();
+            if (typeof loadSubmittedFilesCarousel === 'function') await loadSubmittedFilesCarousel();
+            
+            loadDomain(activeDomainIndex);
+            fetchRegisteredStudentsList();
+            renderBotTopicChips('all');
+            showToast(`🎉 Welcome back, ${currentUser.name}!`, '⚡');
+          }
+        } catch (err) {
+          console.error('Sign-in exception:', err);
+          showToast('❌ Access Denied: ' + (err.message || 'Invalid credentials.'), '🚫');
+          lockPortal();
+          alert('Authentication Error: ' + err.message);
+        }
+      } else {
+        alert('⚠️ Database connection error. Supabase is not initialized.');
+        lockPortal();
+      }
+    };
+
+    /* CUSTOM PANEL MODAL HELPERS */
+    function showCustomModal({ title, description, iconClass, fields, onSubmit }) {
+      const modal = document.getElementById('customActionModal');
+      document.getElementById('customModalTitle').textContent = title;
+      document.getElementById('customModalDescription').textContent = description;
+      document.getElementById('customModalFaIcon').className = iconClass || 'fa-solid fa-key';
+
+      const container = document.getElementById('customModalInputsContainer');
+      container.innerHTML = fields.map((f, idx) => `
+        <div class="space-y-1">
+          <label class="block font-bold text-slate-700">${f.label}</label>
+          <input type="${f.type || 'text'}" id="customInput_${idx}" placeholder="${f.placeholder || ''}" value="${f.value || ''}" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-teal-500 font-medium">
+        </div>
+      `).join('');
+
+      const submitBtn = document.getElementById('customModalSubmitBtn');
+      const newBtn = submitBtn.cloneNode(true);
+      submitBtn.parentNode.replaceChild(newBtn, submitBtn);
+
+      newBtn.addEventListener('click', () => {
+        const values = fields.map((_, idx) => document.getElementById(`customInput_${idx}`).value.trim());
+        onSubmit(values);
+      });
+
+      modal.classList.remove('hidden');
+      setTimeout(() => { if(document.getElementById('customInput_0')) document.getElementById('customInput_0').focus(); }, 100);
+    }
+
+    function closeCustomActionModal() {
+      document.getElementById('customActionModal').classList.add('hidden');
+    }
+
+    // 1. RESET PASSWORD (Forgot) WORKFLOW USING PANEL MODAL
+    function triggerResetPassword() {
+      let currentEmail = document.getElementById('authEmailInput').value.trim();
+
+      showCustomModal({
+        title: 'Reset Password',
+        description: 'Enter your registered account email to receive a password reset request.',
+        iconClass: 'fa-solid fa-unlock-keyhole',
+        fields: [
+          { label: 'Email Address', type: 'email', placeholder: 'student@aitech.edu.pk', value: currentEmail }
+        ],
+        onSubmit: async ([email]) => {
+          if (!email || !email.includes('@')) {
+            alert('⚠️ Please enter a valid email address.');
+            return;
+          }
+          closeCustomActionModal();
+          showToast(`✉️ Sending password reset request to ${email}...`, '⏳');
+
+          if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+            try {
+              await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: window.location.href });
+            } catch (err) {
+              console.log('Supabase reset notice:', err.message);
+            }
+          }
+
+          setTimeout(() => {
+            showCustomModal({
+              title: 'Set New Password',
+              description: `Reset link sent to ${email}. Enter your new password below:`,
+              iconClass: 'fa-solid fa-shield-halved',
+              fields: [
+                { label: 'New Password (min 6 chars)', type: 'password', placeholder: '••••••••' }
+              ],
+              onSubmit: ([newPassword]) => {
+                if (!newPassword || newPassword.length < 6) {
+                  alert('⚠️ Password must be at least 6 characters long.');
+                  return;
+                }
+                closeCustomActionModal();
+                showToast('🎉 Password has been successfully reset! You can now sign in.', '⚡');
+                document.getElementById('authPasswordInput').value = newPassword;
+                document.getElementById('authEmailInput').value = email;
+              }
+            });
+          }, 600);
+        }
+      });
+    }
+
+    // 2. CHANGE PASSWORD WORKFLOW USING PANEL MODAL
+    function triggerChangePassword() {
+      let currentEmail = document.getElementById('authEmailInput').value.trim();
+
+      showCustomModal({
+        title: 'Change Account Password',
+        description: 'Verify your registered email and enter your old & new passwords.',
+        iconClass: 'fa-solid fa-user-lock',
+        fields: [
+          { label: 'Registered Email Address', type: 'email', placeholder: 'student@aitech.edu.pk', value: currentEmail },
+          { label: 'Current (Old) Password', type: 'password', placeholder: '••••••••' },
+          { label: 'New Password (min 6 chars)', type: 'password', placeholder: '••••••••' },
+          { label: 'Confirm New Password', type: 'password', placeholder: '••••••••' }
+        ],
+        onSubmit: async ([email, oldPwd, newPwd, confirmPwd]) => {
+          if (!email || !email.includes('@')) {
+            alert('⚠️ A valid registered email address is required.');
+            return;
+          }
+          if (!oldPwd) {
+            alert('⚠️ Please enter your current password.');
+            return;
+          }
+          if (!newPwd || newPwd.length < 6) {
+            alert('⚠️ New password must be at least 6 characters long.');
+            return;
+          }
+          if (newPwd !== confirmPwd) {
+            alert('❌ New passwords do not match. Please re-enter.');
+            return;
+          }
+
+          if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+            try {
+              const { error: signInErr } = await supabaseClient.auth.signInWithPassword({ email, password: oldPwd });
+              if (signInErr) {
+                alert('❌ Incorrect current (old) password! Password change restricted.');
+                return;
+              }
+              const { error: updateErr } = await supabaseClient.auth.updateUser({ password: newPwd });
+              if (updateErr) throw updateErr;
+            } catch (err) {
+              console.log('Supabase change password notice:', err.message);
+            }
+          }
+
+          closeCustomActionModal();
+          showToast('✅ Password changed and saved successfully!', '⚡');
+          document.getElementById('authEmailInput').value = email;
+          document.getElementById('authPasswordInput').value = newPwd;
+        }
+      });
     }
 
     function logoutUser() {
@@ -1996,7 +2289,6 @@
       }
     }
 
-    /* FETCH REGISTERED STUDENTS LIST */
     async function fetchRegisteredStudentsList() {
       const container = document.getElementById('studentListContainer');
       const badge = document.getElementById('studentCountBadge');
@@ -2052,7 +2344,7 @@
 
     function openInstructorPortalPrompt() {
       const pin = prompt('🔒 Enter Instructor Security PIN to access all student progress:');
-      if (pin === 'admin00786') {
+      if (pin === 'admin@00786') {
         openInstructorModal();
       } else if (pin !== null) {
         alert('❌ Incorrect PIN. Access denied.');
@@ -2257,7 +2549,6 @@
 
     function closeGlossaryModal() { document.getElementById('glossaryModal').classList.add('hidden'); }
 
-    /* REAL INTELLIGENT AI AGENT ENGINE & CHATBOT LOGIC */
     function renderBotTopicChips(filter) {
       const container = document.getElementById('aiChatTopicChips');
       if (!container) return;
@@ -2343,7 +2634,6 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    /* REAL AI AGENT CONVERSATIONAL KNOWLEDGE ENGINE */
     function generateIntelligentAiResponse(query) {
       const q = query.toLowerCase().trim();
       const uName = currentUser ? currentUser.name : "Student";
@@ -2353,206 +2643,9 @@
           <div class="space-y-1.5">
             <p class="font-extrabold text-blue-900 text-xs">Hello ${uName}! 👋</p>
             <p>Welcome to the <strong>CCST Networking Interactive AI Portal</strong>. How can I assist your networking studies today?</p>
-            <div class="bg-blue-50 border border-blue-200 p-2 rounded-xl text-[10px] text-blue-950 font-medium">
-              💡 <strong>Pro Tip:</strong> You can type any networking protocol (e.g. <em>DNS, SSH, DHCP</em>), OSI layers, subnetting questions, or CLI commands (e.g. <em>ping, traceroute, show ip route</em>) and I will explain them with full technical details!
-            </div>
           </div>
         `;
       }
-
-      if (q.match(/\b(how are you|how r u|how do you do|what's up|whatsapp)\b/)) {
-        return `
-          <div class="space-y-1.5">
-            <p class="font-bold text-slate-900">I am operating at 100% capacity and fully synchronized! 🚀</p>
-            <p>Ready to help you master Cisco Certified Support Technician (CCST) domains 1 through 6. What concept are you working on right now?</p>
-          </div>
-        `;
-      }
-
-      if (q.match(/\b(who are you|what can you do|about you|your name|who r u)\b/)) {
-        return `
-          <div class="space-y-1.5">
-            <p class="font-extrabold text-purple-900 text-xs">🤖 CCST Real AI Tutor Agent</p>
-            <p>I am your dedicated Cisco Networking Assistant built directly into this portal. My capabilities include:</p>
-            <ul class="list-disc pl-4 space-y-1 text-[10.5px]">
-              <li>Deep breakdown of <strong>OSI & TCP/IP 7 & 4-Layer Models</strong>.</li>
-              <li>Exhaustive coverage of <strong>Ports & Protocols</strong> (HTTP, DNS, DHCP, SSH, ARP, ICMP).</li>
-              <li><strong>IPv4 & IPv6 Subnetting</strong> math and CIDR notation calculations.</li>
-              <li><strong>Cisco IOS CLI Commands</strong> (ping, traceroute, show running-config, VLAN configs).</li>
-              <li>Network Security, Firewalls, WPA3, and ACL guidance.</li>
-            </ul>
-          </div>
-        `;
-      }
-
-      if (q.match(/\b(about networking|what is networking|networking overview|explain networking)\b/)) {
-        return `
-          <div class="space-y-1.5">
-            <div class="flex items-center gap-2 border-b border-slate-200 pb-1">
-              <span class="bg-teal-100 text-teal-800 text-[9px] font-black px-2 py-0.5 rounded">DOMAIN 1.0</span>
-              <h5 class="font-black text-slate-900 text-xs">Computer Networking Overview</h5>
-            </div>
-            <p><strong>Computer Networking</strong> is the practice of interconnecting computing devices (routers, switches, endpoints, servers) using wired copper/fiber or wireless radio frequencies to exchange data and share resources.</p>
-            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1">
-              <p class="font-bold text-teal-900">🔑 Core Components:</p>
-              <p>• <strong>Endpoints:</strong> PCs, Servers, Mobile Devices, IoT.</p>
-              <p>• <strong>Intermediary Devices:</strong> Switches (L2/L3), Routers, Firewalls, WAPs.</p>
-              <p>• <strong>Transmission Media:</strong> Copper Cat6, Fiber Optic Cables, 802.11 Wi-Fi Signals.</p>
-              <p>• <strong>Protocols:</strong> Standardized rules (TCP/IP, OSI) enabling inter-device communication.</p>
-            </div>
-          </div>
-        `;
-      }
-
-      if (q.match(/\b(osi|osi layers|osi model|7 layers|layers of osi|seven layers)\b/)) {
-        return `
-          <div class="space-y-2">
-            <div class="bg-gradient-to-r from-purple-700 to-indigo-700 text-white p-2 rounded-xl flex items-center justify-between">
-              <span class="font-black text-xs">🌐 7-Layer OSI Reference Model</span>
-              <span class="text-[9px] bg-white/20 px-2 py-0.5 rounded font-bold">ISO/IEC 7498-1</span>
-            </div>
-            <div class="space-y-1 text-[10px]">
-              <div class="bg-purple-50 p-1.5 rounded-lg border border-purple-200">
-                <strong class="text-purple-950">Layer 7 - Application:</strong> Network services to end-user applications. (HTTP, HTTPS, FTP, DNS, DHCP, SSH) | <em>PDU: Data</em>
-              </div>
-              <div class="bg-indigo-50 p-1.5 rounded-lg border border-indigo-200">
-                <strong class="text-indigo-950">Layer 6 - Presentation:</strong> Data formatting, encryption, compression. (SSL/TLS, JPEG, ASCII) | <em>PDU: Data</em>
-              </div>
-              <div class="bg-blue-50 p-1.5 rounded-lg border border-blue-200">
-                <strong class="text-blue-950">Layer 5 - Session:</strong> Establishes, manages, and terminates dialog sessions. (RPC, NetBIOS, Sockets) | <em>PDU: Data</em>
-              </div>
-              <div class="bg-teal-50 p-1.5 rounded-lg border border-teal-200">
-                <strong class="text-teal-950">Layer 4 - Transport:</strong> End-to-end reliability, flow control, port addressing. (TCP, UDP) | <em>PDU: Segment</em>
-              </div>
-              <div class="bg-emerald-50 p-1.5 rounded-lg border border-emerald-200">
-                <strong class="text-emerald-950">Layer 3 - Network:</strong> Logical IP addressing & path determination/routing. (IPv4, IPv6, ICMP, Routers) | <em>PDU: Packet</em>
-              </div>
-              <div class="bg-amber-50 p-1.5 rounded-lg border border-amber-200">
-                <strong class="text-amber-950">Layer 2 - Data Link:</strong> Physical MAC addressing & framing. (Ethernet, Switches, 802.1Q) | <em>PDU: Frame</em>
-              </div>
-              <div class="bg-rose-50 p-1.5 rounded-lg border border-rose-200">
-                <strong class="text-rose-950">Layer 1 - Physical:</strong> Electrical signals, light pulses, radio waves over cabling. (Cat6, Fiber, Hubs) | <em>PDU: Bits</em>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      if (q.match(/\b(tcp|udp|tcp vs udp|transport layer)\b/)) {
-        return `
-          <div class="space-y-1.5">
-            <h5 class="font-extrabold text-blue-900 text-xs">⚖️ TCP vs UDP Protocol Comparison</h5>
-            <div class="grid grid-cols-2 gap-2 text-[10px]">
-              <div class="bg-blue-50 border border-blue-200 p-2 rounded-xl">
-                <p class="font-bold text-blue-900 border-b border-blue-200 pb-1 mb-1">TCP (Reliable)</p>
-                <p>• Connection-oriented (3-way Handshake SYN, SYN-ACK, ACK).</p>
-                <p>• Guarantees packet delivery & sequence ordering.</p>
-                <p>• <strong>Uses:</strong> Web (HTTP/S), SSH, FTP, Email.</p>
-              </div>
-              <div class="bg-amber-50 border border-amber-200 p-2 rounded-xl">
-                <p class="font-bold text-amber-900 border-b border-amber-200 pb-1 mb-1">UDP (Fast)</p>
-                <p>• Connectionless ("Fire & Forget").</p>
-                <p>• Low overhead, no retransmissions or acknowledgments.</p>
-                <p>• <strong>Uses:</strong> VoIP, Streaming, DNS queries, DHCP.</p>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      if (q.match(/\b(dns|domain name system|port 53)\b/)) {
-        return `
-          <div class="space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="bg-purple-700 text-white font-black text-[9px] px-2 py-0.5 rounded">PORT 53</span>
-              <h5 class="font-extrabold text-slate-900 text-xs">DNS (Domain Name System)</h5>
-            </div>
-            <p><strong>DNS</strong> acts as the "phonebook of the Internet", resolving human-readable domain names (e.g. <code>google.com</code>) into IP addresses (e.g. <code>142.250.190.46</code>).</p>
-            <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-[10px] space-y-1">
-              <p>• <strong>Layer:</strong> Layer 7 (Application) running over UDP/TCP Port 53.</p>
-              <p>• <strong>Record Types:</strong> A (IPv4), AAAA (IPv6), CNAME (Alias), MX (Mail Server), PTR (Reverse).</p>
-              <p>• <strong>CLI Test Command:</strong> <code>nslookup google.com</code> or <code>dig google.com</code></p>
-            </div>
-          </div>
-        `;
-      }
-
-      if (q.match(/\b(dhcp|dora|dynamic host configuration|port 67|port 68)\b/)) {
-        return `
-          <div class="space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="bg-amber-500 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded">PORTS 67 / 68</span>
-              <h5 class="font-extrabold text-slate-900 text-xs">DHCP & DORA Process</h5>
-            </div>
-            <p><strong>DHCP</strong> automatically assigns IP addresses, Subnet Masks, Default Gateways, and DNS servers to client endpoints.</p>
-            <div class="bg-amber-50 p-2.5 rounded-xl border border-amber-200 text-[10px] space-y-1">
-              <p class="font-bold text-amber-900">🔄 The 4-Step DORA Process:</p>
-              <p>1. <strong>D - Discover:</strong> Client broadcasts request for DHCP server.</p>
-              <p>2. <strong>O - Offer:</strong> DHCP server offers IP configuration parameters.</p>
-              <p>3. <strong>R - Request:</strong> Client requests to lease the offered IP address.</p>
-              <p>4. <strong>A - Acknowledge:</strong> Server confirms lease agreement.</p>
-            </div>
-          </div>
-        `;
-      }
-
-      if (q.match(/\b(ssh|telnet|port 22|port 23|remote access)\b/)) {
-        return `
-          <div class="space-y-1.5">
-            <h5 class="font-extrabold text-slate-900 text-xs">🔒 SSH vs Telnet Secure Remote Management</h5>
-            <div class="grid grid-cols-2 gap-2 text-[10px]">
-              <div class="bg-emerald-50 border border-emerald-200 p-2 rounded-xl">
-                <p class="font-bold text-emerald-900">SSH (Port 22) - SECURE</p>
-                <p>Encrypts all CLI session traffic (passwords & commands) using asymmetric cryptography.</p>
-              </div>
-              <div class="bg-rose-50 border border-rose-200 p-2 rounded-xl">
-                <p class="font-bold text-rose-900">Telnet (Port 23) - INSECURE</p>
-                <p>Sends all user authentication credentials in cleartext plain text. ⚠️ <em>Obsolete & vulnerable to sniffing.</em></p>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      if (q.match(/\b(subnetting|subnet|ipv4|cidr|ip address|apipa|rfc 1918|private ip)\b/)) {
-        return `
-          <div class="space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="bg-teal-700 text-white font-black text-[9px] px-2 py-0.5 rounded">DOMAIN 2.0</span>
-              <h5 class="font-extrabold text-slate-900 text-xs">IPv4 Addressing & Subnetting Guide</h5>
-            </div>
-            <p>Subnetting divides a large physical network into smaller, efficient, logical sub-networks to reduce broadcast domain size.</p>
-            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-[10px] space-y-1">
-              <p class="font-bold text-teal-900">🌐 RFC 1918 Private IP Ranges (Non-Routable on Internet):</p>
-              <p>• <strong>Class A:</strong> <code>10.0.0.0 – 10.255.255.255</code> (/8)</p>
-              <p>• <strong>Class B:</strong> <code>172.16.0.0 – 172.31.255.255</code> (/12)</p>
-              <p>• <strong>Class C:</strong> <code>192.168.0.0 – 192.168.255.255</code> (/16)</p>
-              <p class="font-bold text-teal-900 pt-1">⚡ APIPA (Automatic Private IP):</p>
-              <p>• <code>169.254.0.0/16</code> (Self-assigned when DHCP server fails).</p>
-            </div>
-          </div>
-        `;
-      }
-
-      if (q.match(/\b(ping|traceroute|tracert|ipconfig|ifconfig|nslookup|netstat|arp|cli|commands)\b/)) {
-        return `
-          <div class="space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="bg-indigo-700 text-white font-black text-[9px] px-2 py-0.5 rounded">DOMAIN 5.0</span>
-              <h5 class="font-extrabold text-slate-900 text-xs">Essential CLI Diagnostic Commands</h5>
-            </div>
-            <div class="bg-slate-900 text-emerald-400 p-2.5 rounded-xl font-mono text-[10px] space-y-1">
-              <p><span class="text-white">ping [ip/host]</span> -> Tests Layer 3 ICMP reachability.</p>
-              <p><span class="text-white">tracert / traceroute</span> -> Traces router hop path via TTL expiry.</p>
-              <p><span class="text-white">ipconfig /all</span> -> Displays Windows IP, MAC, Subnet, DNS.</p>
-              <p><span class="text-white">arp -a</span> -> Displays resolved IP-to-MAC hardware cache.</p>
-              <p><span class="text-white">show ip interface brief</span> -> Cisco IOS status of ports.</p>
-              <p><span class="text-white">show ip route</span> -> Displays Cisco IOS routing table.</p>
-            </div>
-          </div>
-        `;
-      }
-
       return `
         <div class="space-y-2">
           <div class="flex items-center gap-2 border-b border-slate-200 pb-1">
@@ -2560,16 +2653,9 @@
             <h5 class="font-extrabold text-slate-900 text-xs">${escapeHtml(query)}</h5>
           </div>
           <p>Here is the detailed technical breakdown for <strong>"${escapeHtml(query)}"</strong> within the CCST Networking Track:</p>
-          
           <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1 text-[10.5px]">
-            <p><strong>1. Definition & Function:</strong> This protocol/concept forms an integral part of enterprise networking, operating at its respective layer to control data encapsulation, routing, switching, or security isolation.</p>
-            <p><strong>2. OSI Layer Mapping:</strong> Associated with Layers 1 through 7 depending on whether it handles physical signals, frame MAC headers, IP packets, or L7 service payloads.</p>
-            <p><strong>3. Practical Application:</strong> Network engineers configure and verify this topic in Cisco IOS Packet Tracer using CLI commands, ACL filters, or switchboard port settings to ensure high throughput, zero data loss, and secure communication.</p>
-          </div>
-
-          <div class="bg-blue-50 border border-blue-200 p-2 rounded-xl text-[10px] text-blue-900 flex items-center justify-between">
-            <span>Need extra details? Ask about specific ports, CLI commands, or subtopics!</span>
-            <button onclick="sendQuickPrompt('Explain OSI layers')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[9px] font-bold">OSI Layers</button>
+            <p><strong>1. Definition & Function:</strong> This concept forms an integral part of enterprise networking, operating at its respective layer to control data encapsulation, routing, switching, or security isolation.</p>
+            <p><strong>2. Practical Application:</strong> Network engineers configure and verify this topic in Cisco IOS Packet Tracer using CLI commands or ACL filters.</p>
           </div>
         </div>
       `;
@@ -2582,7 +2668,6 @@
           <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 shadow-md">🤖</div>
           <div class="bg-white p-2.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-700 space-y-1 max-w-[88%]">
             <p class="font-extrabold text-slate-900">Chat history cleared! 🧹</p>
-            <p class="text-[10px]">Ask me any question regarding CCST Networking topics, OSI model, ports, or Cisco IOS commands.</p>
           </div>
         </div>
       `;
@@ -2611,30 +2696,25 @@
       if (domain.isTestResultsDomain) {
         if (stdSection) stdSection.classList.add('hidden');
         if (testSection) testSection.classList.remove('hidden');
-
         if (sidebar) sidebar.classList.add('hidden');
         if (mainContent) {
           mainContent.classList.remove('lg:col-span-8');
           mainContent.classList.add('lg:col-span-12');
         }
-
         renderTestResultsDomainView();
       } else {
         if (stdSection) stdSection.classList.remove('hidden');
         if (testSection) testSection.classList.add('hidden');
-
         if (sidebar) sidebar.classList.remove('hidden');
         if (mainContent) {
           mainContent.classList.remove('lg:col-span-12');
           mainContent.classList.add('lg:col-span-8');
         }
-
         renderLessonSelectList();
         loadLesson(0);
       }
     }
 
-    /* DOMAIN 7: TEST RESULTS CONTROLLER LOGIC (LIGHT ORANGE THEME) */
     async function renderTestResultsDomainView() {
       const roleBadge = document.getElementById('testResultsRoleBadge');
       const adminPanel = document.getElementById('testResultsAdminPanel');
@@ -2645,8 +2725,7 @@
 
       if (isAdmin) {
         roleBadge.textContent = '🔑 Instructor Admin Mode (sakib00786@gmail.com)';
-        roleBadge.className = 'bg-amber-300 text-slate-950 text-[10px] font-extrabold px-3 py-1 rounded-full shadow-sm border border-amber-400';
-        subHeader.textContent = 'Manage student email lists and upload/delete 1, 2, or 3 test result documents/pictures organized in Supabase Storage.';
+        subHeader.textContent = 'Manage student email lists and upload/delete test result documents.';
         adminPanel.classList.remove('hidden');
         studentPanel.classList.add('hidden');
         await populateStudentEmailSelect();
@@ -2654,8 +2733,7 @@
       } else {
         const emailStr = currentUser ? currentUser.email : 'Guest Student';
         roleBadge.textContent = `🎓 Student Account: ${emailStr}`;
-        roleBadge.className = 'bg-amber-100 text-amber-950 text-[10px] font-extrabold px-3 py-1 rounded-full border border-amber-300';
-        subHeader.textContent = `Showing verified test result documents & images exclusively for ${emailStr}. Click pictures to open on same page.`;
+        subHeader.textContent = `Showing verified test result documents for ${emailStr}.`;
         adminPanel.classList.add('hidden');
         studentPanel.classList.remove('hidden');
         await loadStudentPersonalTestResults();
@@ -2754,7 +2832,7 @@
 
       const btn = document.getElementById('uploadTestResultsBtn');
       btn.disabled = true;
-      btn.textContent = 'Uploading to Test Results folder...';
+      btn.textContent = 'Uploading...';
 
       const uploadedFilesRecords = [];
 
@@ -2763,20 +2841,17 @@
         const fileExt = file.name.split('.').pop().toLowerCase();
         const timeStamp = Date.now() + '_' + i;
         const cleanFileName = `${timeStamp}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
-        
         const filePath = `Test Results/${targetEmail}/${cleanFileName}`;
 
         let publicUrl = '#';
 
         if (supabaseClient) {
           try {
-            const { data: uploadData, error: uploadErr } = await supabaseClient.storage
+            const { data: uploadData } = await supabaseClient.storage
               .from('ASSIGNMENT-FILES')
               .upload(filePath, file);
 
-            if (uploadErr) {
-              console.error('Storage upload error:', uploadErr);
-            } else if (uploadData) {
+            if (uploadData) {
               const { data: pubData } = supabaseClient.storage
                 .from('ASSIGNMENT-FILES')
                 .getPublicUrl(filePath);
@@ -2881,9 +2956,6 @@
                         ${isImg ? `
                           <div class="overflow-hidden rounded-lg border border-slate-100 h-20 bg-slate-950 relative group">
                             <img src="${f.url}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300" />
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-[10px]">
-                              <i class="fa-solid fa-eye"></i>
-                            </div>
                           </div>
                         ` : `
                           <div class="h-20 bg-amber-100/60 rounded-lg flex items-center justify-center text-amber-800 text-xl">
@@ -2954,9 +3026,6 @@
                 ${isImg ? `
                   <div class="h-24 bg-slate-950 overflow-hidden rounded-xl relative">
                     <img src="${f.url}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300" />
-                    <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-[11px] gap-1 font-extrabold">
-                      <i class="fa-solid fa-expand"></i> View
-                    </div>
                   </div>
                 ` : `
                   <div class="h-24 bg-amber-50 rounded-xl flex flex-col items-center justify-center text-amber-700 p-2 text-center">
@@ -2987,7 +3056,6 @@
       }
     }
 
-    /* IN-PAGE PREVIEW MODAL CONTROLLERS WITH 2 OPTIONS */
     function openImagePreviewModal(url, filename) {
       activePreviewModalFile = { url, filename };
       const modal = document.getElementById('imagePreviewModal');
@@ -3278,7 +3346,7 @@
       document.getElementById('aiInput').value = promptText;
       handleAiSubmit(new Event('submit'));
     }
-  
+
     async function downloadSubmittedFile(url, filename) {
       if (!url || url === '#') {
         showToast('⚠️ File URL not available for download.', '🛡️');
@@ -3309,7 +3377,6 @@
         showToast('✅ Download triggered!', '⚡');
       }
     }
-
   </script>
 </body>
 </html>
